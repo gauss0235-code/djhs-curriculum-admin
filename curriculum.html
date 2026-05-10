@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>교육과정 편성표 - 대전 교육과정 지원단</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Malgun Gothic", sans-serif;
+      margin: 0;
+      background: #f5f5f5;
+      color: #2c3e50;
+    }
+    header {
+      background: white;
+      padding: 16px 32px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header h1 { font-size: 18px; margin: 0; }
+    header h1 a { color: inherit; text-decoration: none; }
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 14px;
+    }
+    .school-badge {
+      background: #e3f2fd;
+      color: #1565c0;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-weight: 500;
+    }
+    .admin-badge {
+      background: #fce4ec;
+      color: #c2185b;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-weight: 500;
+    }
+    .logout-btn {
+      background: transparent;
+      border: 1px solid #ddd;
+      padding: 6px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+    main {
+      max-width: 1000px;
+      margin: 32px auto;
+      padding: 0 32px;
+    }
+    .breadcrumb {
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 8px;
+    }
+    .breadcrumb a {
+      color: #888;
+      text-decoration: none;
+    }
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 24px;
+    }
+    .page-header h2 { margin: 0; font-size: 22px; }
+    .page-header .desc {
+      font-size: 14px;
+      color: #666;
+      margin-top: 4px;
+    }
+    .school-filter {
+      background: white;
+      padding: 16px 24px;
+      border-radius: 12px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .school-filter label {
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .school-filter select {
+      padding: 8px 12px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 14px;
+      flex: 1;
+      max-width: 300px;
+    }
+    .btn-primary {
+      background: #3498db;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .btn-primary:hover { background: #2980b9; }
+    .btn-secondary {
+      background: white;
+      border: 1px solid #ddd;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #999;
+      background: white;
+      border-radius: 12px;
+    }
+    .sheet-item {
+      background: white;
+      padding: 20px 24px;
+      border-radius: 12px;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      transition: all 0.2s;
+    }
+    .sheet-item:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    .sheet-info {
+      flex: 1;
+      cursor: pointer;
+    }
+    .sheet-info h3 {
+      margin: 0 0 6px 0;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .type-tag {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 500;
+    }
+    .type-practice {
+      background: #e8f5e9;
+      color: #2e7d32;
+    }
+    .type-first_draft {
+      background: #fff3e0;
+      color: #e65100;
+    }
+    .type-final {
+      background: #e3f2fd;
+      color: #1565c0;
+    }
+    .sheet-desc {
+      font-size: 13px;
+      color: #666;
+      margin: 4px 0;
+      line-height: 1.5;
+    }
+    .sheet-meta {
+      font-size: 12px;
+      color: #999;
+    }
+    .sheet-actions {
+      display: flex;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .open-btn {
+      background: #3498db;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .open-btn:hover { background: #2980b9; }
+    .edit-btn, .delete-btn {
+      background: white;
+      border: 1px solid #ddd;
+      padding: 8px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+    .delete-btn {
+      color: #e74c3c;
+      border-color: #e74c3c;
+    }
+    .delete-btn:hover { background: #ffebee; }
+    .modal-bg {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+    }
+    .modal-bg.hidden { display: none; }
+    .modal {
+      background: white;
+      padding: 32px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 500px;
+    }
+    .modal h3 { margin: 0 0 20px 0; }
+    .form-row { margin-bottom: 16px; }
+    .form-row label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #555;
+    }
+    .form-row input,
+    .form-row select,
+    .form-row textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 14px;
+      font-family: inherit;
+    }
+    .form-row textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+    .form-actions {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+      margin-top: 8px;
+    }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1><a href="dashboard.html">← 대전 교육과정 지원단</a></h1>
+    <div class="user-info" id="userInfo"></div>
+  </header>
+  
+  <main>
+    <div class="breadcrumb">
+      <a href="dashboard.html">대시보드</a> / 교육과정 편성표
+    </div>
+    
+    <div class="page-header">
+      <div>
+        <h2>📋 교육과정 편성표</h2>
+        <div class="desc" id="pageDesc">교육과정 편성표 시트를 확인하세요.</div>
+      </div>
+      <button id="addBtn" class="btn-primary hidden" onclick="showAddForm()">+ 새 시트 등록</button>
+    </div>
+    
+    <div id="schoolFilter" class="school-filter hidden">
+      <label>학교:</label>
+      <select id="schoolSelect" onchange="loadSheets()">
+        <option value="">학교를 선택하세요</option>
+      </select>
+    </div>
+    
+    <div id="sheetList">
+      <div class="empty-state">불러오는 중...</div>
+    </div>
+  </main>
+  
+  <div id="modal" class="modal-bg hidden">
+    <div class="modal">
+      <h3 id="modalTitle">새 시트 등록</h3>
+      <div class="form-row">
+        <label>학교 *</label>
+        <select id="formSchool"></select>
+      </div>
+      <div class="form-row">
+        <label>제목 *</label>
+        <input type="text" id="formTitle" placeholder="예: 2027학년도 입학생 교육과정 편성표 - 연습용">
+      </div>
+      <div class="form-row">
+        <label>종류 *</label>
+        <select id="formType" onchange="updateTitlePlaceholder()">
+          <option value="practice">연습용</option>
+          <option value="first_draft">1차 제출본</option>
+          <option value="final">최종본</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label>구글 스프레드시트 URL *</label>
+        <input type="url" id="formUrl" placeholder="https://docs.google.com/spreadsheets/d/...">
+      </div>
+      <div class="form-row">
+        <label>설명</label>
+        <textarea id="formDesc" placeholder="이 시트에 대한 설명을 입력하세요"></textarea>
+      </div>
+      <div class="form-actions">
+        <button class="btn-secondary" onclick="hideModal()">취소</button>
+        <button class="btn-primary" onclick="saveSheet()">저장</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+    
+    const SUPABASE_URL = 'https://nzsgvjdotnvqpzhehfsg.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_ALakaYU4jTYEIQas_nWrsQ_An3IK9_h';
+    
+    const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+    
+    let currentUser = null;
+    let currentProfile = null;
+    let isAdmin = false;
+    let allSchools = [];
+    let editingId = null;
+    
+    const TYPE_LABELS = {
+      practice: '연습용',
+      first_draft: '1차 제출본',
+      final: '최종본'
+    };
+    
+    window.updateTitlePlaceholder = function() {
+      const type = document.getElementById('formType').value;
+      const label = TYPE_LABELS[type];
+      document.getElementById('formTitle').placeholder = `예: 2027학년도 입학생 교육과정 편성표 - ${label}`;
+    };
+    
+    async function init() {
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (!user) {
+        alert('로그인이 필요합니다.');
+        window.location.href = 'login.html';
+        return;
+      }
+      
+      currentUser = user;
+      
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('display_name, role, school_id, schools(name, code)')
+        .eq('id', user.id)
+        .single();
+      
+      currentProfile = profile;
+      isAdmin = profile.role === 'admin';
+      
+      const userInfoEl = document.getElementById('userInfo');
+      if (isAdmin) {
+        userInfoEl.innerHTML = `
+          <span class="admin-badge">관리자</span>
+          <span>${profile.display_name}</span>
+          <button class="logout-btn" onclick="handleLogout()">로그아웃</button>
+        `;
+        document.getElementById('addBtn').classList.remove('hidden');
+        document.getElementById('schoolFilter').classList.remove('hidden');
+        document.getElementById('pageDesc').textContent = '학교를 선택해서 등록된 시트를 관리하세요.';
+        await loadSchools();
+      } else {
+        userInfoEl.innerHTML = `
+          <span class="school-badge">${profile.schools.name}</span>
+          <span>${profile.display_name}</span>
+          <button class="logout-btn" onclick="handleLogout()">로그아웃</button>
+        `;
+        document.getElementById('pageDesc').textContent = `${profile.schools.name}의 편성표 시트입니다. 클릭하면 새 탭에서 열립니다.`;
+        loadSheets();
+      }
+    }
+    
+    async function loadSchools() {
+      const { data, error } = await supabase
+        .from('schools')
+        .select('id, name, code')
+        .order('name');
+      
+      if (error) {
+        console.error(error);
+        return;
+      }
+      
+      allSchools = data;
+      
+      const select = document.getElementById('schoolSelect');
+      select.innerHTML = '<option value="">학교를 선택하세요</option>' + 
+        data.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
+      
+      const formSelect = document.getElementById('formSchool');
+      formSelect.innerHTML = data.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
+    }
+    
+    window.loadSheets = async function() {
+      const listEl = document.getElementById('sheetList');
+      
+      let schoolId;
+      if (isAdmin) {
+        schoolId = document.getElementById('schoolSelect').value;
+        if (!schoolId) {
+          listEl.innerHTML = '<div class="empty-state">위에서 학교를 선택하세요.</div>';
+          return;
+        }
+      } else {
+        schoolId = currentProfile.school_id;
+      }
+      
+      const { data, error } = await supabase
+        .from('curriculums')
+        .select('*')
+        .eq('school_id', schoolId)
+        .order('display_order', { ascending: true })
+        .order('created_at', { ascending: true });
+      
+      if (error) {
+        listEl.innerHTML = `<div class="empty-state" style="color: red;">오류: ${error.message}</div>`;
+        return;
+      }
+      
+      if (!data || data.length === 0) {
+        listEl.innerHTML = `
+          <div class="empty-state">
+            <p>아직 등록된 시트가 없습니다.</p>
+            ${isAdmin ? '<p>위 버튼으로 새 시트를 등록해주세요.</p>' : '<p>지원단에서 시트를 등록하면 여기에 표시됩니다.</p>'}
+          </div>
+        `;
+        return;
+      }
+      
+      listEl.innerHTML = data.map(item => {
+        const updatedDate = new Date(item.updated_at).toLocaleDateString('ko-KR', {
+          year: 'numeric', month: 'long', day: 'numeric'
+        });
+        return `
+          <div class="sheet-item">
+            <div class="sheet-info" onclick="window.open('${item.spreadsheet_url}', '_blank')">
+              <h3>
+                ${item.title}
+                <span class="type-tag type-${item.sheet_type}">${TYPE_LABELS[item.sheet_type]}</span>
+              </h3>
+              ${item.description ? `<div class="sheet-desc">${item.description}</div>` : ''}
+              <div class="sheet-meta">최종 수정: ${updatedDate}</div>
+            </div>
+            <div class="sheet-actions">
+              <a class="open-btn" href="${item.spreadsheet_url}" target="_blank">열기 ↗</a>
+              ${isAdmin ? `
+                <button class="edit-btn" onclick="editSheet('${item.id}')">수정</button>
+                <button class="delete-btn" onclick="deleteSheet('${item.id}')">삭제</button>
+              ` : ''}
+            </div>
+          </div>
+        `;
+      }).join('');
+    };
+    
+    window.showAddForm = function() {
+      editingId = null;
+      document.getElementById('modalTitle').textContent = '새 시트 등록';
+      document.getElementById('formTitle').value = '';
+      document.getElementById('formType').value = 'practice';
+      document.getElementById('formUrl').value = '';
+      document.getElementById('formDesc').value = '';
+      
+      const selectedSchool = document.getElementById('schoolSelect').value;
+      if (selectedSchool) {
+        document.getElementById('formSchool').value = selectedSchool;
+      }
+      
+      document.getElementById('modal').classList.remove('hidden');
+    };
+    
+    window.editSheet = async function(id) {
+      const { data } = await supabase
+        .from('curriculums')
+        .select('*')
+        .eq('id', id)
+        .single();
+      
+      if (!data) return;
+      
+      editingId = id;
+      document.getElementById('modalTitle').textContent = '시트 수정';
+      document.getElementById('formSchool').value = data.school_id;
+      document.getElementById('formTitle').value = data.title;
+      document.getElementById('formType').value = data.sheet_type;
+      document.getElementById('formUrl').value = data.spreadsheet_url;
+      document.getElementById('formDesc').value = data.description || '';
+      
+      document.getElementById('modal').classList.remove('hidden');
+    };
+    
+    window.hideModal = function() {
+      document.getElementById('modal').classList.add('hidden');
+      editingId = null;
+    };
+    
+    window.saveSheet = async function() {
+      const school_id = document.getElementById('formSchool').value;
+      const title = document.getElementById('formTitle').value.trim();
+      const sheet_type = document.getElementById('formType').value;
+      const spreadsheet_url = document.getElementById('formUrl').value.trim();
+      const description = document.getElementById('formDesc').value.trim();
+      
+      if (!title || !spreadsheet_url) {
+        alert('제목과 URL은 필수입니다.');
+        return;
+      }
+      
+      if (editingId) {
+        const { error } = await supabase
+          .from('curriculums')
+          .update({
+            school_id, title, sheet_type, spreadsheet_url,
+            description: description || null
+          })
+          .eq('id', editingId);
+        
+        if (error) { alert('수정 실패: ' + error.message); return; }
+        alert('수정되었습니다.');
+      } else {
+        const { error } = await supabase
+          .from('curriculums')
+          .insert({
+            school_id, title, sheet_type, spreadsheet_url,
+            description: description || null,
+            created_by: currentUser.id
+          });
+        
+        if (error) { alert('등록 실패: ' + error.message); return; }
+        alert('등록되었습니다.');
+      }
+      
+      hideModal();
+      loadSheets();
+    };
+    
+    window.deleteSheet = async function(id) {
+      const ok = confirm('정말 삭제하시겠습니까?');
+      if (!ok) return;
+      
+      const { error } = await supabase
+        .from('curriculums')
+        .delete()
+        .eq('id', id);
+      
+      if (error) { alert('삭제 실패: ' + error.message); return; }
+      loadSheets();
+    };
+    
+    window.handleLogout = async function() {
+      const ok = confirm('로그아웃 하시겠습니까?');
+      if (!ok) return;
+      
+      await supabase.auth.signOut();
+      window.location.href = 'login.html';
+    };
+    
+    init();
+  </script>
+</body>
+</html>

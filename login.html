@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>로그인 - 대전 교육과정 지원단</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Malgun Gothic", sans-serif;
+      max-width: 400px;
+      margin: 100px auto;
+      padding: 30px;
+      background: #f5f5f5;
+    }
+    .card {
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    h1 {
+      font-size: 20px;
+      margin-bottom: 30px;
+      text-align: center;
+      color: #2c3e50;
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 12px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #3498db;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 15px;
+      cursor: pointer;
+      font-weight: 500;
+    }
+    button:hover { background: #2980b9; }
+    button:disabled { background: #95a5a6; cursor: not-allowed; }
+    .message {
+      margin-top: 16px;
+      padding: 12px;
+      border-radius: 6px;
+      font-size: 14px;
+      display: none;
+    }
+    .message.error {
+      background: #fee;
+      color: #c0392b;
+      display: block;
+    }
+    .message.success {
+      background: #efe;
+      color: #27ae60;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>대전 교육과정 지원단<br>업무 담당자 로그인</h1>
+    
+    <input type="email" id="email" placeholder="이메일">
+    <input type="password" id="password" placeholder="비밀번호">
+    <button id="loginBtn" onclick="handleLogin()">로그인</button>
+    
+    <div id="message" class="message"></div>
+  </div>
+
+  <script type="module">
+    // Supabase 라이브러리 가져오기
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+    
+    // ⚠️ 여기에 본인의 Supabase 정보를 넣어주세요!
+    const SUPABASE_URL = 'https://nzsgvjdotnvqpzhehfsg.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_ALakaYU4jTYEIQas_nWrsQ_An3IK9_h';
+    
+    const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+    
+    // 로그인 처리 함수
+    window.handleLogin = async function() {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const messageEl = document.getElementById('message');
+      const btn = document.getElementById('loginBtn');
+      
+      if (!email || !password) {
+        messageEl.className = 'message error';
+        messageEl.textContent = '이메일과 비밀번호를 입력해주세요.';
+        return;
+      }
+      
+      btn.disabled = true;
+      btn.textContent = '로그인 중...';
+      
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: email,
+        password: password
+      });
+      
+      if (error) {
+        messageEl.className = 'message error';
+        messageEl.textContent = '로그인 실패: ' + error.message;
+        btn.disabled = false;
+        btn.textContent = '로그인';
+        return;
+      }
+      
+// 성공! 사용자의 프로필/학교 정보 가져오기
+      const { data: profile, error: profileError } = await supabase
+        .from('profiles')
+        .select('display_name, role, schools(name, code)')
+        .eq('id', data.user.id)
+        .single();
+      
+      if (profileError) {
+        messageEl.className = 'message error';
+        messageEl.textContent = '프로필 정보를 가져오지 못했습니다: ' + profileError.message;
+        btn.disabled = false;
+        btn.textContent = '로그인';
+        return;
+      }
+      
+      messageEl.className = 'message success';
+      if (profile.role === 'admin') {
+        messageEl.textContent = `관리자(${profile.display_name})로 로그인 성공!`;
+      } else if (profile.schools) {
+        messageEl.textContent = `${profile.schools.name} 담당자(${profile.display_name})로 로그인 성공!`;
+      } else {
+        messageEl.textContent = `${profile.display_name}로 로그인 성공!`;
+      }
+      
+      // 2초 후 다음 페이지로 이동 (나중에 만들 예정)
+      setTimeout(() => {
+        window.location.href = 'dashboard.html';
+      }, 2000);
+    };
+    
+    // 엔터키로도 로그인되게
+    document.getElementById('password').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') window.handleLogin();
+    });
+  </script>
+</body>
+</html>
