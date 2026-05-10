@@ -2,305 +2,513 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>교육과정 편성표 - 대전광역시 고등학교 교육과정 업무담당자 워크스페이스</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>교육과정 편성표 — 대전광역시 고등학교 교육과정 업무담당자 워크스페이스</title>
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   <style>
-    * { box-sizing: border-box; }
+    @font-face {
+      font-family: 'JalnanGothic';
+      src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_231029@1.1/JalnanGothic.woff') format('woff');
+      font-weight: normal;
+      font-display: swap;
+    }
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --border: #e2e8f0;
+      --border-strong: #cbd5e1;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --text-light: #94a3b8;
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --primary-soft: #eef2ff;
+      --primary-dark: #3730a3;
+      --admin: #be185d;
+      --admin-soft: #fdf2f8;
+      --danger: #dc2626;
+      --danger-soft: #fef2f2;
+      --green: #16a34a;
+      --green-soft: #f0fdf4;
+      --orange: #ea580c;
+      --orange-soft: #fff7ed;
+      --blue: #2563eb;
+      --blue-soft: #eff6ff;
+      --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04);
+      --shadow-md: 0 4px 16px rgba(15, 23, 42, 0.06);
+      --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.12);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Malgun Gothic", sans-serif;
-      margin: 0;
-      background: #f5f5f5;
-      color: #2c3e50;
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
     }
     header {
-      background: white;
-      padding: 16px 32px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .header-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 14px 28px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
     }
-    header h1 { font-size: 18px; margin: 0; }
-    header h1 a { color: inherit; text-decoration: none; }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: inherit;
+    }
+    .brand-mark {
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+    .brand-mark img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.2;
+    }
+    .brand-name {
+      font-family: 'JalnanGothic', 'Pretendard', sans-serif;
+      font-size: 16px;
+      font-weight: normal;
+      letter-spacing: -0.01em;
+      line-height: 1.3;
+    }
     .user-info {
       display: flex;
       align-items: center;
-      gap: 16px;
-      font-size: 14px;
+      gap: 12px;
+      font-size: 13px;
     }
-    .school-badge {
-      background: #e3f2fd;
-      color: #1565c0;
-      padding: 4px 12px;
-      border-radius: 12px;
+    .badge {
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 12px;
       font-weight: 500;
     }
-    .admin-badge {
-      background: #fce4ec;
-      color: #c2185b;
-      padding: 4px 12px;
-      border-radius: 12px;
-      font-weight: 500;
+    .badge-school {
+      background: var(--primary-soft);
+      color: var(--primary-dark);
     }
+    .badge-admin {
+      background: var(--admin-soft);
+      color: var(--admin);
+    }
+    .user-name { font-weight: 500; }
     .logout-btn {
       background: transparent;
-      border: 1px solid #ddd;
-      padding: 6px 14px;
-      border-radius: 6px;
+      border: 1px solid var(--border);
+      padding: 6px 12px;
+      border-radius: 8px;
       cursor: pointer;
-      font-size: 13px;
+      font-size: 12px;
+      color: var(--text-muted);
+      font-family: inherit;
+      transition: all 0.15s ease;
     }
+    .logout-btn:hover { background: var(--bg); color: var(--text); }
     main {
-      max-width: 1000px;
-      margin: 32px auto;
-      padding: 0 32px;
-    }
-    .breadcrumb {
-      font-size: 13px;
-      color: #888;
-      margin-bottom: 8px;
-    }
-    .breadcrumb a {
-      color: #888;
-      text-decoration: none;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 32px 28px 80px;
     }
     .page-header {
       display: flex;
       justify-content: space-between;
-      align-items: flex-end;
-      margin-bottom: 24px;
+      align-items: flex-start;
+      margin-bottom: 28px;
+      gap: 16px;
+      flex-wrap: wrap;
     }
-    .page-header h2 { margin: 0; font-size: 22px; }
+    .page-header h2 {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
     .page-header .desc {
       font-size: 14px;
-      color: #666;
-      margin-top: 4px;
+      color: var(--text-muted);
     }
-    .school-filter {
-      background: white;
-      padding: 16px 24px;
+    .page-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: inherit;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+    .btn-primary:hover { background: var(--primary-hover); }
+    .btn-secondary {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 8px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 13px;
+      font-family: inherit;
+      color: var(--text);
+      transition: all 0.15s ease;
+    }
+    .btn-secondary:hover {
+      border-color: var(--border-strong);
+      background: var(--bg);
+    }
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+    .back-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      background: var(--primary-soft);
+    }
+    .filter-bar {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 14px 18px;
       border-radius: 12px;
       margin-bottom: 16px;
       display: flex;
       align-items: center;
       gap: 12px;
+      flex-wrap: wrap;
     }
-    .school-filter label {
-      font-size: 14px;
-      font-weight: 500;
-    }
-    .school-filter select {
-      padding: 8px 12px;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-      font-size: 14px;
-      flex: 1;
-      max-width: 300px;
-    }
-    .btn-primary {
-      background: #3498db;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: 500;
-    }
-    .btn-primary:hover { background: #2980b9; }
-    .btn-secondary {
-      background: white;
-      border: 1px solid #ddd;
-      padding: 8px 16px;
-      border-radius: 6px;
-      cursor: pointer;
+    .filter-bar label {
       font-size: 13px;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+    .filter-bar select {
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      background: var(--surface);
+      color: var(--text);
+      flex: 1;
+      max-width: 280px;
+      cursor: pointer;
+    }
+    .filter-bar select:focus {
+      outline: none;
+      border-color: var(--primary);
     }
     .empty-state {
       text-align: center;
-      padding: 60px 20px;
-      color: #999;
-      background: white;
+      padding: 64px 20px;
+      color: var(--text-muted);
+      background: var(--surface);
+      border: 1px solid var(--border);
       border-radius: 12px;
     }
-    .sheet-item {
-      background: white;
-      padding: 20px 24px;
-      border-radius: 12px;
+    .empty-state .icon {
+      font-size: 32px;
       margin-bottom: 12px;
+      opacity: 0.5;
+    }
+    .empty-state p {
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+    .empty-state p:last-child {
+      color: var(--text-light);
+      font-size: 13px;
+    }
+    .sheet-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .sheet-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 18px 20px;
+      border-radius: 12px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 16px;
-      transition: all 0.2s;
+      transition: all 0.15s ease;
     }
     .sheet-item:hover {
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      border-color: var(--border-strong);
+      box-shadow: var(--shadow-md);
     }
-    .sheet-info {
-      flex: 1;
-      cursor: pointer;
-    }
-    .sheet-info h3 {
-      margin: 0 0 6px 0;
-      font-size: 16px;
+    .sheet-info { flex: 1; min-width: 0; }
+    .sheet-title-row {
       display: flex;
       align-items: center;
       gap: 8px;
+      margin-bottom: 6px;
+      flex-wrap: wrap;
+    }
+    .sheet-title-row h3 {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
     }
     .type-tag {
-      display: inline-block;
-      padding: 3px 10px;
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
       border-radius: 4px;
       font-size: 11px;
       font-weight: 500;
     }
     .type-practice {
-      background: #e8f5e9;
-      color: #2e7d32;
+      background: var(--green-soft);
+      color: var(--green);
     }
     .type-first_draft {
-      background: #fff3e0;
-      color: #e65100;
+      background: var(--orange-soft);
+      color: var(--orange);
     }
     .type-final {
-      background: #e3f2fd;
-      color: #1565c0;
+      background: var(--blue-soft);
+      color: var(--blue);
     }
     .sheet-desc {
       font-size: 13px;
-      color: #666;
-      margin: 4px 0;
+      color: var(--text-muted);
       line-height: 1.5;
+      margin-bottom: 4px;
     }
     .sheet-meta {
       font-size: 12px;
-      color: #999;
+      color: var(--text-light);
     }
     .sheet-actions {
       display: flex;
       gap: 8px;
       flex-shrink: 0;
+      align-items: center;
     }
     .open-btn {
-      background: #3498db;
+      background: var(--primary);
       color: white;
       border: none;
-      padding: 10px 20px;
-      border-radius: 6px;
+      padding: 8px 14px;
+      border-radius: 8px;
       cursor: pointer;
-      font-size: 14px;
-      font-weight: 500;
+      font-size: 13px;
+      font-weight: 600;
       text-decoration: none;
       display: inline-flex;
       align-items: center;
       gap: 6px;
+      transition: all 0.15s ease;
     }
-    .open-btn:hover { background: #2980b9; }
-    .edit-btn, .delete-btn {
-      background: white;
-      border: 1px solid #ddd;
-      padding: 8px 14px;
-      border-radius: 6px;
+    .open-btn:hover { background: var(--primary-hover); }
+    .icon-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      padding: 7px 12px;
+      border-radius: 8px;
       cursor: pointer;
-      font-size: 13px;
+      font-size: 12px;
+      color: var(--text-muted);
+      font-family: inherit;
+      transition: all 0.15s ease;
     }
-    .delete-btn {
-      color: #e74c3c;
-      border-color: #e74c3c;
+    .icon-btn:hover {
+      border-color: var(--border-strong);
+      color: var(--text);
     }
-    .delete-btn:hover { background: #ffebee; }
+    .icon-btn.danger:hover {
+      border-color: var(--danger);
+      color: var(--danger);
+      background: var(--danger-soft);
+    }
     .modal-bg {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.5);
+      background: rgba(15, 23, 42, 0.5);
       display: flex;
       align-items: center;
       justify-content: center;
       z-index: 100;
+      padding: 16px;
     }
     .modal-bg.hidden { display: none; }
     .modal {
-      background: white;
-      padding: 32px;
-      border-radius: 12px;
-      width: 90%;
-      max-width: 500px;
+      background: var(--surface);
+      padding: 28px;
+      border-radius: 14px;
+      width: 100%;
+      max-width: 480px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-lg);
     }
-    .modal h3 { margin: 0 0 20px 0; }
-    .form-row { margin-bottom: 16px; }
-    .form-row label {
+    .modal h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+    .field { margin-bottom: 14px; }
+    .field label {
       display: block;
-      margin-bottom: 6px;
       font-size: 13px;
       font-weight: 500;
-      color: #555;
+      color: var(--text-muted);
+      margin-bottom: 6px;
     }
-    .form-row input,
-    .form-row select,
-    .form-row textarea {
+    .field input,
+    .field select,
+    .field textarea {
       width: 100%;
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 6px;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
       font-size: 14px;
       font-family: inherit;
+      color: var(--text);
+      background: var(--surface);
+      transition: all 0.15s ease;
     }
-    .form-row textarea {
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-soft);
+    }
+    .field textarea {
       min-height: 80px;
       resize: vertical;
+      line-height: 1.5;
     }
     .form-actions {
       display: flex;
       gap: 8px;
       justify-content: flex-end;
-      margin-top: 8px;
+      margin-top: 20px;
     }
-    .hidden { display: none; }
+    .hidden { display: none !important; }
+    footer {
+      max-width: 1100px;
+      margin: 40px auto 0;
+      padding: 24px 28px 40px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-light);
+      line-height: 1.6;
+      border-top: 1px solid var(--border);
+    }
+    @media (max-width: 768px) {
+      .header-inner { padding: 12px 16px; }
+      main { padding: 24px 16px 60px; }
+      .page-header h2 { font-size: 22px; }
+      .user-info { font-size: 12px; gap: 8px; }
+      .brand-name { font-size: 13px; }
+      .brand-mark { width: 30px; height: 30px; }
+      .sheet-item { flex-direction: column; align-items: stretch; }
+      .sheet-actions { justify-content: flex-end; }
+    }
   </style>
 </head>
 <body>
   <header>
-    <h1><a href="dashboard.html">← 대전광역시 고등학교 교육과정 업무담당자 워크스페이스</a></h1>
-    <div class="user-info" id="userInfo"></div>
+    <div class="header-inner">
+      <a class="brand" href="dashboard.html">
+        <div class="brand-mark"><img src="images/logo.png" alt="대전광역시교육청"></div>
+        <div class="brand-text">
+          <span class="brand-name">대전광역시 고등학교 교육과정 업무담당자 워크스페이스</span>
+        </div>
+      </a>
+      <div class="user-info" id="userInfo"></div>
+    </div>
   </header>
   
   <main>
-    <div class="breadcrumb">
-      <a href="dashboard.html">대시보드</a> / 교육과정 편성표
-    </div>
-    
     <div class="page-header">
       <div>
-        <h2>📋 교육과정 편성표</h2>
+        <h2>교육과정 편성표</h2>
         <div class="desc" id="pageDesc">교육과정 편성표 시트를 확인하세요.</div>
       </div>
-      <button id="addBtn" class="btn-primary hidden" onclick="showAddForm()">+ 새 시트 등록</button>
+      <div class="page-header-actions">
+        <button id="addBtn" class="btn-primary hidden" onclick="showAddForm()">+ 새 시트 등록</button>
+        <a class="back-btn" href="dashboard.html">← 대시보드로</a>
+      </div>
     </div>
     
-    <div id="schoolFilter" class="school-filter hidden">
-      <label>학교:</label>
+    <div id="schoolFilter" class="filter-bar hidden">
+      <label>학교 선택</label>
       <select id="schoolSelect" onchange="loadSheets()">
         <option value="">학교를 선택하세요</option>
       </select>
     </div>
     
     <div id="sheetList">
-      <div class="empty-state">불러오는 중...</div>
+      <div class="empty-state">
+        <div class="icon">⏳</div>
+        <p>불러오는 중...</p>
+      </div>
     </div>
   </main>
+  
+  <footer>
+    Copyright © 대전광역시교육청 고등학교 교육과정지원단. All rights reserved.
+  </footer>
   
   <div id="modal" class="modal-bg hidden">
     <div class="modal">
       <h3 id="modalTitle">새 시트 등록</h3>
-      <div class="form-row">
+      <div class="field">
         <label>학교 *</label>
         <select id="formSchool"></select>
       </div>
-      <div class="form-row">
+      <div class="field">
         <label>제목 *</label>
         <input type="text" id="formTitle" placeholder="예: 2027학년도 입학생 교육과정 편성표 - 연습용">
       </div>
-      <div class="form-row">
+      <div class="field">
         <label>종류 *</label>
         <select id="formType" onchange="updateTitlePlaceholder()">
           <option value="practice">연습용</option>
@@ -308,11 +516,11 @@
           <option value="final">최종본</option>
         </select>
       </div>
-      <div class="form-row">
+      <div class="field">
         <label>구글 스프레드시트 URL *</label>
         <input type="url" id="formUrl" placeholder="https://docs.google.com/spreadsheets/d/...">
       </div>
-      <div class="form-row">
+      <div class="field">
         <label>설명</label>
         <textarea id="formDesc" placeholder="이 시트에 대한 설명을 입력하세요"></textarea>
       </div>
@@ -334,7 +542,6 @@
     let currentUser = null;
     let currentProfile = null;
     let isAdmin = false;
-    let allSchools = [];
     let editingId = null;
     
     const TYPE_LABELS = {
@@ -372,8 +579,8 @@
       const userInfoEl = document.getElementById('userInfo');
       if (isAdmin) {
         userInfoEl.innerHTML = `
-          <span class="admin-badge">관리자</span>
-          <span>${profile.display_name}</span>
+          <span class="badge badge-admin">관리자</span>
+          <span class="user-name">${profile.display_name}</span>
           <button class="logout-btn" onclick="handleLogout()">로그아웃</button>
         `;
         document.getElementById('addBtn').classList.remove('hidden');
@@ -382,8 +589,8 @@
         await loadSchools();
       } else {
         userInfoEl.innerHTML = `
-          <span class="school-badge">${profile.schools.name}</span>
-          <span>${profile.display_name}</span>
+          <span class="badge badge-school">${profile.schools.name}</span>
+          <span class="user-name">${profile.display_name}</span>
           <button class="logout-btn" onclick="handleLogout()">로그아웃</button>
         `;
         document.getElementById('pageDesc').textContent = `${profile.schools.name}의 편성표 시트입니다. 클릭하면 새 탭에서 열립니다.`;
@@ -397,12 +604,7 @@
         .select('id, name, code')
         .order('name');
       
-      if (error) {
-        console.error(error);
-        return;
-      }
-      
-      allSchools = data;
+      if (error) { console.error(error); return; }
       
       const select = document.getElementById('schoolSelect');
       select.innerHTML = '<option value="">학교를 선택하세요</option>' + 
@@ -419,7 +621,13 @@
       if (isAdmin) {
         schoolId = document.getElementById('schoolSelect').value;
         if (!schoolId) {
-          listEl.innerHTML = '<div class="empty-state">위에서 학교를 선택하세요.</div>';
+          listEl.innerHTML = `
+            <div class="empty-state">
+              <div class="icon">🏫</div>
+              <p>위에서 학교를 선택하세요</p>
+              <p>선택한 학교의 시트가 표시됩니다.</p>
+            </div>
+          `;
           return;
         }
       } else {
@@ -434,44 +642,45 @@
         .order('created_at', { ascending: true });
       
       if (error) {
-        listEl.innerHTML = `<div class="empty-state" style="color: red;">오류: ${error.message}</div>`;
+        listEl.innerHTML = `<div class="empty-state" style="color: var(--danger);">오류: ${error.message}</div>`;
         return;
       }
       
       if (!data || data.length === 0) {
         listEl.innerHTML = `
           <div class="empty-state">
-            <p>아직 등록된 시트가 없습니다.</p>
-            ${isAdmin ? '<p>위 버튼으로 새 시트를 등록해주세요.</p>' : '<p>지원단에서 시트를 등록하면 여기에 표시됩니다.</p>'}
+            <div class="icon">📭</div>
+            <p>아직 등록된 시트가 없습니다</p>
+            <p>${isAdmin ? '위 버튼으로 새 시트를 등록해주세요.' : '지원단에서 시트를 등록하면 여기에 표시됩니다.'}</p>
           </div>
         `;
         return;
       }
       
-      listEl.innerHTML = data.map(item => {
+      listEl.innerHTML = `<div class="sheet-list">` + data.map(item => {
         const updatedDate = new Date(item.updated_at).toLocaleDateString('ko-KR', {
           year: 'numeric', month: 'long', day: 'numeric'
         });
         return `
           <div class="sheet-item">
-            <div class="sheet-info" onclick="window.open('${item.spreadsheet_url}', '_blank')">
-              <h3>
-                ${item.title}
+            <div class="sheet-info">
+              <div class="sheet-title-row">
+                <h3>${item.title}</h3>
                 <span class="type-tag type-${item.sheet_type}">${TYPE_LABELS[item.sheet_type]}</span>
-              </h3>
+              </div>
               ${item.description ? `<div class="sheet-desc">${item.description}</div>` : ''}
-              <div class="sheet-meta">최종 수정: ${updatedDate}</div>
+              <div class="sheet-meta">최종 수정 ${updatedDate}</div>
             </div>
             <div class="sheet-actions">
               <a class="open-btn" href="${item.spreadsheet_url}" target="_blank">열기 ↗</a>
               ${isAdmin ? `
-                <button class="edit-btn" onclick="editSheet('${item.id}')">수정</button>
-                <button class="delete-btn" onclick="deleteSheet('${item.id}')">삭제</button>
+                <button class="icon-btn" onclick="editSheet('${item.id}')">수정</button>
+                <button class="icon-btn danger" onclick="deleteSheet('${item.id}')">삭제</button>
               ` : ''}
             </div>
           </div>
         `;
-      }).join('');
+      }).join('') + `</div>`;
     };
     
     window.showAddForm = function() {
@@ -481,22 +690,18 @@
       document.getElementById('formType').value = 'practice';
       document.getElementById('formUrl').value = '';
       document.getElementById('formDesc').value = '';
+      window.updateTitlePlaceholder();
       
       const selectedSchool = document.getElementById('schoolSelect').value;
       if (selectedSchool) {
         document.getElementById('formSchool').value = selectedSchool;
       }
-      
       document.getElementById('modal').classList.remove('hidden');
     };
     
     window.editSheet = async function(id) {
       const { data } = await supabase
-        .from('curriculums')
-        .select('*')
-        .eq('id', id)
-        .single();
-      
+        .from('curriculums').select('*').eq('id', id).single();
       if (!data) return;
       
       editingId = id;
@@ -506,7 +711,6 @@
       document.getElementById('formType').value = data.sheet_type;
       document.getElementById('formUrl').value = data.spreadsheet_url;
       document.getElementById('formDesc').value = data.description || '';
-      
       document.getElementById('modal').classList.remove('hidden');
     };
     
@@ -530,25 +734,14 @@
       if (editingId) {
         const { error } = await supabase
           .from('curriculums')
-          .update({
-            school_id, title, sheet_type, spreadsheet_url,
-            description: description || null
-          })
+          .update({ school_id, title, sheet_type, spreadsheet_url, description: description || null })
           .eq('id', editingId);
-        
         if (error) { alert('수정 실패: ' + error.message); return; }
-        alert('수정되었습니다.');
       } else {
         const { error } = await supabase
           .from('curriculums')
-          .insert({
-            school_id, title, sheet_type, spreadsheet_url,
-            description: description || null,
-            created_by: currentUser.id
-          });
-        
+          .insert({ school_id, title, sheet_type, spreadsheet_url, description: description || null, created_by: currentUser.id });
         if (error) { alert('등록 실패: ' + error.message); return; }
-        alert('등록되었습니다.');
       }
       
       hideModal();
@@ -559,11 +752,7 @@
       const ok = confirm('정말 삭제하시겠습니까?');
       if (!ok) return;
       
-      const { error } = await supabase
-        .from('curriculums')
-        .delete()
-        .eq('id', id);
-      
+      const { error } = await supabase.from('curriculums').delete().eq('id', id);
       if (error) { alert('삭제 실패: ' + error.message); return; }
       loadSheets();
     };
@@ -571,7 +760,6 @@
     window.handleLogout = async function() {
       const ok = confirm('로그아웃 하시겠습니까?');
       if (!ok) return;
-      
       await supabase.auth.signOut();
       window.location.href = 'login.html';
     };

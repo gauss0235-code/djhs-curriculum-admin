@@ -2,90 +2,198 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>로그인 - 대전광역시 고등학교 교육과정 업무담당자 워크스페이스</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>로그인 — 대전광역시 고등학교 교육과정 업무담당자 워크스페이스</title>
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   <style>
+    @font-face {
+      font-family: 'JalnanGothic';
+      src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_231029@1.1/JalnanGothic.woff') format('woff');
+      font-weight: normal;
+      font-display: swap;
+    }
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --border: #e2e8f0;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --text-light: #94a3b8;
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --primary-soft: #eef2ff;
+      --danger: #dc2626;
+      --danger-soft: #fef2f2;
+      --success: #16a34a;
+      --success-soft: #f0fdf4;
+      --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04);
+      --shadow-md: 0 4px 16px rgba(15, 23, 42, 0.06);
+      --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Malgun Gothic", sans-serif;
-      max-width: 400px;
-      margin: 100px auto;
-      padding: 30px;
-      background: #f5f5f5;
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+    .container {
+      width: 100%;
+      max-width: 420px;
+    }
+    .brand {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    .brand-mark {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 80px;
+      height: 80px;
+      margin-bottom: 16px;
+      overflow: hidden;
+      background: transparent;
+    }
+    .brand-mark img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .brand h1 {
+      font-family: 'JalnanGothic', 'Pretendard', sans-serif;
+      font-size: 24px;
+      font-weight: normal;
+      letter-spacing: -0.01em;
+      line-height: 1.4;
+      margin-bottom: 6px;
     }
     .card {
-      background: white;
-      padding: 40px;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: var(--shadow-md);
     }
-    h1 {
-      font-size: 20px;
-      margin-bottom: 30px;
-      text-align: center;
-      color: #2c3e50;
+    .card h2 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 24px;
+    }
+    .field {
+      margin-bottom: 14px;
+    }
+    .field label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-muted);
+      margin-bottom: 6px;
     }
     input {
       width: 100%;
-      padding: 12px;
-      margin-bottom: 12px;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-      font-size: 14px;
-      box-sizing: border-box;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 15px;
+      font-family: inherit;
+      color: var(--text);
+      background: var(--surface);
+      transition: all 0.15s ease;
+    }
+    input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-soft);
     }
     button {
       width: 100%;
-      padding: 12px;
-      background: #3498db;
+      padding: 12px 16px;
+      background: var(--primary);
       color: white;
       border: none;
-      border-radius: 6px;
+      border-radius: 10px;
       font-size: 15px;
+      font-weight: 600;
+      font-family: inherit;
       cursor: pointer;
-      font-weight: 500;
+      transition: all 0.15s ease;
+      margin-top: 6px;
     }
-    button:hover { background: #2980b9; }
-    button:disabled { background: #95a5a6; cursor: not-allowed; }
+    button:hover { background: var(--primary-hover); }
+    button:disabled {
+      background: var(--text-light);
+      cursor: not-allowed;
+    }
     .message {
       margin-top: 16px;
-      padding: 12px;
-      border-radius: 6px;
-      font-size: 14px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 13px;
       display: none;
+      line-height: 1.5;
     }
     .message.error {
-      background: #fee;
-      color: #c0392b;
+      background: var(--danger-soft);
+      color: var(--danger);
       display: block;
     }
     .message.success {
-      background: #efe;
-      color: #27ae60;
+      background: var(--success-soft);
+      color: var(--success);
       display: block;
+    }
+    .footer {
+      text-align: center;
+      margin-top: 24px;
+      font-size: 13px;
+      color: var(--text-light);
+      line-height: 1.6;
     }
   </style>
 </head>
 <body>
-  <div class="card">
-    <h1>대전광역시 고등학교<br>교육과정 업무담당자<br>워크스페이스</h1>
+  <div class="container">
+    <div class="brand">
+      <div class="brand-mark"><img src="images/logo.png" alt="대전광역시교육청"></div>
+      <h1>대전광역시 고등학교<br>교육과정 업무담당자 워크스페이스</h1>
+    </div>
     
-    <input type="email" id="email" placeholder="이메일">
-    <input type="password" id="password" placeholder="비밀번호">
-    <button id="loginBtn" onclick="handleLogin()">로그인</button>
+    <div class="card">
+      <h2>교육과정 업무담당자 로그인</h2>
+      
+      <div class="field">
+        <label for="email">이메일</label>
+        <input type="email" id="email" placeholder="이메일 주소를 입력하세요">
+      </div>
+      
+      <div class="field">
+        <label for="password">비밀번호</label>
+        <input type="password" id="password" placeholder="비밀번호를 입력하세요">
+      </div>
+      
+      <button id="loginBtn" onclick="handleLogin()">로그인</button>
+      
+      <div id="message" class="message"></div>
+    </div>
     
-    <div id="message" class="message"></div>
+    <div class="footer">Copyright © 대전광역시교육청 고등학교 교육과정지원단. All rights reserved.</div>
   </div>
 
   <script type="module">
-    // Supabase 라이브러리 가져오기
     import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
     
-    // ⚠️ 여기에 본인의 Supabase 정보를 넣어주세요!
     const SUPABASE_URL = 'https://nzsgvjdotnvqpzhehfsg.supabase.co';
     const SUPABASE_KEY = 'sb_publishable_ALakaYU4jTYEIQas_nWrsQ_An3IK9_h';
     
     const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
     
-    // 로그인 처리 함수
     window.handleLogin = async function() {
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
@@ -114,7 +222,6 @@
         return;
       }
       
-// 성공! 사용자의 프로필/학교 정보 가져오기
       const { data: profile, error: profileError } = await supabase
         .from('profiles')
         .select('display_name, role, schools(name, code)')
@@ -131,20 +238,18 @@
       
       messageEl.className = 'message success';
       if (profile.role === 'admin') {
-        messageEl.textContent = `관리자(${profile.display_name})로 로그인 성공!`;
+        messageEl.textContent = `관리자(${profile.display_name})로 로그인했습니다.`;
       } else if (profile.schools) {
-        messageEl.textContent = `${profile.schools.name} 담당자(${profile.display_name})로 로그인 성공!`;
+        messageEl.textContent = `${profile.schools.name} 담당자(${profile.display_name})로 로그인했습니다.`;
       } else {
-        messageEl.textContent = `${profile.display_name}로 로그인 성공!`;
+        messageEl.textContent = `${profile.display_name}로 로그인했습니다.`;
       }
-
-      // 2초 후 다음 페이지로 이동 (나중에 만들 예정)
+      
       setTimeout(() => {
         window.location.href = 'dashboard.html';
-      }, 2000);
+      }, 1500);
     };
     
-    // 엔터키로도 로그인되게
     document.getElementById('password').addEventListener('keypress', (e) => {
       if (e.key === 'Enter') window.handleLogin();
     });
