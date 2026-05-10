@@ -14,41 +14,43 @@
       font-display: swap;
     }
     :root {
-      --bg: #f8fafc;
+      --bg-sky: #e8f4fc;
+      --bg-sky-deep: #d4ecf8;
       --surface: #ffffff;
-      --border: #e2e8f0;
-      --border-strong: #cbd5e1;
-      --text: #0f172a;
-      --text-muted: #64748b;
-      --text-light: #94a3b8;
-      --primary: #4f46e5;
-      --primary-hover: #4338ca;
-      --primary-soft: #eef2ff;
-      --primary-dark: #3730a3;
-      --admin: #be185d;
-      --admin-soft: #fdf2f8;
-      --danger: #dc2626;
-      --danger-soft: #fef2f2;
-      --green: #16a34a;
-      --green-soft: #f0fdf4;
-      --orange: #ea580c;
-      --orange-soft: #fff7ed;
-      --blue: #2563eb;
-      --blue-soft: #eff6ff;
-      --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04);
-      --shadow-md: 0 4px 16px rgba(15, 23, 42, 0.06);
-      --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.12);
+      --border: #d8e8f3;
+      --border-strong: #b8d4e8;
+      --text: #1e3a5f;
+      --text-muted: #5d7894;
+      --text-light: #8ba8c2;
+      --primary: #4a90d9;
+      --primary-hover: #3a7ec0;
+      --primary-soft: #e3f0fa;
+      --primary-dark: #2d5a8a;
+      --admin: #ec6f8e;
+      --admin-soft: #fde7ed;
+      --danger: #e57373;
+      --danger-soft: #fdeaea;
+      --green: #7cb342;
+      --green-soft: #eef7e3;
+      --orange: #f4a261;
+      --orange-soft: #fef0e3;
+      --blue: #5a9fd4;
+      --blue-soft: #e3f0fa;
+      --shadow-soft: 0 4px 20px rgba(74, 144, 217, 0.08);
+      --shadow-card: 0 8px 32px rgba(74, 144, 217, 0.12);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: var(--bg);
+      background: linear-gradient(180deg, var(--bg-sky) 0%, var(--bg-sky-deep) 100%);
       color: var(--text);
       line-height: 1.5;
       -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
     }
     header {
-      background: var(--surface);
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--border);
       position: sticky;
       top: 0;
@@ -72,13 +74,16 @@
       color: inherit;
     }
     .brand-mark {
-      width: 40px;
-      height: 40px;
+      width: 42px;
+      height: 42px;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
       overflow: hidden;
+      background: white;
+      border-radius: 50%;
+      padding: 6px;
     }
     .brand-mark img {
       width: 100%;
@@ -94,6 +99,7 @@
       font-family: 'JalnanGothic', 'Pretendard', sans-serif;
       font-size: 17px;
       font-weight: normal;
+      color: var(--primary-dark);
       letter-spacing: -0.01em;
       line-height: 1.3;
     }
@@ -104,10 +110,10 @@
       font-size: 14px;
     }
     .badge {
-      padding: 5px 12px;
-      border-radius: 8px;
+      padding: 6px 14px;
+      border-radius: 20px;
       font-size: 13px;
-      font-weight: 500;
+      font-weight: 600;
     }
     .badge-school {
       background: var(--primary-soft);
@@ -119,17 +125,21 @@
     }
     .user-name { font-weight: 500; }
     .logout-btn {
-      background: transparent;
-      border: 1px solid var(--border);
-      padding: 8px 14px;
-      border-radius: 8px;
+      background: white;
+      border: 1.5px solid var(--border);
+      padding: 8px 16px;
+      border-radius: 20px;
       cursor: pointer;
       font-size: 13px;
       color: var(--text-muted);
       font-family: inherit;
       transition: all 0.15s ease;
     }
-    .logout-btn:hover { background: var(--bg); color: var(--text); }
+    .logout-btn:hover {
+      background: var(--primary-soft);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
     main {
       max-width: 1200px;
       margin: 0 auto;
@@ -144,11 +154,13 @@
       flex-wrap: wrap;
     }
     .page-header h2 {
+      font-family: 'JalnanGothic', 'Pretendard', sans-serif;
       font-size: 32px;
-      font-weight: 700;
-      letter-spacing: -0.025em;
-      margin-bottom: 8px;
-      line-height: 1.2;
+      font-weight: normal;
+      color: var(--primary-dark);
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+      line-height: 1.3;
     }
     .page-header .desc {
       font-size: 16px;
@@ -165,20 +177,21 @@
       color: white;
       border: none;
       padding: 12px 22px;
-      border-radius: 10px;
+      border-radius: 12px;
       cursor: pointer;
       font-size: 15px;
       font-weight: 600;
       font-family: inherit;
       transition: all 0.15s ease;
       white-space: nowrap;
+      box-shadow: 0 2px 8px rgba(74, 144, 217, 0.25);
     }
     .btn-primary:hover { background: var(--primary-hover); }
     .btn-secondary {
       background: var(--surface);
-      border: 1px solid var(--border);
-      padding: 9px 16px;
-      border-radius: 8px;
+      border: 1.5px solid var(--border);
+      padding: 10px 18px;
+      border-radius: 10px;
       cursor: pointer;
       font-size: 14px;
       font-family: inherit;
@@ -187,16 +200,16 @@
     }
     .btn-secondary:hover {
       border-color: var(--border-strong);
-      background: var(--bg);
+      background: var(--bg-sky);
     }
     .back-btn {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      background: var(--surface);
-      border: 1px solid var(--border);
+      background: white;
+      border: 1.5px solid var(--border);
       padding: 12px 18px;
-      border-radius: 10px;
+      border-radius: 12px;
       font-size: 14px;
       color: var(--text);
       text-decoration: none;
@@ -211,27 +224,28 @@
     }
     .filter-bar {
       background: var(--surface);
-      border: 1px solid var(--border);
-      padding: 16px 22px;
-      border-radius: 14px;
+      border: 1.5px solid var(--border);
+      padding: 18px 24px;
+      border-radius: 16px;
       margin-bottom: 20px;
       display: flex;
       align-items: center;
       gap: 14px;
       flex-wrap: wrap;
+      box-shadow: var(--shadow-soft);
     }
     .filter-bar label {
       font-size: 14px;
-      font-weight: 500;
-      color: var(--text-muted);
+      font-weight: 600;
+      color: var(--text);
     }
     .filter-bar select {
-      padding: 10px 14px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
+      padding: 11px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
       font-size: 15px;
       font-family: inherit;
-      background: var(--surface);
+      background: #f8fbfd;
       color: var(--text);
       flex: 1;
       max-width: 320px;
@@ -240,55 +254,63 @@
     .filter-bar select:focus {
       outline: none;
       border-color: var(--primary);
+      background: white;
     }
     .empty-state {
       text-align: center;
       padding: 80px 20px;
       color: var(--text-muted);
       background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 14px;
+      border-radius: 20px;
+      box-shadow: var(--shadow-soft);
     }
     .empty-state .icon {
-      width: 56px;
-      height: 56px;
-      margin: 0 auto 16px;
-      color: var(--text-light);
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 20px;
+      color: var(--primary);
+      background: var(--primary-soft);
+      border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
     }
     .empty-state .icon svg {
-      width: 100%;
-      height: 100%;
+      width: 32px;
+      height: 32px;
     }
     .empty-state p {
-      font-size: 15px;
+      font-size: 16px;
       margin-bottom: 6px;
+      color: var(--text);
+      font-weight: 500;
     }
     .empty-state p:last-child {
       color: var(--text-light);
       font-size: 14px;
+      font-weight: 400;
     }
     .sheet-list {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 14px;
     }
     .sheet-item {
       background: var(--surface);
-      border: 1px solid var(--border);
-      padding: 22px 26px;
-      border-radius: 14px;
+      border: 2px solid transparent;
+      padding: 24px 28px;
+      border-radius: 18px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 18px;
-      transition: all 0.15s ease;
+      transition: all 0.2s ease;
+      box-shadow: var(--shadow-soft);
     }
     .sheet-item:hover {
-      border-color: var(--border-strong);
-      box-shadow: var(--shadow-md);
+      border-color: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-card);
     }
     .sheet-info { flex: 1; min-width: 0; }
     .sheet-title-row {
@@ -300,16 +322,17 @@
     }
     .sheet-title-row h3 {
       font-size: 17px;
-      font-weight: 600;
+      font-weight: 700;
+      color: var(--text);
       letter-spacing: -0.01em;
     }
     .type-tag {
       display: inline-flex;
       align-items: center;
-      padding: 3px 10px;
-      border-radius: 6px;
+      padding: 4px 12px;
+      border-radius: 12px;
       font-size: 12px;
-      font-weight: 500;
+      font-weight: 600;
     }
     .type-practice {
       background: var(--green-soft);
@@ -343,8 +366,8 @@
       background: var(--primary);
       color: white;
       border: none;
-      padding: 10px 18px;
-      border-radius: 8px;
+      padding: 11px 20px;
+      border-radius: 10px;
       cursor: pointer;
       font-size: 14px;
       font-weight: 600;
@@ -353,13 +376,14 @@
       align-items: center;
       gap: 6px;
       transition: all 0.15s ease;
+      box-shadow: 0 2px 8px rgba(74, 144, 217, 0.25);
     }
     .open-btn:hover { background: var(--primary-hover); }
     .icon-btn {
-      background: transparent;
-      border: 1px solid var(--border);
-      padding: 9px 14px;
-      border-radius: 8px;
+      background: white;
+      border: 1.5px solid var(--border);
+      padding: 10px 14px;
+      border-radius: 10px;
       cursor: pointer;
       font-size: 13px;
       color: var(--text-muted);
@@ -378,7 +402,8 @@
     .modal-bg {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(15, 23, 42, 0.5);
+      background: rgba(30, 58, 95, 0.5);
+      backdrop-filter: blur(4px);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -388,39 +413,41 @@
     .modal-bg.hidden { display: none; }
     .modal {
       background: var(--surface);
-      padding: 32px;
-      border-radius: 16px;
+      padding: 36px;
+      border-radius: 24px;
       width: 100%;
       max-width: 520px;
       max-height: 90vh;
       overflow-y: auto;
-      box-shadow: var(--shadow-lg);
+      box-shadow: 0 20px 60px rgba(30, 58, 95, 0.3);
     }
     .modal h3 {
-      font-size: 20px;
-      font-weight: 600;
+      font-family: 'JalnanGothic', 'Pretendard', sans-serif;
+      font-size: 22px;
+      font-weight: normal;
+      color: var(--primary-dark);
       margin-bottom: 24px;
       letter-spacing: -0.01em;
     }
-    .field { margin-bottom: 16px; }
+    .field { margin-bottom: 18px; }
     .field label {
       display: block;
       font-size: 14px;
-      font-weight: 500;
-      color: var(--text-muted);
+      font-weight: 600;
+      color: var(--text);
       margin-bottom: 8px;
     }
     .field input,
     .field select,
     .field textarea {
       width: 100%;
-      padding: 11px 14px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
+      padding: 12px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
       font-size: 15px;
       font-family: inherit;
       color: var(--text);
-      background: var(--surface);
+      background: #f8fbfd;
       transition: all 0.15s ease;
     }
     .field input:focus,
@@ -428,6 +455,7 @@
     .field textarea:focus {
       outline: none;
       border-color: var(--primary);
+      background: white;
       box-shadow: 0 0 0 3px var(--primary-soft);
     }
     .field textarea {
@@ -450,7 +478,6 @@
       font-size: 13px;
       color: var(--text-light);
       line-height: 1.6;
-      border-top: 1px solid var(--border);
     }
     @media (max-width: 768px) {
       .header-inner { padding: 14px 18px; }
@@ -459,8 +486,8 @@
       .page-header .desc { font-size: 14px; }
       .user-info { font-size: 13px; gap: 10px; }
       .brand-name { font-size: 14px; }
-      .brand-mark { width: 34px; height: 34px; }
-      .sheet-item { flex-direction: column; align-items: stretch; padding: 18px 20px; }
+      .brand-mark { width: 36px; height: 36px; }
+      .sheet-item { flex-direction: column; align-items: stretch; padding: 20px 22px; }
       .sheet-actions { justify-content: flex-end; }
     }
   </style>
@@ -481,7 +508,7 @@
   <main>
     <div class="page-header">
       <div>
-        <h2>교육과정 편성표</h2>
+        <h2>교육과정 편성표 작성</h2>
         <div class="desc" id="pageDesc">교육과정 편성표 시트를 확인하세요.</div>
       </div>
       <div class="page-header-actions">
@@ -500,7 +527,7 @@
     <div id="sheetList">
       <div class="empty-state">
         <div class="icon">
-          <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
         </div>
         <p>불러오는 중...</p>
       </div>
@@ -565,8 +592,8 @@
     };
     
     const EMPTY_ICONS = {
-      school: `<svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5z"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/></svg>`,
-      empty: `<svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/></svg>`
+      school: `<svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5z"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/></svg>`,
+      empty: `<svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/></svg>`
     };
     
     window.updateTitlePlaceholder = function() {

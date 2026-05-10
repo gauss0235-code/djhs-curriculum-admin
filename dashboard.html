@@ -14,33 +14,37 @@
       font-display: swap;
     }
     :root {
-      --bg: #f8fafc;
+      --bg-sky: #e8f4fc;
+      --bg-sky-deep: #d4ecf8;
       --surface: #ffffff;
-      --border: #e2e8f0;
-      --border-strong: #cbd5e1;
-      --text: #0f172a;
-      --text-muted: #64748b;
-      --text-light: #94a3b8;
-      --primary: #4f46e5;
-      --primary-hover: #4338ca;
-      --primary-soft: #eef2ff;
-      --primary-dark: #3730a3;
-      --admin: #be185d;
-      --admin-soft: #fdf2f8;
-      --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04);
-      --shadow-md: 0 4px 16px rgba(15, 23, 42, 0.06);
-      --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.10);
+      --border: #d8e8f3;
+      --border-strong: #b8d4e8;
+      --text: #1e3a5f;
+      --text-muted: #5d7894;
+      --text-light: #8ba8c2;
+      --primary: #4a90d9;
+      --primary-hover: #3a7ec0;
+      --primary-soft: #e3f0fa;
+      --primary-dark: #2d5a8a;
+      --accent: #ffd966;
+      --accent-soft: #fff8e1;
+      --admin: #ec6f8e;
+      --admin-soft: #fde7ed;
+      --shadow-soft: 0 4px 20px rgba(74, 144, 217, 0.08);
+      --shadow-card: 0 8px 32px rgba(74, 144, 217, 0.12);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: var(--bg);
+      background: linear-gradient(180deg, var(--bg-sky) 0%, var(--bg-sky-deep) 100%);
       color: var(--text);
       line-height: 1.5;
       -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
     }
     header {
-      background: var(--surface);
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--border);
       position: sticky;
       top: 0;
@@ -62,13 +66,16 @@
       gap: 12px;
     }
     .brand-mark {
-      width: 40px;
-      height: 40px;
+      width: 42px;
+      height: 42px;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
       overflow: hidden;
+      background: white;
+      border-radius: 50%;
+      padding: 6px;
     }
     .brand-mark img {
       width: 100%;
@@ -84,6 +91,7 @@
       font-family: 'JalnanGothic', 'Pretendard', sans-serif;
       font-size: 17px;
       font-weight: normal;
+      color: var(--primary-dark);
       letter-spacing: -0.01em;
       line-height: 1.3;
     }
@@ -94,10 +102,10 @@
       font-size: 14px;
     }
     .badge {
-      padding: 5px 12px;
-      border-radius: 8px;
+      padding: 6px 14px;
+      border-radius: 20px;
       font-size: 13px;
-      font-weight: 500;
+      font-weight: 600;
     }
     .badge-school {
       background: var(--primary-soft);
@@ -112,10 +120,10 @@
       font-weight: 500;
     }
     .logout-btn {
-      background: transparent;
-      border: 1px solid var(--border);
-      padding: 8px 14px;
-      border-radius: 8px;
+      background: white;
+      border: 1.5px solid var(--border);
+      padding: 8px 16px;
+      border-radius: 20px;
       cursor: pointer;
       font-size: 13px;
       color: var(--text-muted);
@@ -123,8 +131,9 @@
       transition: all 0.15s ease;
     }
     .logout-btn:hover {
-      background: var(--bg);
-      color: var(--text);
+      background: var(--primary-soft);
+      border-color: var(--primary);
+      color: var(--primary);
     }
     main {
       max-width: 1200px;
@@ -133,13 +142,26 @@
     }
     .welcome {
       margin-bottom: 48px;
+      text-align: center;
+    }
+    .welcome-tag {
+      display: inline-block;
+      padding: 6px 16px;
+      background: var(--primary);
+      color: white;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 16px;
     }
     .welcome h2 {
-      font-size: 36px;
-      font-weight: 700;
-      letter-spacing: -0.025em;
-      margin-bottom: 10px;
-      line-height: 1.2;
+      font-family: 'JalnanGothic', 'Pretendard', sans-serif;
+      font-size: 38px;
+      font-weight: normal;
+      color: var(--primary-dark);
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+      line-height: 1.3;
     }
     .welcome p {
       font-size: 17px;
@@ -148,58 +170,60 @@
     .menu-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 20px;
+      gap: 24px;
     }
     .menu-card {
       background: var(--surface);
-      border: 1px solid var(--border);
-      padding: 32px 28px;
-      border-radius: 16px;
+      border: 2px solid transparent;
+      padding: 36px 28px;
+      border-radius: 24px;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.25s ease;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 18px;
       text-decoration: none;
       color: inherit;
-      min-height: 200px;
+      min-height: 220px;
+      box-shadow: var(--shadow-soft);
     }
     .menu-card:hover {
       border-color: var(--primary);
-      transform: translateY(-3px);
-      box-shadow: var(--shadow-lg);
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-card);
     }
     .menu-card.disabled {
-      opacity: 0.55;
+      opacity: 0.6;
       cursor: not-allowed;
     }
     .menu-card.disabled:hover {
-      border-color: var(--border);
+      border-color: transparent;
       transform: none;
-      box-shadow: none;
+      box-shadow: var(--shadow-soft);
     }
     .menu-icon {
-      width: 56px;
-      height: 56px;
+      width: 64px;
+      height: 64px;
       background: var(--primary-soft);
       color: var(--primary);
-      border-radius: 14px;
+      border-radius: 18px;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
     }
     .menu-icon svg {
-      width: 28px;
-      height: 28px;
+      width: 32px;
+      height: 32px;
     }
     .menu-card.disabled .menu-icon {
-      background: #f1f5f9;
+      background: #eef3f7;
       color: var(--text-light);
     }
     .menu-card h3 {
-      font-size: 19px;
-      font-weight: 600;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text);
       margin-bottom: 6px;
       letter-spacing: -0.01em;
     }
@@ -234,7 +258,6 @@
       font-size: 13px;
       color: var(--text-light);
       line-height: 1.6;
-      border-top: 1px solid var(--border);
     }
     @media (max-width: 768px) {
       .header-inner { padding: 14px 18px; }
@@ -243,11 +266,11 @@
       .welcome p { font-size: 15px; }
       .user-info { font-size: 13px; gap: 10px; }
       .brand-name { font-size: 14px; }
-      .brand-mark { width: 34px; height: 34px; }
-      .menu-card { padding: 24px 22px; min-height: auto; }
-      .menu-icon { width: 48px; height: 48px; }
-      .menu-icon svg { width: 24px; height: 24px; }
-      .menu-card h3 { font-size: 17px; }
+      .brand-mark { width: 36px; height: 36px; }
+      .menu-card { padding: 26px 22px; min-height: auto; }
+      .menu-icon { width: 52px; height: 52px; }
+      .menu-icon svg { width: 26px; height: 26px; }
+      .menu-card h3 { font-size: 18px; }
     }
   </style>
 </head>
@@ -282,11 +305,13 @@
     
     const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
     
+    const NOTEBOOKLM_URL = 'https://notebooklm.google.com/notebook/b599e81a-4d0b-4091-b641-d4cf1f61beff';
+    
     const ICONS = {
       curriculum: `<svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>`,
       track: `<svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>`,
       users: `<svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>`,
-      chat: `<svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>`,
+      check: `<svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>`,
       bot: `<svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>`
     };
     
@@ -307,7 +332,7 @@
       
       if (profileError) {
         document.getElementById('content').innerHTML = 
-          `<div class="loading" style="color: #dc2626;">프로필을 불러오지 못했습니다: ${profileError.message}</div>`;
+          `<div class="loading" style="color: var(--admin);">프로필을 불러오지 못했습니다: ${profileError.message}</div>`;
         return;
       }
       
@@ -321,6 +346,7 @@
         `;
         document.getElementById('content').innerHTML = `
           <div class="welcome">
+            <span class="welcome-tag">관리자 대시보드</span>
             <h2>안녕하세요, ${profile.display_name}님</h2>
             <p>관리자 권한으로 모든 학교의 데이터를 관리할 수 있습니다.</p>
           </div>
@@ -328,7 +354,7 @@
             <a class="menu-card" href="curriculum.html">
               <div class="menu-icon">${ICONS.curriculum}</div>
               <div>
-                <h3>교육과정 편성표</h3>
+                <h3>교육과정 편성표 작성</h3>
                 <p>학교별 시트 등록·수정·삭제</p>
               </div>
               <span class="arrow">관리하기 →</span>
@@ -336,7 +362,7 @@
             <div class="menu-card disabled">
               <div class="menu-icon">${ICONS.track}</div>
               <div>
-                <h3>과목 트랙 관리</h3>
+                <h3>과목 선택 트랙 작성</h3>
                 <p>곧 추가될 예정입니다</p>
               </div>
               <span class="arrow">준비 중</span>
@@ -349,10 +375,10 @@
               </div>
               <span class="arrow">준비 중</span>
             </div>
-            <a class="menu-card" href="https://notebooklm.google.com" target="_blank">
+            <a class="menu-card" href="${NOTEBOOKLM_URL}" target="_blank">
               <div class="menu-icon">${ICONS.bot}</div>
               <div>
-                <h3>교육과정 챗봇</h3>
+                <h3>교육과정 업무 도우미 챗봇</h3>
                 <p>NotebookLM 문서 기반 질의응답</p>
               </div>
               <span class="arrow">새 탭에서 열기 ↗</span>
@@ -368,6 +394,7 @@
         `;
         document.getElementById('content').innerHTML = `
           <div class="welcome">
+            <span class="welcome-tag">${schoolName}</span>
             <h2>안녕하세요, ${profile.display_name}님</h2>
             <p>${schoolName}의 교육과정 작업 공간입니다.</p>
           </div>
@@ -375,31 +402,31 @@
             <a class="menu-card" href="curriculum.html">
               <div class="menu-icon">${ICONS.curriculum}</div>
               <div>
-                <h3>교육과정 편성표</h3>
-                <p>우리 학교 편성표 시트 보기</p>
+                <h3>교육과정 편성표 작성</h3>
+                <p>우리 학교 교육과정 편성표 시트 보기</p>
               </div>
               <span class="arrow">바로가기 →</span>
             </a>
             <div class="menu-card disabled">
               <div class="menu-icon">${ICONS.track}</div>
               <div>
-                <h3>과목 트랙 만들기</h3>
+                <h3>과목 선택 트랙 작성</h3>
                 <p>곧 추가될 예정입니다</p>
               </div>
               <span class="arrow">준비 중</span>
             </div>
             <div class="menu-card disabled">
-              <div class="menu-icon">${ICONS.chat}</div>
+              <div class="menu-icon">${ICONS.check}</div>
               <div>
-                <h3>담당자 댓글</h3>
+                <h3>교육과정 편성 점검 결과</h3>
                 <p>곧 추가될 예정입니다</p>
               </div>
               <span class="arrow">준비 중</span>
             </div>
-            <a class="menu-card" href="https://notebooklm.google.com" target="_blank">
+            <a class="menu-card" href="${NOTEBOOKLM_URL}" target="_blank">
               <div class="menu-icon">${ICONS.bot}</div>
               <div>
-                <h3>교육과정 챗봇</h3>
+                <h3>교육과정 업무 도우미 챗봇</h3>
                 <p>NotebookLM 문서 기반 질의응답</p>
               </div>
               <span class="arrow">새 탭에서 열기 ↗</span>

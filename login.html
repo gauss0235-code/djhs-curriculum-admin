@@ -14,27 +14,30 @@
       font-display: swap;
     }
     :root {
-      --bg: #f8fafc;
+      --bg-sky: #e8f4fc;
+      --bg-sky-deep: #d4ecf8;
       --surface: #ffffff;
-      --border: #e2e8f0;
-      --text: #0f172a;
-      --text-muted: #64748b;
-      --text-light: #94a3b8;
-      --primary: #4f46e5;
-      --primary-hover: #4338ca;
-      --primary-soft: #eef2ff;
-      --danger: #dc2626;
-      --danger-soft: #fef2f2;
-      --success: #16a34a;
-      --success-soft: #f0fdf4;
-      --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04);
-      --shadow-md: 0 4px 16px rgba(15, 23, 42, 0.06);
-      --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.08);
+      --border: #d8e8f3;
+      --border-strong: #b8d4e8;
+      --text: #1e3a5f;
+      --text-muted: #5d7894;
+      --text-light: #8ba8c2;
+      --primary: #4a90d9;
+      --primary-hover: #3a7ec0;
+      --primary-soft: #e3f0fa;
+      --primary-dark: #2d5a8a;
+      --accent: #ffd966;
+      --danger: #e57373;
+      --danger-soft: #fdeaea;
+      --success: #66bb6a;
+      --success-soft: #e8f5e9;
+      --shadow-soft: 0 4px 20px rgba(74, 144, 217, 0.08);
+      --shadow-card: 0 8px 32px rgba(74, 144, 217, 0.12);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: var(--bg);
+      background: linear-gradient(180deg, var(--bg-sky) 0%, var(--bg-sky-deep) 100%);
       color: var(--text);
       min-height: 100vh;
       display: flex;
@@ -43,10 +46,38 @@
       padding: 24px;
       line-height: 1.5;
       -webkit-font-smoothing: antialiased;
+      position: relative;
+      overflow-x: hidden;
+    }
+    .cloud {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.6);
+      border-radius: 100px;
+      pointer-events: none;
+    }
+    .cloud-1 {
+      width: 100px;
+      height: 30px;
+      top: 10%;
+      left: 8%;
+    }
+    .cloud-2 {
+      width: 140px;
+      height: 36px;
+      top: 25%;
+      right: 12%;
+    }
+    .cloud-3 {
+      width: 80px;
+      height: 24px;
+      bottom: 18%;
+      left: 15%;
     }
     .container {
       width: 100%;
-      max-width: 420px;
+      max-width: 460px;
+      position: relative;
+      z-index: 1;
     }
     .brand {
       text-align: center;
@@ -56,11 +87,14 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 80px;
-      height: 80px;
-      margin-bottom: 16px;
+      width: 88px;
+      height: 88px;
+      margin-bottom: 20px;
       overflow: hidden;
-      background: transparent;
+      background: white;
+      border-radius: 50%;
+      box-shadow: var(--shadow-soft);
+      padding: 12px;
     }
     .brand-mark img {
       width: 100%;
@@ -71,61 +105,68 @@
       font-family: 'JalnanGothic', 'Pretendard', sans-serif;
       font-size: 24px;
       font-weight: normal;
+      color: var(--primary-dark);
       letter-spacing: -0.01em;
       line-height: 1.4;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
+    }
+    .brand p {
+      font-size: 14px;
+      color: var(--text-muted);
     }
     .card {
       background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 32px;
-      box-shadow: var(--shadow-md);
+      border-radius: 24px;
+      padding: 36px;
+      box-shadow: var(--shadow-card);
     }
     .card h2 {
-      font-size: 18px;
+      font-size: 19px;
       font-weight: 600;
-      margin-bottom: 24px;
+      color: var(--text);
+      margin-bottom: 26px;
+      text-align: center;
     }
     .field {
-      margin-bottom: 14px;
+      margin-bottom: 16px;
     }
     .field label {
       display: block;
       font-size: 13px;
       font-weight: 500;
       color: var(--text-muted);
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
     input {
       width: 100%;
-      padding: 12px 14px;
-      border: 1px solid var(--border);
-      border-radius: 10px;
+      padding: 14px 18px;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
       font-size: 15px;
       font-family: inherit;
       color: var(--text);
-      background: var(--surface);
+      background: #f8fbfd;
       transition: all 0.15s ease;
     }
     input:focus {
       outline: none;
       border-color: var(--primary);
+      background: white;
       box-shadow: 0 0 0 3px var(--primary-soft);
     }
     button {
       width: 100%;
-      padding: 12px 16px;
+      padding: 14px 20px;
       background: var(--primary);
       color: white;
       border: none;
-      border-radius: 10px;
-      font-size: 15px;
+      border-radius: 12px;
+      font-size: 16px;
       font-weight: 600;
       font-family: inherit;
       cursor: pointer;
       transition: all 0.15s ease;
-      margin-top: 6px;
+      margin-top: 10px;
     }
     button:hover { background: var(--primary-hover); }
     button:disabled {
@@ -134,11 +175,12 @@
     }
     .message {
       margin-top: 16px;
-      padding: 12px 14px;
-      border-radius: 10px;
-      font-size: 13px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      font-size: 14px;
       display: none;
       line-height: 1.5;
+      text-align: center;
     }
     .message.error {
       background: var(--danger-soft);
@@ -152,18 +194,23 @@
     }
     .footer {
       text-align: center;
-      margin-top: 24px;
-      font-size: 13px;
+      margin-top: 28px;
+      font-size: 12px;
       color: var(--text-light);
       line-height: 1.6;
     }
   </style>
 </head>
 <body>
+  <div class="cloud cloud-1"></div>
+  <div class="cloud cloud-2"></div>
+  <div class="cloud cloud-3"></div>
+  
   <div class="container">
     <div class="brand">
       <div class="brand-mark"><img src="images/logo.png" alt="대전광역시교육청"></div>
       <h1>대전광역시 고등학교<br>교육과정 업무담당자 워크스페이스</h1>
+      <p>대전광역시교육청 고등학교 교육과정지원단</p>
     </div>
     
     <div class="card">
