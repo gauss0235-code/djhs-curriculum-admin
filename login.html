@@ -26,7 +26,6 @@
       --primary-hover: #3a7ec0;
       --primary-soft: #e3f0fa;
       --primary-dark: #2d5a8a;
-      --accent: #ffd966;
       --danger: #e57373;
       --danger-soft: #fdeaea;
       --success: #66bb6a;
@@ -40,44 +39,54 @@
       background: linear-gradient(180deg, var(--bg-sky) 0%, var(--bg-sky-deep) 100%);
       color: var(--text);
       min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       padding: 24px;
       line-height: 1.5;
       -webkit-font-smoothing: antialiased;
       position: relative;
       overflow-x: hidden;
     }
-    .cloud {
-      position: absolute;
-      background: rgba(255, 255, 255, 0.6);
-      border-radius: 100px;
-      pointer-events: none;
+    
+    .layout {
+      min-height: calc(100vh - 48px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
     }
-    .cloud-1 {
-      width: 100px;
-      height: 30px;
-      top: 10%;
-      left: 8%;
+    
+    /* 좌우 인물 일러스트 */
+    .person-illust {
+      flex-shrink: 0;
+      width: 320px;
+      height: 480px;
+      align-self: center;
+      display: flex;
+      align-items: flex-end;
     }
-    .cloud-2 {
-      width: 140px;
-      height: 36px;
-      top: 25%;
-      right: 12%;
+    .person-illust img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
     }
-    .cloud-3 {
-      width: 80px;
-      height: 24px;
-      bottom: 18%;
-      left: 15%;
+    .person-left {
+      margin-right: -20px;
     }
+    .person-right {
+      margin-left: -20px;
+    }
+    
+    @keyframes float-up {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+    }
+    .person-left img { animation: float-up 4s ease-in-out infinite; }
+    .person-right img { animation: float-up 4s ease-in-out infinite 0.5s; }
+    
     .container {
       width: 100%;
-      max-width: 460px;
+      max-width: 420px;
       position: relative;
-      z-index: 1;
+      z-index: 5;
     }
     .brand {
       text-align: center;
@@ -105,10 +114,6 @@
       letter-spacing: -0.01em;
       line-height: 1.4;
       margin-bottom: 8px;
-    }
-    .brand p {
-      font-size: 14px;
-      color: var(--text-muted);
     }
     .card {
       background: var(--surface);
@@ -195,34 +200,68 @@
       color: var(--text-light);
       line-height: 1.6;
     }
+    
+    @media (max-width: 1180px) {
+      .person-illust {
+        width: 260px;
+        height: 400px;
+      }
+    }
+    
+    @media (max-width: 900px) {
+      .person-illust {
+        width: 200px;
+        height: 320px;
+        opacity: 0.6;
+      }
+    }
+    
+    @media (max-width: 700px) {
+      .person-illust {
+        display: none;
+      }
+    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="brand">
-      <div class="brand-mark"><img src="images/logo.png" alt="대전광역시교육청"></div>
-      <h1>대전광역시 고등학교<br>교육과정 업무담당자 워크스페이스</h1>
+  <div class="layout">
+    <!-- 왼쪽 인물 -->
+    <div class="person-illust person-left">
+      <img src="images/person-left.svg" alt="">
     </div>
     
-    <div class="card">
-      <h2>교육과정 업무담당자 로그인</h2>
-      
-      <div class="field">
-        <label for="email">이메일</label>
-        <input type="email" id="email" placeholder="이메일 주소를 입력하세요">
+    <!-- 가운데 로그인 -->
+    <div class="container">
+      <div class="brand">
+        <div class="brand-mark"><img src="images/logo.png" alt="대전광역시교육청"></div>
+        <h1>대전광역시 고등학교<br>교육과정 업무담당자 워크스페이스</h1>
       </div>
       
-      <div class="field">
-        <label for="password">비밀번호</label>
-        <input type="password" id="password" placeholder="비밀번호를 입력하세요">
+      <div class="card">
+        <h2>교육과정 업무담당자 로그인</h2>
+        
+        <div class="field">
+          <label for="email">이메일</label>
+          <input type="email" id="email" placeholder="이메일 주소를 입력하세요">
+        </div>
+        
+        <div class="field">
+          <label for="password">비밀번호</label>
+          <input type="password" id="password" placeholder="비밀번호를 입력하세요">
+        </div>
+        
+        <button id="loginBtn" onclick="handleLogin()">로그인</button>
+        
+        <div id="message" class="message"></div>
       </div>
       
-      <button id="loginBtn" onclick="handleLogin()">로그인</button>
-      
-      <div id="message" class="message"></div>
+      <div class="footer">Copyright © 대전광역시교육청 고등학교 교육과정지원단. All rights reserved.</div>
     </div>
     
-    <div class="footer">Copyright © 대전광역시교육청 고등학교 교육과정지원단. All rights reserved.</div>
+    <!-- 오른쪽 인물 -->
+    <div class="person-illust person-right">
+      <img src="images/person-right.svg" alt="">
+    </div>
   </div>
 
   <script type="module">
