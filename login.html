@@ -46,14 +46,13 @@
       overflow-x: hidden;
     }
     
-    /* 배경 일러스트 - 화면 전체에 큼직하게 */
+    /* 배경 일러스트 - 로그인창과 비례하여 크기 조절 */
     .background-image {
       position: fixed;
       bottom: 0;
       left: 50%;
       transform: translateX(-50%);
-      width: 75%;
-      max-width: 1000px;
+      width: clamp(420px, 55vw, 800px);
       height: auto;
       z-index: 0;
       pointer-events: none;
@@ -195,7 +194,13 @@
     
     @media (max-width: 700px) {
       .background-image {
-        opacity: 0.5;
+        width: 90vw;
+        opacity: 0.4;
+      }
+    }
+    @media (max-width: 480px) {
+      .background-image {
+        opacity: 0.25;
       }
     }
   </style>
