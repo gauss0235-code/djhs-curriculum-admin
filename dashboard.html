@@ -29,6 +29,7 @@
       --admin-soft: #fdf2f8;
       --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04);
       --shadow-md: 0 4px 16px rgba(15, 23, 42, 0.06);
+      --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.10);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -46,9 +47,9 @@
       z-index: 10;
     }
     .header-inner {
-      max-width: 1100px;
+      max-width: 1200px;
       margin: 0 auto;
-      padding: 14px 28px;
+      padding: 16px 32px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -58,11 +59,11 @@
     .brand {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
     }
     .brand-mark {
-      width: 36px;
-      height: 36px;
+      width: 40px;
+      height: 40px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -81,7 +82,7 @@
     }
     .brand-name {
       font-family: 'JalnanGothic', 'Pretendard', sans-serif;
-      font-size: 16px;
+      font-size: 17px;
       font-weight: normal;
       letter-spacing: -0.01em;
       line-height: 1.3;
@@ -89,13 +90,13 @@
     .user-info {
       display: flex;
       align-items: center;
-      gap: 12px;
-      font-size: 13px;
+      gap: 14px;
+      font-size: 14px;
     }
     .badge {
-      padding: 4px 10px;
-      border-radius: 6px;
-      font-size: 12px;
+      padding: 5px 12px;
+      border-radius: 8px;
+      font-size: 13px;
       font-weight: 500;
     }
     .badge-school {
@@ -113,10 +114,10 @@
     .logout-btn {
       background: transparent;
       border: 1px solid var(--border);
-      padding: 6px 12px;
+      padding: 8px 14px;
       border-radius: 8px;
       cursor: pointer;
-      font-size: 12px;
+      font-size: 13px;
       color: var(--text-muted);
       font-family: inherit;
       transition: all 0.15s ease;
@@ -126,48 +127,50 @@
       color: var(--text);
     }
     main {
-      max-width: 1100px;
+      max-width: 1200px;
       margin: 0 auto;
-      padding: 40px 28px 80px;
+      padding: 56px 32px 80px;
     }
     .welcome {
-      margin-bottom: 32px;
+      margin-bottom: 48px;
     }
     .welcome h2 {
-      font-size: 28px;
+      font-size: 36px;
       font-weight: 700;
-      letter-spacing: -0.02em;
-      margin-bottom: 6px;
+      letter-spacing: -0.025em;
+      margin-bottom: 10px;
+      line-height: 1.2;
     }
     .welcome p {
-      font-size: 15px;
+      font-size: 17px;
       color: var(--text-muted);
     }
     .menu-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 16px;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
     }
     .menu-card {
       background: var(--surface);
       border: 1px solid var(--border);
-      padding: 24px;
-      border-radius: 14px;
+      padding: 32px 28px;
+      border-radius: 16px;
       cursor: pointer;
       transition: all 0.2s ease;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 16px;
       text-decoration: none;
       color: inherit;
+      min-height: 200px;
     }
     .menu-card:hover {
       border-color: var(--primary);
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-md);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-lg);
     }
     .menu-card.disabled {
-      opacity: 0.5;
+      opacity: 0.55;
       cursor: not-allowed;
     }
     .menu-card.disabled:hover {
@@ -176,35 +179,43 @@
       box-shadow: none;
     }
     .menu-icon {
-      width: 40px;
-      height: 40px;
+      width: 56px;
+      height: 56px;
       background: var(--primary-soft);
       color: var(--primary);
-      border-radius: 10px;
+      border-radius: 14px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 20px;
+      flex-shrink: 0;
+    }
+    .menu-icon svg {
+      width: 28px;
+      height: 28px;
     }
     .menu-card.disabled .menu-icon {
-      background: var(--bg);
+      background: #f1f5f9;
       color: var(--text-light);
     }
     .menu-card h3 {
-      font-size: 16px;
+      font-size: 19px;
       font-weight: 600;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
+      letter-spacing: -0.01em;
     }
     .menu-card p {
-      font-size: 13px;
+      font-size: 14px;
       color: var(--text-muted);
-      line-height: 1.5;
+      line-height: 1.6;
     }
     .menu-card .arrow {
       margin-top: auto;
-      font-size: 13px;
+      font-size: 14px;
       color: var(--primary);
-      font-weight: 500;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
     }
     .menu-card.disabled .arrow {
       color: var(--text-light);
@@ -213,12 +224,12 @@
       text-align: center;
       padding: 60px;
       color: var(--text-muted);
-      font-size: 14px;
+      font-size: 15px;
     }
     footer {
-      max-width: 1100px;
+      max-width: 1200px;
       margin: 40px auto 0;
-      padding: 24px 28px 40px;
+      padding: 28px 32px 40px;
       text-align: center;
       font-size: 13px;
       color: var(--text-light);
@@ -226,12 +237,17 @@
       border-top: 1px solid var(--border);
     }
     @media (max-width: 768px) {
-      .header-inner { padding: 12px 16px; }
-      main { padding: 28px 16px 60px; }
-      .welcome h2 { font-size: 22px; }
-      .user-info { font-size: 12px; gap: 8px; }
-      .brand-name { font-size: 13px; }
-      .brand-mark { width: 30px; height: 30px; }
+      .header-inner { padding: 14px 18px; }
+      main { padding: 36px 18px 60px; }
+      .welcome h2 { font-size: 26px; }
+      .welcome p { font-size: 15px; }
+      .user-info { font-size: 13px; gap: 10px; }
+      .brand-name { font-size: 14px; }
+      .brand-mark { width: 34px; height: 34px; }
+      .menu-card { padding: 24px 22px; min-height: auto; }
+      .menu-icon { width: 48px; height: 48px; }
+      .menu-icon svg { width: 24px; height: 24px; }
+      .menu-card h3 { font-size: 17px; }
     }
   </style>
 </head>
@@ -265,6 +281,14 @@
     const SUPABASE_KEY = 'sb_publishable_ALakaYU4jTYEIQas_nWrsQ_An3IK9_h';
     
     const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+    
+    const ICONS = {
+      curriculum: `<svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>`,
+      track: `<svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>`,
+      users: `<svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>`,
+      chat: `<svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>`,
+      bot: `<svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>`
+    };
     
     async function init() {
       const { data: { user } } = await supabase.auth.getUser();
@@ -302,7 +326,7 @@
           </div>
           <div class="menu-grid">
             <a class="menu-card" href="curriculum.html">
-              <div class="menu-icon">📋</div>
+              <div class="menu-icon">${ICONS.curriculum}</div>
               <div>
                 <h3>교육과정 편성표</h3>
                 <p>학교별 시트 등록·수정·삭제</p>
@@ -310,7 +334,7 @@
               <span class="arrow">관리하기 →</span>
             </a>
             <div class="menu-card disabled">
-              <div class="menu-icon">🎯</div>
+              <div class="menu-icon">${ICONS.track}</div>
               <div>
                 <h3>과목 트랙 관리</h3>
                 <p>곧 추가될 예정입니다</p>
@@ -318,7 +342,7 @@
               <span class="arrow">준비 중</span>
             </div>
             <div class="menu-card disabled">
-              <div class="menu-icon">👥</div>
+              <div class="menu-icon">${ICONS.users}</div>
               <div>
                 <h3>학교·담당자 관리</h3>
                 <p>곧 추가될 예정입니다</p>
@@ -326,7 +350,7 @@
               <span class="arrow">준비 중</span>
             </div>
             <a class="menu-card" href="https://notebooklm.google.com" target="_blank">
-              <div class="menu-icon">🤖</div>
+              <div class="menu-icon">${ICONS.bot}</div>
               <div>
                 <h3>교육과정 챗봇</h3>
                 <p>NotebookLM 문서 기반 질의응답</p>
@@ -349,7 +373,7 @@
           </div>
           <div class="menu-grid">
             <a class="menu-card" href="curriculum.html">
-              <div class="menu-icon">📋</div>
+              <div class="menu-icon">${ICONS.curriculum}</div>
               <div>
                 <h3>교육과정 편성표</h3>
                 <p>우리 학교 편성표 시트 보기</p>
@@ -357,7 +381,7 @@
               <span class="arrow">바로가기 →</span>
             </a>
             <div class="menu-card disabled">
-              <div class="menu-icon">🎯</div>
+              <div class="menu-icon">${ICONS.track}</div>
               <div>
                 <h3>과목 트랙 만들기</h3>
                 <p>곧 추가될 예정입니다</p>
@@ -365,7 +389,7 @@
               <span class="arrow">준비 중</span>
             </div>
             <div class="menu-card disabled">
-              <div class="menu-icon">💬</div>
+              <div class="menu-icon">${ICONS.chat}</div>
               <div>
                 <h3>담당자 댓글</h3>
                 <p>곧 추가될 예정입니다</p>
@@ -373,7 +397,7 @@
               <span class="arrow">준비 중</span>
             </div>
             <a class="menu-card" href="https://notebooklm.google.com" target="_blank">
-              <div class="menu-icon">🤖</div>
+              <div class="menu-icon">${ICONS.bot}</div>
               <div>
                 <h3>교육과정 챗봇</h3>
                 <p>NotebookLM 문서 기반 질의응답</p>

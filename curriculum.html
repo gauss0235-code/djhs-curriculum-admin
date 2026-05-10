@@ -55,9 +55,9 @@
       z-index: 10;
     }
     .header-inner {
-      max-width: 1100px;
+      max-width: 1200px;
       margin: 0 auto;
-      padding: 14px 28px;
+      padding: 16px 32px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -67,13 +67,13 @@
     .brand {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       text-decoration: none;
       color: inherit;
     }
     .brand-mark {
-      width: 36px;
-      height: 36px;
+      width: 40px;
+      height: 40px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -92,7 +92,7 @@
     }
     .brand-name {
       font-family: 'JalnanGothic', 'Pretendard', sans-serif;
-      font-size: 16px;
+      font-size: 17px;
       font-weight: normal;
       letter-spacing: -0.01em;
       line-height: 1.3;
@@ -100,13 +100,13 @@
     .user-info {
       display: flex;
       align-items: center;
-      gap: 12px;
-      font-size: 13px;
+      gap: 14px;
+      font-size: 14px;
     }
     .badge {
-      padding: 4px 10px;
-      border-radius: 6px;
-      font-size: 12px;
+      padding: 5px 12px;
+      border-radius: 8px;
+      font-size: 13px;
       font-weight: 500;
     }
     .badge-school {
@@ -121,52 +121,53 @@
     .logout-btn {
       background: transparent;
       border: 1px solid var(--border);
-      padding: 6px 12px;
+      padding: 8px 14px;
       border-radius: 8px;
       cursor: pointer;
-      font-size: 12px;
+      font-size: 13px;
       color: var(--text-muted);
       font-family: inherit;
       transition: all 0.15s ease;
     }
     .logout-btn:hover { background: var(--bg); color: var(--text); }
     main {
-      max-width: 1100px;
+      max-width: 1200px;
       margin: 0 auto;
-      padding: 32px 28px 80px;
+      padding: 48px 32px 80px;
     }
     .page-header {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      margin-bottom: 28px;
+      margin-bottom: 36px;
       gap: 16px;
       flex-wrap: wrap;
     }
     .page-header h2 {
-      font-size: 26px;
+      font-size: 32px;
       font-weight: 700;
-      letter-spacing: -0.02em;
-      margin-bottom: 6px;
+      letter-spacing: -0.025em;
+      margin-bottom: 8px;
+      line-height: 1.2;
     }
     .page-header .desc {
-      font-size: 14px;
+      font-size: 16px;
       color: var(--text-muted);
     }
     .page-header-actions {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
       flex-wrap: wrap;
     }
     .btn-primary {
       background: var(--primary);
       color: white;
       border: none;
-      padding: 10px 18px;
+      padding: 12px 22px;
       border-radius: 10px;
       cursor: pointer;
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 600;
       font-family: inherit;
       transition: all 0.15s ease;
@@ -176,10 +177,10 @@
     .btn-secondary {
       background: var(--surface);
       border: 1px solid var(--border);
-      padding: 8px 14px;
+      padding: 9px 16px;
       border-radius: 8px;
       cursor: pointer;
-      font-size: 13px;
+      font-size: 14px;
       font-family: inherit;
       color: var(--text);
       transition: all 0.15s ease;
@@ -194,9 +195,9 @@
       gap: 6px;
       background: var(--surface);
       border: 1px solid var(--border);
-      padding: 10px 16px;
+      padding: 12px 18px;
       border-radius: 10px;
-      font-size: 13px;
+      font-size: 14px;
       color: var(--text);
       text-decoration: none;
       font-weight: 500;
@@ -211,29 +212,29 @@
     .filter-bar {
       background: var(--surface);
       border: 1px solid var(--border);
-      padding: 14px 18px;
-      border-radius: 12px;
-      margin-bottom: 16px;
+      padding: 16px 22px;
+      border-radius: 14px;
+      margin-bottom: 20px;
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
       flex-wrap: wrap;
     }
     .filter-bar label {
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 500;
       color: var(--text-muted);
     }
     .filter-bar select {
-      padding: 8px 12px;
+      padding: 10px 14px;
       border: 1px solid var(--border);
       border-radius: 8px;
-      font-size: 14px;
+      font-size: 15px;
       font-family: inherit;
       background: var(--surface);
       color: var(--text);
       flex: 1;
-      max-width: 280px;
+      max-width: 320px;
       cursor: pointer;
     }
     .filter-bar select:focus {
@@ -242,39 +243,47 @@
     }
     .empty-state {
       text-align: center;
-      padding: 64px 20px;
+      padding: 80px 20px;
       color: var(--text-muted);
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: 14px;
     }
     .empty-state .icon {
-      font-size: 32px;
-      margin-bottom: 12px;
-      opacity: 0.5;
+      width: 56px;
+      height: 56px;
+      margin: 0 auto 16px;
+      color: var(--text-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .empty-state .icon svg {
+      width: 100%;
+      height: 100%;
     }
     .empty-state p {
-      font-size: 14px;
+      font-size: 15px;
       margin-bottom: 6px;
     }
     .empty-state p:last-child {
       color: var(--text-light);
-      font-size: 13px;
+      font-size: 14px;
     }
     .sheet-list {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 12px;
     }
     .sheet-item {
       background: var(--surface);
       border: 1px solid var(--border);
-      padding: 18px 20px;
-      border-radius: 12px;
+      padding: 22px 26px;
+      border-radius: 14px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 16px;
+      gap: 18px;
       transition: all 0.15s ease;
     }
     .sheet-item:hover {
@@ -285,21 +294,21 @@
     .sheet-title-row {
       display: flex;
       align-items: center;
-      gap: 8px;
-      margin-bottom: 6px;
+      gap: 10px;
+      margin-bottom: 8px;
       flex-wrap: wrap;
     }
     .sheet-title-row h3 {
-      font-size: 15px;
+      font-size: 17px;
       font-weight: 600;
       letter-spacing: -0.01em;
     }
     .type-tag {
       display: inline-flex;
       align-items: center;
-      padding: 2px 8px;
-      border-radius: 4px;
-      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-size: 12px;
       font-weight: 500;
     }
     .type-practice {
@@ -315,13 +324,13 @@
       color: var(--blue);
     }
     .sheet-desc {
-      font-size: 13px;
+      font-size: 14px;
       color: var(--text-muted);
-      line-height: 1.5;
-      margin-bottom: 4px;
+      line-height: 1.6;
+      margin-bottom: 6px;
     }
     .sheet-meta {
-      font-size: 12px;
+      font-size: 13px;
       color: var(--text-light);
     }
     .sheet-actions {
@@ -334,10 +343,10 @@
       background: var(--primary);
       color: white;
       border: none;
-      padding: 8px 14px;
+      padding: 10px 18px;
       border-radius: 8px;
       cursor: pointer;
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 600;
       text-decoration: none;
       display: inline-flex;
@@ -349,10 +358,10 @@
     .icon-btn {
       background: transparent;
       border: 1px solid var(--border);
-      padding: 7px 12px;
+      padding: 9px 14px;
       border-radius: 8px;
       cursor: pointer;
-      font-size: 12px;
+      font-size: 13px;
       color: var(--text-muted);
       font-family: inherit;
       transition: all 0.15s ease;
@@ -379,35 +388,36 @@
     .modal-bg.hidden { display: none; }
     .modal {
       background: var(--surface);
-      padding: 28px;
-      border-radius: 14px;
+      padding: 32px;
+      border-radius: 16px;
       width: 100%;
-      max-width: 480px;
+      max-width: 520px;
       max-height: 90vh;
       overflow-y: auto;
       box-shadow: var(--shadow-lg);
     }
     .modal h3 {
-      font-size: 18px;
+      font-size: 20px;
       font-weight: 600;
-      margin-bottom: 20px;
+      margin-bottom: 24px;
+      letter-spacing: -0.01em;
     }
-    .field { margin-bottom: 14px; }
+    .field { margin-bottom: 16px; }
     .field label {
       display: block;
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 500;
       color: var(--text-muted);
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
     .field input,
     .field select,
     .field textarea {
       width: 100%;
-      padding: 10px 12px;
+      padding: 11px 14px;
       border: 1px solid var(--border);
       border-radius: 8px;
-      font-size: 14px;
+      font-size: 15px;
       font-family: inherit;
       color: var(--text);
       background: var(--surface);
@@ -421,7 +431,7 @@
       box-shadow: 0 0 0 3px var(--primary-soft);
     }
     .field textarea {
-      min-height: 80px;
+      min-height: 90px;
       resize: vertical;
       line-height: 1.5;
     }
@@ -429,13 +439,13 @@
       display: flex;
       gap: 8px;
       justify-content: flex-end;
-      margin-top: 20px;
+      margin-top: 24px;
     }
     .hidden { display: none !important; }
     footer {
-      max-width: 1100px;
+      max-width: 1200px;
       margin: 40px auto 0;
-      padding: 24px 28px 40px;
+      padding: 28px 32px 40px;
       text-align: center;
       font-size: 13px;
       color: var(--text-light);
@@ -443,13 +453,14 @@
       border-top: 1px solid var(--border);
     }
     @media (max-width: 768px) {
-      .header-inner { padding: 12px 16px; }
-      main { padding: 24px 16px 60px; }
-      .page-header h2 { font-size: 22px; }
-      .user-info { font-size: 12px; gap: 8px; }
-      .brand-name { font-size: 13px; }
-      .brand-mark { width: 30px; height: 30px; }
-      .sheet-item { flex-direction: column; align-items: stretch; }
+      .header-inner { padding: 14px 18px; }
+      main { padding: 32px 18px 60px; }
+      .page-header h2 { font-size: 24px; }
+      .page-header .desc { font-size: 14px; }
+      .user-info { font-size: 13px; gap: 10px; }
+      .brand-name { font-size: 14px; }
+      .brand-mark { width: 34px; height: 34px; }
+      .sheet-item { flex-direction: column; align-items: stretch; padding: 18px 20px; }
       .sheet-actions { justify-content: flex-end; }
     }
   </style>
@@ -488,7 +499,9 @@
     
     <div id="sheetList">
       <div class="empty-state">
-        <div class="icon">⏳</div>
+        <div class="icon">
+          <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
         <p>불러오는 중...</p>
       </div>
     </div>
@@ -549,6 +562,11 @@
       practice: '연습용',
       first_draft: '1차 제출본',
       final: '최종본'
+    };
+    
+    const EMPTY_ICONS = {
+      school: `<svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5z"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/></svg>`,
+      empty: `<svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/></svg>`
     };
     
     window.updateTitlePlaceholder = function() {
@@ -624,7 +642,7 @@
         if (!schoolId) {
           listEl.innerHTML = `
             <div class="empty-state">
-              <div class="icon">🏫</div>
+              <div class="icon">${EMPTY_ICONS.school}</div>
               <p>위에서 학교를 선택하세요</p>
               <p>선택한 학교의 시트가 표시됩니다.</p>
             </div>
@@ -650,7 +668,7 @@
       if (!data || data.length === 0) {
         listEl.innerHTML = `
           <div class="empty-state">
-            <div class="icon">📭</div>
+            <div class="icon">${EMPTY_ICONS.empty}</div>
             <p>아직 등록된 시트가 없습니다</p>
             <p>${isAdmin ? '위 버튼으로 새 시트를 등록해주세요.' : '지원단에서 시트를 등록하면 여기에 표시됩니다.'}</p>
           </div>
