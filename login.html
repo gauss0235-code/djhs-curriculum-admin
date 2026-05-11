@@ -328,7 +328,15 @@
       
       if (error) {
         messageEl.className = 'message error';
-        messageEl.textContent = '로그인 실패: ' + error.message;
+        // Supabase 에러를 사용자 친화적 메시지로 변환
+        if (error.message.includes('Invalid login credentials') || 
+            error.message.includes('invalid')) {
+          messageEl.textContent = '비밀번호 입력 오류';
+        } else if (error.message.includes('Email not confirmed')) {
+          messageEl.textContent = '이메일 인증이 필요합니다.';
+        } else {
+          messageEl.textContent = '로그인 실패: ' + error.message;
+        }
         btn.disabled = false;
         btn.textContent = '로그인';
         return;
@@ -348,20 +356,10 @@
         return;
       }
       
-      messageEl.className = 'message success';
-      if (profile.role === 'admin') {
-        messageEl.textContent = `관리자(${profile.display_name})로 로그인했습니다.`;
-      } else if (profile.role === 'support') {
-        messageEl.textContent = `${profile.display_name}로 로그인했습니다.`;
-      } else if (profile.schools) {
-        messageEl.textContent = `${profile.schools.name} 담당자(${profile.display_name})로 로그인했습니다.`;
-      } else {
-        messageEl.textContent = `${profile.display_name}로 로그인했습니다.`;
-      }
-      
-      setTimeout(() => {
-        window.location.href = 'dashboard.html';
-      }, 1500);
+      // 로그인 성공: 메시지 안 보이게 하고 바로 대시보드로 이동
+      messageEl.className = 'message';
+      messageEl.textContent = '';
+      window.location.href = 'dashboard.html';
     };
     
     document.getElementById('password').addEventListener('keypress', (e) => {
