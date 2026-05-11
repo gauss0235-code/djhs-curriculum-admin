@@ -14,42 +14,56 @@
       font-display: swap;
     }
     :root {
+      /* 배경 (건드리지 않음) */
       --bg-sky: #e8f4fc;
       --bg-sky-deep: #d4ecf8;
-      --surface: #ffffff;
       --border: #d8e8f3;
-      --border-strong: #b8d4e8;
-      --text: #1e3a5f;
-      --text-muted: #5d7894;
-      --text-light: #8ba8c2;
       --primary: #4a90d9;
       --primary-hover: #3a7ec0;
       --primary-soft: #e3f0fa;
       --primary-dark: #2d5a8a;
       --admin: #ec6f8e;
       --admin-soft: #fde7ed;
-      --danger: #e57373;
-      --danger-soft: #fdeaea;
-      --warning: #f4a261;
-      --warning-soft: #fef0e3;
-      --cat-social: #5a9fd4;
-      --cat-social-soft: #e3f0fa;
-      --cat-business: #f4a261;
-      --cat-business-soft: #fef0e3;
-      --cat-engineering: #7cb342;
-      --cat-engineering-soft: #eef7e3;
-      --cat-medical: #e57373;
-      --cat-medical-soft: #fdeaea;
-      --cat-other: #9ca3af;
-      --cat-other-soft: #f1f5f9;
+      --text-light: #8ba8c2;
+      --text-muted: #5d7894;
+      
+      /* 시뮬레이터 톤 (track-edit과 동일) */
+      --sim-text: #2C3E50;
+      --sim-text-mid: #6B7280;
+      --sim-text-brown: #6B4423;
+      --sim-sky-blue: #4A8AB8;
+      --sim-beige: #FFF8E7;
+      --sim-beige-deep: #FFE9B3;
+      --sim-yellow-banner: #FEF3C7;
+      --sim-yellow-border: #F59E0B;
+      
+      /* 계열별 태그 (track-edit 톤) */
+      --cat-social-bg: #DBEAFE;
+      --cat-social-text: #1D4ED8;
+      --cat-business-bg: #FEF3C7;
+      --cat-business-text: #B45309;
+      --cat-engineering-bg: #DCFCE7;
+      --cat-engineering-text: #15803D;
+      --cat-medical-bg: #FEE2E2;
+      --cat-medical-text: #B91C1C;
+      --cat-other-bg: #F3F4F6;
+      --cat-other-text: #4B5563;
+      
+      --check-brown: #4A2E14;
+      
+      --danger: #DC2626;
+      --danger-soft: #FEE2E2;
+      --warning: #F59E0B;
+      --warning-soft: #FEF3C7;
+      
       --shadow-soft: 0 4px 20px rgba(74, 144, 217, 0.08);
-      --shadow-card: 0 8px 32px rgba(74, 144, 217, 0.12);
+      --shadow-card: 0 2px 8px rgba(120, 80, 30, 0.06);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
       background: linear-gradient(180deg, var(--bg-sky) 0%, var(--bg-sky-deep) 100%);
-      color: var(--text);
+      color: var(--sim-text);
       line-height: 1.5;
       -webkit-font-smoothing: antialiased;
       min-height: 100vh;
@@ -119,29 +133,29 @@
       color: var(--primary);
     }
     main {
-      max-width: 1200px;
+      max-width: 1100px;
       margin: 0 auto;
-      padding: 48px 32px 80px;
+      padding: 32px 28px 80px;
     }
     .page-header {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      margin-bottom: 36px;
+      margin-bottom: 28px;
       gap: 16px;
       flex-wrap: wrap;
     }
     .page-header h2 {
       font-family: 'JalnanGothic', 'Pretendard', sans-serif;
-      font-size: 32px;
-      color: var(--primary-dark);
+      font-size: 30px;
+      color: var(--sim-sky-blue);
       letter-spacing: -0.02em;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
       line-height: 1.3;
     }
     .page-header .desc {
-      font-size: 16px;
-      color: var(--text-muted);
+      font-size: 14px;
+      color: var(--sim-text-mid);
     }
     .page-header-actions {
       display: flex;
@@ -149,173 +163,226 @@
       gap: 10px;
       flex-wrap: wrap;
     }
+    
+    /* === 버튼 (track-edit과 일치) === */
     .btn-primary {
-      background: var(--primary);
+      background: var(--sim-sky-blue);
       color: white;
       border: none;
       padding: 12px 22px;
       border-radius: 12px;
       cursor: pointer;
-      font-size: 15px;
-      font-weight: 600;
+      font-size: 14px;
+      font-weight: 700;
       font-family: inherit;
       transition: all 0.15s ease;
       white-space: nowrap;
-      box-shadow: 0 2px 8px rgba(74, 144, 217, 0.25);
+      box-shadow: 0 3px 10px rgba(74, 138, 184, 0.3);
       text-decoration: none;
       display: inline-block;
     }
-    .btn-primary:hover { background: var(--primary-hover); }
+    .btn-primary:hover { background: #3D7AA3; transform: translateY(-1px); box-shadow: 0 5px 14px rgba(74, 138, 184, 0.4); }
+    
     .back-btn {
       display: inline-flex;
       align-items: center;
       gap: 6px;
       background: white;
-      border: 1.5px solid var(--border);
+      border: 1.5px solid #E5E7EB;
       padding: 12px 18px;
       border-radius: 12px;
       font-size: 14px;
-      color: var(--text);
+      color: var(--sim-text);
       text-decoration: none;
-      font-weight: 500;
+      font-weight: 600;
       transition: all 0.15s ease;
       white-space: nowrap;
     }
     .back-btn:hover {
-      border-color: var(--primary);
-      color: var(--primary);
-      background: var(--primary-soft);
+      background: #F9FAFB;
+      border-color: var(--sim-sky-blue);
+      color: var(--sim-sky-blue);
     }
+    
+    /* === 학교 선택 바 === */
     .filter-bar {
-      background: var(--surface);
-      border: 1.5px solid var(--border);
+      background: white;
+      border: 1.5px solid #E5E7EB;
       padding: 18px 24px;
       border-radius: 16px;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
       display: flex;
       align-items: center;
       gap: 14px;
       flex-wrap: wrap;
-      box-shadow: var(--shadow-soft);
+      box-shadow: var(--shadow-card);
     }
     .filter-bar label {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text);
+      font-family: 'JalnanGothic', 'Pretendard', sans-serif;
+      font-size: 15px;
+      color: var(--sim-sky-blue);
     }
     .filter-bar select {
       padding: 11px 16px;
-      border: 1.5px solid var(--border);
+      border: 1.5px solid #E5E7EB;
       border-radius: 10px;
-      font-size: 15px;
+      font-size: 14px;
       font-family: inherit;
-      background: #f8fbfd;
-      color: var(--text);
+      background: white;
+      color: var(--sim-text);
       flex: 1;
       max-width: 320px;
       cursor: pointer;
     }
     .filter-bar select:focus {
       outline: none;
-      border-color: var(--primary);
-      background: white;
+      border-color: var(--sim-sky-blue);
+      box-shadow: 0 0 0 3px rgba(74, 138, 184, 0.15);
     }
+    
+    /* === 빈 상태 === */
     .empty-state {
       text-align: center;
       padding: 80px 20px;
-      color: var(--text-muted);
-      background: var(--surface);
+      color: var(--sim-text-mid);
+      background: white;
       border-radius: 20px;
-      box-shadow: var(--shadow-soft);
+      box-shadow: var(--shadow-card);
     }
     .empty-state .icon {
-      width: 64px;
-      height: 64px;
+      width: 72px;
+      height: 72px;
       margin: 0 auto 20px;
-      color: var(--primary);
-      background: var(--primary-soft);
+      color: var(--sim-sky-blue);
+      background: var(--sim-beige);
+      border: 2px dashed var(--sim-yellow-border);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
     }
-    .empty-state .icon svg { width: 32px; height: 32px; }
+    .empty-state .icon svg { width: 34px; height: 34px; color: var(--sim-yellow-border); }
     .empty-state p {
-      font-size: 16px;
-      margin-bottom: 6px;
-      color: var(--text);
-      font-weight: 500;
+      font-family: 'JalnanGothic', 'Pretendard', sans-serif;
+      font-size: 18px;
+      margin-bottom: 8px;
+      color: var(--sim-sky-blue);
     }
     .empty-state p:last-child {
-      color: var(--text-light);
+      font-family: 'Pretendard', sans-serif;
+      color: var(--sim-text-mid);
       font-size: 14px;
       font-weight: 400;
     }
+    
+    /* === 트랙 카드 (track-edit의 subject-card 톤) === */
     .track-list {
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 12px;
     }
     .track-item {
-      background: var(--surface);
-      border: 2px solid transparent;
-      padding: 24px 28px;
+      background: white;
+      border: 2px solid #F3F4F6;
+      padding: 22px 26px;
       border-radius: 18px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 18px;
       transition: all 0.2s ease;
-      box-shadow: var(--shadow-soft);
+      box-shadow: var(--shadow-card);
     }
     .track-item:hover {
-      border-color: var(--primary);
+      border-color: var(--sim-sky-blue);
       transform: translateY(-2px);
-      box-shadow: var(--shadow-card);
+      box-shadow: 0 8px 20px rgba(74, 138, 184, 0.12);
     }
     .track-info { flex: 1; min-width: 0; }
     .track-title-row {
       display: flex;
       align-items: center;
       gap: 10px;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
       flex-wrap: wrap;
     }
     .track-title-row h3 {
-      font-size: 17px;
-      font-weight: 700;
-      color: var(--text);
+      font-family: 'JalnanGothic', 'Pretendard', sans-serif;
+      font-size: 18px;
+      color: var(--sim-text);
     }
+    
+    /* 계열 태그 (track-edit과 동일한 컬러풀 스타일) */
     .category-tag {
       display: inline-flex;
       align-items: center;
       padding: 4px 12px;
-      border-radius: 12px;
+      border-radius: 10px;
       font-size: 12px;
-      font-weight: 600;
+      font-weight: 700;
     }
-    .category-social_science { background: var(--cat-social-soft); color: var(--cat-social); }
-    .category-business { background: var(--cat-business-soft); color: var(--cat-business); }
-    .category-engineering { background: var(--cat-engineering-soft); color: var(--cat-engineering); }
-    .category-medical { background: var(--cat-medical-soft); color: var(--cat-medical); }
-    .category-other { background: var(--cat-other-soft); color: var(--cat-other); }
+    .category-social_science { background: var(--cat-social-bg); color: var(--cat-social-text); }
+    .category-business { background: var(--cat-business-bg); color: var(--cat-business-text); }
+    .category-engineering { background: var(--cat-engineering-bg); color: var(--cat-engineering-text); }
+    .category-medical { background: var(--cat-medical-bg); color: var(--cat-medical-text); }
+    .category-other { background: var(--cat-other-bg); color: var(--cat-other-text); }
+    
     .track-desc {
-      font-size: 14px;
-      color: var(--text-muted);
+      font-size: 13.5px;
+      color: var(--sim-text-mid);
       line-height: 1.6;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
     .track-meta {
       font-size: 13px;
-      color: var(--text-light);
+      color: var(--sim-text-mid);
       display: flex;
-      gap: 12px;
+      gap: 8px;
       flex-wrap: wrap;
+      align-items: center;
+    }
+    .meta-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 10px;
+      background: #F9FAFB;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--sim-text-mid);
+    }
+    .meta-chip.subjects {
+      background: var(--primary-soft);
+      color: var(--primary-dark);
+    }
+    .meta-chip.curriculum {
+      background: var(--sim-beige);
+      color: var(--sim-text-brown);
     }
     .track-meta .meta-warn {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      background: var(--warning-soft);
       color: var(--warning);
-      font-weight: 600;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
     }
+    .track-meta .meta-danger {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      background: var(--danger-soft);
+      color: var(--danger);
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    
     .track-actions {
       display: flex;
       gap: 8px;
@@ -323,46 +390,50 @@
       align-items: center;
     }
     .open-btn {
-      background: var(--primary);
+      background: var(--sim-sky-blue);
       color: white;
       border: none;
-      padding: 11px 20px;
+      padding: 10px 20px;
       border-radius: 10px;
       cursor: pointer;
       font-size: 14px;
-      font-weight: 600;
+      font-weight: 700;
       text-decoration: none;
       display: inline-flex;
       align-items: center;
       gap: 6px;
       transition: all 0.15s ease;
-      box-shadow: 0 2px 8px rgba(74, 144, 217, 0.25);
+      box-shadow: 0 3px 10px rgba(74, 138, 184, 0.25);
+      font-family: inherit;
     }
-    .open-btn:hover { background: var(--primary-hover); }
+    .open-btn:hover { background: #3D7AA3; }
     .icon-btn {
       background: white;
-      border: 1.5px solid var(--border);
-      padding: 10px 14px;
+      border: 1.5px solid #E5E7EB;
+      padding: 9px 14px;
       border-radius: 10px;
       cursor: pointer;
       font-size: 13px;
-      color: var(--text-muted);
+      font-weight: 600;
+      color: var(--sim-text-mid);
       font-family: inherit;
       transition: all 0.15s ease;
       text-decoration: none;
       display: inline-block;
     }
     .icon-btn:hover {
-      border-color: var(--border-strong);
-      color: var(--text);
+      border-color: var(--sim-sky-blue);
+      color: var(--sim-sky-blue);
+      background: var(--primary-soft);
     }
     .icon-btn.danger:hover {
       border-color: var(--danger);
       color: var(--danger);
       background: var(--danger-soft);
     }
+    
     footer {
-      max-width: 1200px;
+      max-width: 1100px;
       margin: 40px auto 0;
       padding: 28px 32px 40px;
       text-align: center;
@@ -372,9 +443,9 @@
     }
     @media (max-width: 768px) {
       .header-inner { padding: 14px 18px; }
-      main { padding: 32px 18px 60px; }
+      main { padding: 28px 16px 60px; }
       .page-header h2 { font-size: 24px; }
-      .track-item { flex-direction: column; align-items: stretch; padding: 20px 22px; }
+      .track-item { flex-direction: column; align-items: stretch; padding: 20px 20px; }
       .track-actions { justify-content: flex-end; }
     }
   </style>
@@ -403,7 +474,7 @@
     </div>
     
     <div id="schoolFilter" class="filter-bar" style="display:none">
-      <label>학교 선택</label>
+      <label>🏫 학교 선택</label>
       <select id="schoolSelect" onchange="loadTracks()">
         <option value="">학교를 선택하세요</option>
       </select>
@@ -531,10 +602,10 @@
         listEl.innerHTML = `
           <div class="empty-state">
             <div class="icon">
-              <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/></svg>
+              <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
             </div>
-            <p>아직 등록된 트랙이 없습니다</p>
-            <p>위 버튼으로 새 트랙을 만들어보세요.</p>
+            <p>아직 등록된 트랙이 없어요</p>
+            <p>위 버튼으로 새 트랙을 만들어보세요</p>
           </div>
         `;
         return;
@@ -554,22 +625,30 @@
         });
         const canEdit = isAdmin || (currentProfile.school_id === item.school_id);
         
-        // 편성표 변경 감지: 트랙 생성/수정 시점 이후에 편성표가 수정됐는지
+        // 편성표 변경 감지
         let curriculumInfo = '';
         let warningInfo = '';
         if (item.curriculums) {
-          curriculumInfo = `<span>📋 ${item.curriculums.title}</span>`;
-          // 편성표가 트랙 마지막 수정보다 나중에 변경됐으면 경고
+          curriculumInfo = `<span class="meta-chip curriculum">📋 ${item.curriculums.title}</span>`;
           if (new Date(item.curriculums.updated_at) > new Date(item.updated_at)) {
-            warningInfo = `<span class="meta-warn">⚠ 편성표가 변경되었습니다. 트랙 점검을 권장합니다.</span>`;
+            warningInfo = `<span class="meta-warn">⚠ 편성표가 변경되었습니다. 점검을 권장합니다.</span>`;
           }
         } else if (item.curriculum_id) {
-          warningInfo = `<span class="meta-warn">⚠ 연결된 편성표가 삭제되었습니다.</span>`;
+          warningInfo = `<span class="meta-danger">⚠ 연결된 편성표가 삭제되었습니다.</span>`;
         }
         
-        // 추천 과목 수 계산
+        // 추천 과목 수 계산 (구/신 형식 모두 호환)
         const subjects = item.recommended_subjects || {};
-        const totalSubjects = Object.values(subjects).reduce((sum, arr) => sum + (Array.isArray(arr) ? arr.length : 0), 0);
+        let totalCore = 0, totalRecommend = 0;
+        for (const semData of Object.values(subjects)) {
+          if (Array.isArray(semData)) {
+            totalRecommend += semData.length;
+          } else if (semData && typeof semData === 'object') {
+            totalCore += (semData.core || []).length;
+            totalRecommend += (semData.recommend || []).length;
+          }
+        }
+        const totalSubjects = totalCore + totalRecommend;
         
         return `
           <div class="track-item">
@@ -581,7 +660,7 @@
               ${item.description ? `<div class="track-desc">${item.description}</div>` : ''}
               <div class="track-meta">
                 ${curriculumInfo}
-                <span>추천 과목 ${totalSubjects}개</span>
+                <span class="meta-chip subjects">⭐ 핵심 ${totalCore} · ✓ 권장 ${totalRecommend}</span>
                 <span>최종 수정 ${updatedDate}</span>
                 ${warningInfo}
               </div>
