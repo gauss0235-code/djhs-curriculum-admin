@@ -195,7 +195,7 @@
     }
     
     .legend-bar {
-      background: var(--surface);
+      background: white;
       border-radius: 14px;
       padding: 14px 22px;
       margin-bottom: 16px;
@@ -205,18 +205,23 @@
       flex-wrap: wrap;
       box-shadow: var(--shadow-soft);
     }
-    .legend-bar .legend-title { font-size: 13px; font-weight: 700; color: var(--text); }
+    .legend-bar .legend-title { 
+      font-family: 'JalnanGothic', 'Pretendard', sans-serif;
+      font-size: 14px; 
+      color: #4A8AB8;
+    }
     .legend-item {
       display: inline-flex;
       align-items: center;
       gap: 6px;
       font-size: 13px;
-      color: var(--text-muted);
+      font-weight: 600;
+      color: var(--text);
     }
-    .legend-dot { width: 14px; height: 14px; border-radius: 4px; flex-shrink: 0; }
-    .legend-dot.fixed { background: var(--fixed); }
-    .legend-dot.core { background: var(--core); }
-    .legend-dot.recommend { background: var(--recommend); }
+    .legend-dot { width: 16px; height: 16px; border-radius: 5px; flex-shrink: 0; }
+    .legend-dot.fixed { background: #FFF8E7; border: 2px solid #F59E0B; }
+    .legend-dot.core { background: #FFFBEB; border: 2px solid #F59E0B; }
+    .legend-dot.recommend { background: #EFF6FF; border: 2px solid #3B82F6; }
     
     .track-table-wrap {
       background: var(--surface);
@@ -229,7 +234,7 @@
       border-collapse: separate;
       border-spacing: 0;
       width: 100%;
-      min-width: 1200px;
+      min-width: 1280px;
       font-size: 13px;
     }
     .track-table th, .track-table td {
@@ -242,11 +247,24 @@
       background: var(--primary-soft);
       color: var(--primary-dark);
       font-weight: 700;
-      font-size: 13px;
+      font-size: 14px;
       padding: 12px;
+      font-family: 'JalnanGothic', 'Pretendard', sans-serif;
     }
-    .track-table thead th.grade-header { background: var(--primary); color: white; }
-    .track-table thead th.subject-col { background: white; width: 110px; min-width: 110px; }
+    .track-table thead th.grade-header { 
+      background: var(--primary); 
+      color: white; 
+      font-family: 'JalnanGothic', 'Pretendard', sans-serif;
+      font-size: 15px;
+    }
+    .track-table thead th.subject-col { 
+      background: white; 
+      width: 140px; 
+      min-width: 140px;
+      text-align: center;
+      vertical-align: middle;
+      color: var(--text);
+    }
     
     .area-cell {
       background: var(--bg-sky);
@@ -254,10 +272,17 @@
       color: var(--primary-dark);
       text-align: center;
       vertical-align: middle;
-      width: 110px;
-      min-width: 110px;
+      width: 140px;
+      min-width: 140px;
+      padding: 12px 8px;
     }
-    .area-cell .area-name { font-size: 14px; margin-bottom: 4px; }
+    .area-cell .area-name { 
+      font-family: 'JalnanGothic', 'Pretendard', sans-serif;
+      font-size: 14px; 
+      margin-bottom: 4px;
+      word-break: keep-all;
+      line-height: 1.4;
+    }
     
     .subject-cell {
       text-align: left;
@@ -280,20 +305,20 @@
       line-height: 1.3;
     }
     .subject-pill.fixed {
-      background: var(--fixed-soft);
-      color: var(--fixed-dark);
-      border-left: 3px solid var(--fixed);
+      background: #FFF8E7;
+      color: #B45309;
+      border-left: 3px solid #F59E0B;
     }
     .subject-pill.core {
-      background: var(--core-soft);
-      color: var(--core-dark);
-      border-left: 3px solid var(--core);
+      background: #FFFBEB;
+      color: #9A3412;
+      border-left: 3px solid #F59E0B;
       font-weight: 700;
     }
     .subject-pill.recommend {
-      background: var(--recommend-soft);
-      color: var(--recommend-dark);
-      border-left: 3px solid var(--recommend);
+      background: #EFF6FF;
+      color: #1D4ED8;
+      border-left: 3px solid #3B82F6;
     }
     .subject-pill .star { font-size: 11px; }
     .subject-pill .credit { font-size: 11px; color: var(--text-muted); font-weight: 400; }
@@ -783,10 +808,10 @@
         </div>
         ${track.description ? `<div class="description-box">${escapeHtml(track.description)}</div>` : ''}
         <div class="legend-bar">
-          <span class="legend-title">표시 안내:</span>
-          <span class="legend-item"><span class="legend-dot fixed"></span> 학교지정 (필수)</span>
-          <span class="legend-item"><span class="legend-dot core"></span> ⭐ 핵심 추천</span>
-          <span class="legend-item"><span class="legend-dot recommend"></span> ✓ 권장</span>
+          <span class="legend-title">📌 표시 안내</span>
+          <span class="legend-item"><span class="legend-dot fixed"></span>학교지정 (필수)</span>
+          <span class="legend-item"><span class="legend-dot core"></span>⭐ 핵심 권장</span>
+          <span class="legend-item"><span class="legend-dot recommend"></span>✓ 권장</span>
         </div>
         <div class="track-table-wrap" id="trackTableForPdf">
           ${tableHtml}
@@ -802,7 +827,7 @@
         if (!semData) return '<td class="subject-cell"><span class="empty-cell">-</span></td>';
         
         const fixedPills = semData.fixed.map(s => `
-          <span class="subject-pill fixed">${escapeHtml(s.name)}<span class="credit">(${s.credit})</span></span>
+          <span class="subject-pill fixed">${escapeHtml(s.name)}<span class="credit">(${s.credit}학점)</span></span>
         `).join('');
         
         const semSelections = selections[sem.key] || {};
@@ -810,21 +835,16 @@
           const items = group.subjects.map(s => {
             const lv = semSelections[s.name];
             if (lv === 'core') {
-              return `<span class="subject-pill core"><span class="star">⭐</span>${escapeHtml(s.name)}<span class="credit">(${s.credit})</span></span>`;
+              return `<span class="subject-pill core"><span class="star">⭐</span>${escapeHtml(s.name)}<span class="credit">(${s.credit}학점)</span></span>`;
             } else if (lv === 'recommend') {
-              return `<span class="subject-pill recommend">${escapeHtml(s.name)}<span class="credit">(${s.credit})</span></span>`;
+              return `<span class="subject-pill recommend">${escapeHtml(s.name)}<span class="credit">(${s.credit}학점)</span></span>`;
             }
             return null;
           }).filter(Boolean).join('');
           
           if (!items) return '';
           
-          const takeText = group.takeMin && group.takeMax 
-            ? `중 택${group.takeMin}~${group.takeMax}`
-            : group.takeN ? `중 택${group.takeN}` : '';
-          const groupLabel = takeText ? `<div class="group-label">${takeText}</div>` : '';
-          
-          return items + groupLabel;
+          return items;
         }).filter(Boolean).join('');
         
         const inner = fixedPills + groupBlocks;

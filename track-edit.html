@@ -713,7 +713,7 @@
     <!-- 하단 액션 바 -->
     <div id="actionBar" class="action-bar" style="display:none">
       <div class="action-stats">
-        <span class="stat-item core">⭐ 핵심 <strong id="coreCount">0</strong></span>
+        <span class="stat-item core">⭐ 핵심 권장 <strong id="coreCount">0</strong></span>
         <span class="stat-item recommend">✓ 권장 <strong id="recommendCount">0</strong></span>
         <span class="stat-item total">총 학점 <strong id="totalCredit">0</strong></span>
       </div>
@@ -1075,7 +1075,7 @@
         <div class="legend-bar">
           <span class="legend-title">📌 표시 안내</span>
           <span class="legend-item"><span class="legend-dot fixed"></span>학교지정 (자동 필수)</span>
-          <span class="legend-item"><span class="legend-dot core"></span>⭐ 핵심</span>
+          <span class="legend-item"><span class="legend-dot core"></span>⭐ 핵심 권장</span>
           <span class="legend-item"><span class="legend-dot recommend"></span>✓ 권장</span>
         </div>
       `;
@@ -1156,7 +1156,7 @@
                 <button type="button" class="level-btn active none" data-level="none"
                   onclick="setLevel('${sem.key}', '${escapeJsStr(s.name)}', null, this)">안 함</button>
                 <button type="button" class="level-btn core" data-level="core"
-                  onclick="setLevel('${sem.key}', '${escapeJsStr(s.name)}', 'core', this)">⭐ 핵심</button>
+                  onclick="setLevel('${sem.key}', '${escapeJsStr(s.name)}', 'core', this)">⭐ 핵심 권장</button>
                 <button type="button" class="level-btn recommend" data-level="recommend"
                   onclick="setLevel('${sem.key}', '${escapeJsStr(s.name)}', 'recommend', this)">✓ 권장</button>
               </div>
