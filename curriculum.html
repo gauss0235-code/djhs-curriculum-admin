@@ -586,6 +586,7 @@
     let currentUser = null;
     let currentProfile = null;
     let isAdmin = false;
+    let isSupport = false;
     let editingId = null;
     
     const TYPE_LABELS = {
@@ -624,17 +625,28 @@
       
       currentProfile = profile;
       isAdmin = profile.role === 'admin';
+      isSupport = profile.role === 'support';
       
       const userInfoEl = document.getElementById('userInfo');
       if (isAdmin) {
         userInfoEl.innerHTML = `
-          <span class="badge badge-admin">관리자</span>
+          <span class="badge badge-admin">교육과정지원단 관리자</span>
           <span class="user-name">${profile.display_name}</span>
           <button class="logout-btn" onclick="handleLogout()">로그아웃</button>
         `;
         document.getElementById('addBtn').classList.remove('hidden');
         document.getElementById('schoolFilter').classList.remove('hidden');
         document.getElementById('pageDesc').textContent = '학교를 선택해서 등록된 시트를 관리하세요.';
+        await loadSchools();
+      } else if (isSupport) {
+        userInfoEl.innerHTML = `
+          <span class="badge badge-admin">교육과정지원단</span>
+          <span class="user-name">${profile.display_name}</span>
+          <button class="logout-btn" onclick="handleLogout()">로그아웃</button>
+        `;
+        // 지원단은 조회만 가능: 새 시트 등록 버튼 숨김, 학교 선택은 표시
+        document.getElementById('schoolFilter').classList.remove('hidden');
+        document.getElementById('pageDesc').textContent = '학교를 선택해서 등록된 시트를 조회하세요.';
         await loadSchools();
       } else {
         userInfoEl.innerHTML = `
@@ -667,7 +679,7 @@
       const listEl = document.getElementById('sheetList');
       
       let schoolId;
-      if (isAdmin) {
+      if (isAdmin || isSupport) {
         schoolId = document.getElementById('schoolSelect').value;
         if (!schoolId) {
           listEl.innerHTML = `

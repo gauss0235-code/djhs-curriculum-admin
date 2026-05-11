@@ -740,6 +740,7 @@
     let currentUser = null;
     let currentProfile = null;
     let isAdmin = false;
+    let isSupport = false;
     let editingId = null;
     let currentSchoolId = null;
     let currentCurriculumData = null;
@@ -795,11 +796,19 @@
         .single();
       currentProfile = profile;
       isAdmin = profile.role === 'admin';
+      isSupport = profile.role === 'support';
+      
+      // 지원단은 트랙 작성/수정 불가 - 차단 후 목록으로 리다이렉트
+      if (isSupport) {
+        alert('교육과정지원단은 트랙을 작성·수정할 수 없습니다.\n조회 전용 권한입니다.');
+        window.location.href = 'track.html';
+        return;
+      }
       
       const userInfoEl = document.getElementById('userInfo');
       if (isAdmin) {
         userInfoEl.innerHTML = `
-          <span class="badge badge-admin">관리자</span>
+          <span class="badge badge-admin">교육과정지원단 관리자</span>
           <span class="user-name">${profile.display_name}</span>
           <button class="logout-btn" onclick="handleLogout()">로그아웃</button>
         `;

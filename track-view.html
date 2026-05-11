@@ -525,6 +525,7 @@
     let currentUser = null;
     let currentProfile = null;
     let isAdmin = false;
+    let isSupport = false;
     let currentTrack = null;
     
     const CATEGORY_LABELS = {
@@ -594,11 +595,18 @@
         .single();
       currentProfile = profile;
       isAdmin = profile.role === 'admin';
+      isSupport = profile.role === 'support';
       
       const userInfoEl = document.getElementById('userInfo');
       if (isAdmin) {
         userInfoEl.innerHTML = `
-          <span class="badge badge-admin">관리자</span>
+          <span class="badge badge-admin">교육과정지원단 관리자</span>
+          <span class="user-name">${profile.display_name}</span>
+          <button class="logout-btn" onclick="handleLogout()">로그아웃</button>
+        `;
+      } else if (isSupport) {
+        userInfoEl.innerHTML = `
+          <span class="badge badge-admin">교육과정지원단</span>
           <span class="user-name">${profile.display_name}</span>
           <button class="logout-btn" onclick="handleLogout()">로그아웃</button>
         `;
