@@ -129,8 +129,11 @@
     }
     .cat-social_science { background: #e3f0fa; color: #2d5a8a; }
     .cat-business { background: #fef0e3; color: #a8612a; }
+    .cat-humanities { background: #EDE9FE; color: #6D28D9; }
     .cat-engineering { background: #eef7e3; color: #4d7c0f; }
     .cat-medical { background: #fdeaea; color: #c44545; }
+    .cat-arts_sports { background: #FCE7F3; color: #BE185D; }
+    .cat-custom { background: #E0E7FF; color: #4338CA; }
     .cat-other { background: #f1f5f9; color: #475569; }
     
     .top-actions {
@@ -258,12 +261,12 @@
       font-size: 15px;
     }
     .track-table thead th.subject-col { 
-      background: white; 
+      background: var(--primary); 
       width: 140px; 
       min-width: 140px;
       text-align: center;
       vertical-align: middle;
-      color: var(--text);
+      color: white;
     }
     
     .area-cell {
@@ -522,12 +525,26 @@
     let currentTrack = null;
     
     const CATEGORY_LABELS = {
-      social_science: '사회과학계열',
       business: '경영경제계열',
+      social_science: '사회과학계열',
+      humanities: '인문학계열',
       engineering: '자연공학계열',
       medical: '의료생명계열',
+      arts_sports: '예체능계열',
       other: '기타'
     };
+    
+    // 카테고리 라벨/클래스 가져오기 (custom:XXX 형식 처리)
+    function getCategoryLabel(cat) {
+      if (!cat) return '미지정';
+      if (cat.startsWith('custom:')) return cat.substring(7);
+      return CATEGORY_LABELS[cat] || cat;
+    }
+    function getCategoryClass(cat) {
+      if (!cat) return 'cat-other';
+      if (cat.startsWith('custom:')) return 'cat-custom';
+      return `cat-${cat}`;
+    }
     const SEMESTERS = [
       { key: '1-1', label: '1학기', grade: 1 },
       { key: '1-2', label: '2학기', grade: 1 },
@@ -804,7 +821,7 @@
           <div>
             <h2>${escapeHtml(track.title)}</h2>
             <div class="meta">
-              <span class="category-tag cat-${track.track_category}">${CATEGORY_LABELS[track.track_category]}</span>
+              <span class="category-tag ${getCategoryClass(track.track_category)}">${getCategoryLabel(track.track_category)}</span>
               <span>📋 ${escapeHtml(track.schools.name)}</span>
               <span>📄 ${escapeHtml(track.curriculums.title)}</span>
             </div>
