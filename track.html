@@ -30,6 +30,8 @@
       --admin-soft: #fde7ed;
       --danger: #e57373;
       --danger-soft: #fdeaea;
+      --warning: #f4a261;
+      --warning-soft: #fef0e3;
       --cat-social: #5a9fd4;
       --cat-social-soft: #e3f0fa;
       --cat-business: #f4a261;
@@ -77,32 +79,13 @@
       text-decoration: none;
       color: inherit;
     }
-    .brand-mark {
-      width: 42px;
-      height: 42px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      overflow: hidden;
-    }
-    .brand-mark img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-    }
-    .brand-text {
-      display: flex;
-      flex-direction: column;
-      line-height: 1.2;
-    }
+    .brand-mark { width: 42px; height: 42px; }
+    .brand-mark img { width: 100%; height: 100%; object-fit: contain; }
     .brand-name {
       font-family: 'JalnanGothic', 'Pretendard', sans-serif;
       font-size: 17px;
-      font-weight: normal;
       color: var(--primary-dark);
       letter-spacing: -0.01em;
-      line-height: 1.3;
     }
     .user-info {
       display: flex;
@@ -116,14 +99,8 @@
       font-size: 13px;
       font-weight: 600;
     }
-    .badge-school {
-      background: var(--primary-soft);
-      color: var(--primary-dark);
-    }
-    .badge-admin {
-      background: var(--admin-soft);
-      color: var(--admin);
-    }
+    .badge-school { background: var(--primary-soft); color: var(--primary-dark); }
+    .badge-admin { background: var(--admin-soft); color: var(--admin); }
     .user-name { font-weight: 500; }
     .logout-btn {
       background: white;
@@ -157,7 +134,6 @@
     .page-header h2 {
       font-family: 'JalnanGothic', 'Pretendard', sans-serif;
       font-size: 32px;
-      font-weight: normal;
       color: var(--primary-dark);
       letter-spacing: -0.02em;
       margin-bottom: 10px;
@@ -186,23 +162,10 @@
       transition: all 0.15s ease;
       white-space: nowrap;
       box-shadow: 0 2px 8px rgba(74, 144, 217, 0.25);
+      text-decoration: none;
+      display: inline-block;
     }
     .btn-primary:hover { background: var(--primary-hover); }
-    .btn-secondary {
-      background: var(--surface);
-      border: 1.5px solid var(--border);
-      padding: 10px 18px;
-      border-radius: 10px;
-      cursor: pointer;
-      font-size: 14px;
-      font-family: inherit;
-      color: var(--text);
-      transition: all 0.15s ease;
-    }
-    .btn-secondary:hover {
-      border-color: var(--border-strong);
-      background: var(--bg-sky);
-    }
     .back-btn {
       display: inline-flex;
       align-items: center;
@@ -276,10 +239,7 @@
       align-items: center;
       justify-content: center;
     }
-    .empty-state .icon svg {
-      width: 32px;
-      height: 32px;
-    }
+    .empty-state .icon svg { width: 32px; height: 32px; }
     .empty-state p {
       font-size: 16px;
       margin-bottom: 6px;
@@ -325,7 +285,6 @@
       font-size: 17px;
       font-weight: 700;
       color: var(--text);
-      letter-spacing: -0.01em;
     }
     .category-tag {
       display: inline-flex;
@@ -335,26 +294,11 @@
       font-size: 12px;
       font-weight: 600;
     }
-    .category-social_science {
-      background: var(--cat-social-soft);
-      color: var(--cat-social);
-    }
-    .category-business {
-      background: var(--cat-business-soft);
-      color: var(--cat-business);
-    }
-    .category-engineering {
-      background: var(--cat-engineering-soft);
-      color: var(--cat-engineering);
-    }
-    .category-medical {
-      background: var(--cat-medical-soft);
-      color: var(--cat-medical);
-    }
-    .category-other {
-      background: var(--cat-other-soft);
-      color: var(--cat-other);
-    }
+    .category-social_science { background: var(--cat-social-soft); color: var(--cat-social); }
+    .category-business { background: var(--cat-business-soft); color: var(--cat-business); }
+    .category-engineering { background: var(--cat-engineering-soft); color: var(--cat-engineering); }
+    .category-medical { background: var(--cat-medical-soft); color: var(--cat-medical); }
+    .category-other { background: var(--cat-other-soft); color: var(--cat-other); }
     .track-desc {
       font-size: 14px;
       color: var(--text-muted);
@@ -364,6 +308,13 @@
     .track-meta {
       font-size: 13px;
       color: var(--text-light);
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .track-meta .meta-warn {
+      color: var(--warning);
+      font-weight: 600;
     }
     .track-actions {
       display: flex;
@@ -398,6 +349,8 @@
       color: var(--text-muted);
       font-family: inherit;
       transition: all 0.15s ease;
+      text-decoration: none;
+      display: inline-block;
     }
     .icon-btn:hover {
       border-color: var(--border-strong);
@@ -408,83 +361,6 @@
       color: var(--danger);
       background: var(--danger-soft);
     }
-    .modal-bg {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(30, 58, 95, 0.5);
-      backdrop-filter: blur(4px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 100;
-      padding: 16px;
-    }
-    .modal-bg.hidden { display: none; }
-    .modal {
-      background: var(--surface);
-      padding: 36px;
-      border-radius: 24px;
-      width: 100%;
-      max-width: 560px;
-      max-height: 90vh;
-      overflow-y: auto;
-      box-shadow: 0 20px 60px rgba(30, 58, 95, 0.3);
-    }
-    .modal h3 {
-      font-family: 'JalnanGothic', 'Pretendard', sans-serif;
-      font-size: 22px;
-      font-weight: normal;
-      color: var(--primary-dark);
-      margin-bottom: 24px;
-      letter-spacing: -0.01em;
-    }
-    .field { margin-bottom: 18px; }
-    .field label {
-      display: block;
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 8px;
-    }
-    .field input,
-    .field select,
-    .field textarea {
-      width: 100%;
-      padding: 12px 16px;
-      border: 1.5px solid var(--border);
-      border-radius: 10px;
-      font-size: 15px;
-      font-family: inherit;
-      color: var(--text);
-      background: #f8fbfd;
-      transition: all 0.15s ease;
-    }
-    .field input:focus,
-    .field select:focus,
-    .field textarea:focus {
-      outline: none;
-      border-color: var(--primary);
-      background: white;
-      box-shadow: 0 0 0 3px var(--primary-soft);
-    }
-    .field textarea {
-      min-height: 90px;
-      resize: vertical;
-      line-height: 1.5;
-    }
-    .field-hint {
-      font-size: 12px;
-      color: var(--text-light);
-      margin-top: 6px;
-      line-height: 1.5;
-    }
-    .form-actions {
-      display: flex;
-      gap: 8px;
-      justify-content: flex-end;
-      margin-top: 24px;
-    }
-    .hidden { display: none !important; }
     footer {
       max-width: 1200px;
       margin: 40px auto 0;
@@ -498,10 +374,6 @@
       .header-inner { padding: 14px 18px; }
       main { padding: 32px 18px 60px; }
       .page-header h2 { font-size: 24px; }
-      .page-header .desc { font-size: 14px; }
-      .user-info { font-size: 13px; gap: 10px; }
-      .brand-name { font-size: 14px; }
-      .brand-mark { width: 36px; height: 36px; }
       .track-item { flex-direction: column; align-items: stretch; padding: 20px 22px; }
       .track-actions { justify-content: flex-end; }
     }
@@ -512,9 +384,7 @@
     <div class="header-inner">
       <a class="brand" href="dashboard.html">
         <div class="brand-mark"><img src="images/logo.png" alt="대전광역시교육청"></div>
-        <div class="brand-text">
-          <span class="brand-name">대전광역시 고등학교 교육과정 업무담당자 워크스페이스</span>
-        </div>
+        <span class="brand-name">대전광역시 고등학교 교육과정 업무담당자 워크스페이스</span>
       </a>
       <div class="user-info" id="userInfo"></div>
     </div>
@@ -524,15 +394,15 @@
     <div class="page-header">
       <div>
         <h2>과목 선택 트랙 작성</h2>
-        <div class="desc" id="pageDesc">과목 선택 트랙을 확인하세요.</div>
+        <div class="desc" id="pageDesc">계열별 추천 과목 트랙을 확인하세요.</div>
       </div>
       <div class="page-header-actions">
-        <button id="addBtn" class="btn-primary hidden" onclick="showAddForm()">+ 새 트랙 등록</button>
+        <a id="addBtn" class="btn-primary" href="track-edit.html" style="display:none">+ 새 트랙 만들기</a>
         <a class="back-btn" href="dashboard.html">← 대시보드로</a>
       </div>
     </div>
     
-    <div id="schoolFilter" class="filter-bar hidden">
+    <div id="schoolFilter" class="filter-bar" style="display:none">
       <label>학교 선택</label>
       <select id="schoolSelect" onchange="loadTracks()">
         <option value="">학교를 선택하세요</option>
@@ -552,43 +422,6 @@
   <footer>
     Copyright © 대전광역시교육청 고등학교 교육과정지원단. All rights reserved.
   </footer>
-  
-  <div id="modal" class="modal-bg hidden">
-    <div class="modal">
-      <h3 id="modalTitle">새 트랙 등록</h3>
-      <div class="field" id="schoolField">
-        <label>학교 *</label>
-        <select id="formSchool"></select>
-      </div>
-      <div class="field">
-        <label>계열 *</label>
-        <select id="formCategory" onchange="updateTitlePlaceholder()">
-          <option value="social_science">사회과학계열</option>
-          <option value="business">경영·경제계열</option>
-          <option value="engineering">자연공학계열</option>
-          <option value="medical">의료생명계열</option>
-          <option value="other">기타</option>
-        </select>
-      </div>
-      <div class="field">
-        <label>제목 *</label>
-        <input type="text" id="formTitle" placeholder="예: 2025학년도 입학생 사회과학계열 과목 선택 트랙">
-      </div>
-      <div class="field">
-        <label>파일 URL *</label>
-        <input type="url" id="formUrl" placeholder="https://docs.google.com/... 또는 https://drive.google.com/...">
-        <div class="field-hint">구글 드라이브, 구글 스프레드시트, PDF 등의 공유 링크를 입력하세요. 공유 권한이 '링크가 있는 모든 사람'으로 설정되어 있어야 합니다.</div>
-      </div>
-      <div class="field">
-        <label>설명</label>
-        <textarea id="formDesc" placeholder="이 트랙에 대한 설명이나 진로 안내 등을 입력하세요"></textarea>
-      </div>
-      <div class="form-actions">
-        <button class="btn-secondary" onclick="hideModal()">취소</button>
-        <button class="btn-primary" onclick="saveTrack()">저장</button>
-      </div>
-    </div>
-  </div>
 
   <script type="module">
     import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
@@ -601,7 +434,6 @@
     let currentUser = null;
     let currentProfile = null;
     let isAdmin = false;
-    let editingId = null;
     
     const CATEGORY_LABELS = {
       social_science: '사회과학계열',
@@ -610,30 +442,15 @@
       medical: '의료생명계열',
       other: '기타'
     };
-    
     const CATEGORY_ORDER = ['social_science', 'business', 'engineering', 'medical', 'other'];
-    
-    const EMPTY_ICONS = {
-      school: `<svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5z"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/></svg>`,
-      empty: `<svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>`
-    };
-    
-    window.updateTitlePlaceholder = function() {
-      const cat = document.getElementById('formCategory').value;
-      const label = CATEGORY_LABELS[cat];
-      const year = new Date().getFullYear() + 1;
-      document.getElementById('formTitle').placeholder = `예: ${year}학년도 입학생 ${label} 과목 선택 트랙`;
-    };
     
     async function init() {
       const { data: { user } } = await supabase.auth.getUser();
-      
       if (!user) {
         alert('로그인이 필요합니다.');
         window.location.href = 'login.html';
         return;
       }
-      
       currentUser = user;
       
       const { data: profile } = await supabase
@@ -641,7 +458,6 @@
         .select('display_name, role, school_id, schools(name, code)')
         .eq('id', user.id)
         .single();
-      
       currentProfile = profile;
       isAdmin = profile.role === 'admin';
       
@@ -652,8 +468,8 @@
           <span class="user-name">${profile.display_name}</span>
           <button class="logout-btn" onclick="handleLogout()">로그아웃</button>
         `;
-        document.getElementById('addBtn').classList.remove('hidden');
-        document.getElementById('schoolFilter').classList.remove('hidden');
+        document.getElementById('addBtn').style.display = 'inline-block';
+        document.getElementById('schoolFilter').style.display = 'flex';
         document.getElementById('pageDesc').textContent = '학교를 선택해서 등록된 트랙을 관리하세요.';
         await loadSchools();
       } else {
@@ -662,9 +478,8 @@
           <span class="user-name">${profile.display_name}</span>
           <button class="logout-btn" onclick="handleLogout()">로그아웃</button>
         `;
-        document.getElementById('addBtn').classList.remove('hidden');
-        document.getElementById('schoolField').classList.add('hidden');
-        document.getElementById('pageDesc').textContent = `${profile.schools.name}의 과목 선택 트랙입니다. 클릭하면 새 탭에서 열립니다.`;
+        document.getElementById('addBtn').style.display = 'inline-block';
+        document.getElementById('pageDesc').textContent = `${profile.schools.name}의 과목 선택 트랙입니다.`;
         loadTracks();
       }
     }
@@ -674,24 +489,10 @@
         .from('schools')
         .select('id, name, code')
         .order('name');
-      
       if (error) { console.error(error); return; }
-      
       const select = document.getElementById('schoolSelect');
       select.innerHTML = '<option value="">학교를 선택하세요</option>' + 
         data.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
-      
-      const formSelect = document.getElementById('formSchool');
-      formSelect.innerHTML = data.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
-    }
-    
-    function sortByCategoryThenDate(arr) {
-      return arr.sort((a, b) => {
-        const ai = CATEGORY_ORDER.indexOf(a.track_category);
-        const bi = CATEGORY_ORDER.indexOf(b.track_category);
-        if (ai !== bi) return ai - bi;
-        return new Date(a.created_at) - new Date(b.created_at);
-      });
     }
     
     window.loadTracks = async function() {
@@ -703,7 +504,9 @@
         if (!schoolId) {
           listEl.innerHTML = `
             <div class="empty-state">
-              <div class="icon">${EMPTY_ICONS.school}</div>
+              <div class="icon">
+                <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5z"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/></svg>
+              </div>
               <p>위에서 학교를 선택하세요</p>
               <p>선택한 학교의 트랙이 표시됩니다.</p>
             </div>
@@ -716,7 +519,7 @@
       
       const { data, error } = await supabase
         .from('tracks')
-        .select('*')
+        .select('*, curriculums(title, sheet_type, updated_at)')
         .eq('school_id', schoolId);
       
       if (error) {
@@ -727,21 +530,47 @@
       if (!data || data.length === 0) {
         listEl.innerHTML = `
           <div class="empty-state">
-            <div class="icon">${EMPTY_ICONS.empty}</div>
+            <div class="icon">
+              <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/></svg>
+            </div>
             <p>아직 등록된 트랙이 없습니다</p>
-            <p>위 버튼으로 새 트랙을 등록해주세요.</p>
+            <p>위 버튼으로 새 트랙을 만들어보세요.</p>
           </div>
         `;
         return;
       }
       
-      const sorted = sortByCategoryThenDate(data);
+      // 정렬: 계열별 → 등록일순
+      data.sort((a, b) => {
+        const ai = CATEGORY_ORDER.indexOf(a.track_category);
+        const bi = CATEGORY_ORDER.indexOf(b.track_category);
+        if (ai !== bi) return ai - bi;
+        return new Date(a.created_at) - new Date(b.created_at);
+      });
       
-      listEl.innerHTML = `<div class="track-list">` + sorted.map(item => {
+      listEl.innerHTML = `<div class="track-list">` + data.map(item => {
         const updatedDate = new Date(item.updated_at).toLocaleDateString('ko-KR', {
           year: 'numeric', month: 'long', day: 'numeric'
         });
         const canEdit = isAdmin || (currentProfile.school_id === item.school_id);
+        
+        // 편성표 변경 감지: 트랙 생성/수정 시점 이후에 편성표가 수정됐는지
+        let curriculumInfo = '';
+        let warningInfo = '';
+        if (item.curriculums) {
+          curriculumInfo = `<span>📋 ${item.curriculums.title}</span>`;
+          // 편성표가 트랙 마지막 수정보다 나중에 변경됐으면 경고
+          if (new Date(item.curriculums.updated_at) > new Date(item.updated_at)) {
+            warningInfo = `<span class="meta-warn">⚠ 편성표가 변경되었습니다. 트랙 점검을 권장합니다.</span>`;
+          }
+        } else if (item.curriculum_id) {
+          warningInfo = `<span class="meta-warn">⚠ 연결된 편성표가 삭제되었습니다.</span>`;
+        }
+        
+        // 추천 과목 수 계산
+        const subjects = item.recommended_subjects || {};
+        const totalSubjects = Object.values(subjects).reduce((sum, arr) => sum + (Array.isArray(arr) ? arr.length : 0), 0);
+        
         return `
           <div class="track-item">
             <div class="track-info">
@@ -750,95 +579,29 @@
                 <span class="category-tag category-${item.track_category}">${CATEGORY_LABELS[item.track_category]}</span>
               </div>
               ${item.description ? `<div class="track-desc">${item.description}</div>` : ''}
-              <div class="track-meta">최종 수정 ${updatedDate}</div>
+              <div class="track-meta">
+                ${curriculumInfo}
+                <span>추천 과목 ${totalSubjects}개</span>
+                <span>최종 수정 ${updatedDate}</span>
+                ${warningInfo}
+              </div>
             </div>
             <div class="track-actions">
-              <a class="open-btn" href="${item.file_url}" target="_blank">열기 ↗</a>
               ${canEdit ? `
-                <button class="icon-btn" onclick="editTrack('${item.id}')">수정</button>
+                <a class="open-btn" href="track-edit.html?id=${item.id}">수정 →</a>
                 <button class="icon-btn danger" onclick="deleteTrack('${item.id}')">삭제</button>
-              ` : ''}
+              ` : `
+                <a class="open-btn" href="track-edit.html?id=${item.id}">보기 →</a>
+              `}
             </div>
           </div>
         `;
       }).join('') + `</div>`;
     };
     
-    window.showAddForm = function() {
-      editingId = null;
-      document.getElementById('modalTitle').textContent = '새 트랙 등록';
-      document.getElementById('formTitle').value = '';
-      document.getElementById('formCategory').value = 'social_science';
-      document.getElementById('formUrl').value = '';
-      document.getElementById('formDesc').value = '';
-      window.updateTitlePlaceholder();
-      
-      if (isAdmin) {
-        const selectedSchool = document.getElementById('schoolSelect').value;
-        if (selectedSchool) {
-          document.getElementById('formSchool').value = selectedSchool;
-        }
-      }
-      document.getElementById('modal').classList.remove('hidden');
-    };
-    
-    window.editTrack = async function(id) {
-      const { data } = await supabase
-        .from('tracks').select('*').eq('id', id).single();
-      if (!data) return;
-      
-      editingId = id;
-      document.getElementById('modalTitle').textContent = '트랙 수정';
-      if (isAdmin) {
-        document.getElementById('formSchool').value = data.school_id;
-      }
-      document.getElementById('formTitle').value = data.title;
-      document.getElementById('formCategory').value = data.track_category;
-      document.getElementById('formUrl').value = data.file_url;
-      document.getElementById('formDesc').value = data.description || '';
-      document.getElementById('modal').classList.remove('hidden');
-    };
-    
-    window.hideModal = function() {
-      document.getElementById('modal').classList.add('hidden');
-      editingId = null;
-    };
-    
-    window.saveTrack = async function() {
-      const school_id = isAdmin 
-        ? document.getElementById('formSchool').value 
-        : currentProfile.school_id;
-      const title = document.getElementById('formTitle').value.trim();
-      const track_category = document.getElementById('formCategory').value;
-      const file_url = document.getElementById('formUrl').value.trim();
-      const description = document.getElementById('formDesc').value.trim();
-      
-      if (!title || !file_url) {
-        alert('제목과 파일 URL은 필수입니다.');
-        return;
-      }
-      
-      if (editingId) {
-        const { error } = await supabase
-          .from('tracks')
-          .update({ school_id, title, track_category, file_url, description: description || null })
-          .eq('id', editingId);
-        if (error) { alert('수정 실패: ' + error.message); return; }
-      } else {
-        const { error } = await supabase
-          .from('tracks')
-          .insert({ school_id, title, track_category, file_url, description: description || null, created_by: currentUser.id });
-        if (error) { alert('등록 실패: ' + error.message); return; }
-      }
-      
-      hideModal();
-      loadTracks();
-    };
-    
     window.deleteTrack = async function(id) {
       const ok = confirm('정말 삭제하시겠습니까?');
       if (!ok) return;
-      
       const { error } = await supabase.from('tracks').delete().eq('id', id);
       if (error) { alert('삭제 실패: ' + error.message); return; }
       loadTracks();

@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="images/logo.png">
+  <title>트랙 작성 — 대전광역시 고등학교 교육과정 업무담당자 워크스페이스</title>
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <style>
+    @font-face {
+      font-family: 'JalnanGothic';
+      src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_231029@1.1/JalnanGothic.woff') format('woff');
+      font-weight: normal;
+      font-display: swap;
+    }
+    :root {
+      --bg-sky: #e8f4fc;
+      --bg-sky-deep: #d4ecf8;
+      --surface: #ffffff;
+      --border: #d8e8f3;
+      --border-strong: #b8d4e8;
+      --text: #1e3a5f;
+      --text-muted: #5d7894;
+      --text-light: #8ba8c2;
+      --primary: #4a90d9;
+      --primary-hover: #3a7ec0;
+      --primary-soft: #e3f0fa;
+      --primary-dark: #2d5a8a;
+      --admin: #ec6f8e;
+      --admin-soft: #fde7ed;
+      --danger: #e57373;
+      --danger-soft: #fdeaea;
+      --warning: #f4a261;
+      --warning-soft: #fef0e3;
+      --success: #66bb6a;
+      --success-soft: #e8f5e9;
+      --green: #7cb342;
+      --green-soft: #eef7e3;
+      --shadow-soft: 0 4px 20px rgba(74, 144, 217, 0.08);
+      --shadow-card: 0 8px 32px rgba(74, 144, 217, 0.12);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(180deg, var(--bg-sky) 0%, var(--bg-sky-deep) 100%);
+      color: var(--text);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+    header {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 16px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: inherit;
+    }
+    .brand-mark { width: 42px; height: 42px; }
+    .brand-mark img { width: 100%; height: 100%; object-fit: contain; }
+    .brand-name {
+      font-family: 'JalnanGothic', 'Pretendard', sans-serif;
+      font-size: 17px;
+      color: var(--primary-dark);
+      letter-spacing: -0.01em;
+    }
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 14px;
+    }
+    .badge {
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .badge-school { background: var(--primary-soft); color: var(--primary-dark); }
+    .badge-admin { background: var(--admin-soft); color: var(--admin); }
+    .user-name { font-weight: 500; }
+    .logout-btn {
+      background: white;
+      border: 1.5px solid var(--border);
+      padding: 8px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 13px;
+      color: var(--text-muted);
+      font-family: inherit;
+      transition: all 0.15s ease;
+    }
+    .logout-btn:hover {
+      background: var(--primary-soft);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 32px 32px 80px;
+    }
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 24px;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .page-header h2 {
+      font-family: 'JalnanGothic', 'Pretendard', sans-serif;
+      font-size: 28px;
+      color: var(--primary-dark);
+      letter-spacing: -0.02em;
+      line-height: 1.3;
+    }
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: white;
+      border: 1.5px solid var(--border);
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-size: 14px;
+      color: var(--text);
+      text-decoration: none;
+      transition: all 0.15s ease;
+    }
+    .back-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      background: var(--primary-soft);
+    }
+    
+    /* 폼 카드 */
+    .form-card {
+      background: var(--surface);
+      border-radius: 18px;
+      padding: 28px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-soft);
+    }
+    .form-card h3 {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 18px;
+      color: var(--text);
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+    .form-row.single { grid-template-columns: 1fr; }
+    @media (max-width: 700px) {
+      .form-row { grid-template-columns: 1fr; }
+    }
+    .field label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .field input,
+    .field select,
+    .field textarea {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: inherit;
+      color: var(--text);
+      background: #f8fbfd;
+      transition: all 0.15s ease;
+    }
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: white;
+      box-shadow: 0 0 0 3px var(--primary-soft);
+    }
+    .field textarea {
+      min-height: 70px;
+      resize: vertical;
+      line-height: 1.5;
+    }
+    
+    /* 편성표 정보 박스 */
+    .curriculum-info {
+      background: var(--primary-soft);
+      border-left: 4px solid var(--primary);
+      padding: 14px 18px;
+      border-radius: 10px;
+      margin-top: 12px;
+      font-size: 14px;
+      color: var(--primary-dark);
+      line-height: 1.6;
+      display: none;
+    }
+    .curriculum-info.show { display: block; }
+    .curriculum-info .school-type {
+      display: inline-block;
+      padding: 2px 10px;
+      background: white;
+      border-radius: 10px;
+      font-size: 12px;
+      margin-left: 6px;
+    }
+    
+    /* 학기별 과목 선택 영역 */
+    .semester-section {
+      background: var(--surface);
+      border-radius: 18px;
+      padding: 24px;
+      margin-bottom: 14px;
+      box-shadow: var(--shadow-soft);
+    }
+    .semester-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--border);
+    }
+    .semester-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--primary-dark);
+    }
+    .semester-stats {
+      font-size: 13px;
+      color: var(--text-muted);
+      display: flex;
+      gap: 12px;
+    }
+    .semester-stats .stat {
+      padding: 4px 10px;
+      background: var(--bg-sky);
+      border-radius: 8px;
+      font-weight: 500;
+    }
+    .semester-stats .stat strong {
+      color: var(--primary-dark);
+    }
+    
+    .area-group {
+      margin-bottom: 14px;
+    }
+    .area-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      padding-left: 4px;
+    }
+    
+    .subject-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      background: #f8fbfd;
+      border: 1.5px solid transparent;
+      border-radius: 10px;
+      margin-bottom: 6px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .subject-row:hover {
+      background: var(--primary-soft);
+      border-color: var(--border-strong);
+    }
+    .subject-row.checked {
+      background: var(--primary-soft);
+      border-color: var(--primary);
+    }
+    .subject-row.fixed {
+      background: var(--green-soft);
+      border-color: var(--green);
+      cursor: default;
+    }
+    .subject-row.fixed:hover { background: var(--green-soft); }
+    
+    .subject-checkbox {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+    .subject-name {
+      flex: 1;
+      font-size: 14px;
+      color: var(--text);
+      font-weight: 500;
+    }
+    .subject-credit {
+      font-size: 12px;
+      color: var(--text-muted);
+      padding: 2px 8px;
+      background: white;
+      border-radius: 6px;
+      font-weight: 600;
+    }
+    .subject-tag {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-weight: 600;
+    }
+    .tag-fixed { background: var(--green); color: white; }
+    .tag-choice { background: var(--warning); color: white; }
+    
+    .choice-group-header {
+      background: var(--warning-soft);
+      border-left: 4px solid var(--warning);
+      padding: 8px 14px;
+      border-radius: 8px;
+      margin: 12px 0 8px;
+      font-size: 13px;
+      color: var(--text);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .choice-group-header strong {
+      font-weight: 700;
+      color: #a8612a;
+    }
+    
+    /* 진로별 추천 영역 */
+    .career-recommend {
+      background: var(--surface);
+      border: 1.5px solid var(--primary);
+      border-radius: 14px;
+      padding: 16px 20px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .career-recommend .label {
+      font-size: 14px;
+      color: var(--text);
+      font-weight: 600;
+    }
+    .career-recommend .desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+    .career-btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 9px 18px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: inherit;
+      transition: all 0.15s ease;
+    }
+    .career-btn:hover { background: var(--primary-hover); }
+    .career-btn.secondary {
+      background: white;
+      color: var(--text);
+      border: 1.5px solid var(--border);
+    }
+    .career-btn.secondary:hover { background: var(--bg-sky); }
+    
+    /* 하단 액션 바 */
+    .action-bar {
+      position: sticky;
+      bottom: 20px;
+      background: var(--surface);
+      border-radius: 14px;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 -2px 20px rgba(74, 144, 217, 0.15);
+      flex-wrap: wrap;
+    }
+    .action-stats {
+      font-size: 14px;
+      color: var(--text);
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .action-stats span strong {
+      color: var(--primary-dark);
+      font-size: 16px;
+    }
+    .action-buttons {
+      display: flex;
+      gap: 8px;
+    }
+    .btn-save {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 11px 22px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: 600;
+      font-family: inherit;
+      transition: all 0.15s ease;
+    }
+    .btn-save:hover { background: var(--primary-hover); }
+    .btn-save:disabled {
+      background: var(--text-light);
+      cursor: not-allowed;
+    }
+    .btn-cancel {
+      background: white;
+      border: 1.5px solid var(--border);
+      padding: 11px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 14px;
+      color: var(--text);
+      font-family: inherit;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn-cancel:hover {
+      border-color: var(--text-muted);
+    }
+    
+    /* 로딩 / 빈 상태 */
+    .loading-state, .empty-state {
+      text-align: center;
+      padding: 80px 20px;
+      color: var(--text-muted);
+      background: var(--surface);
+      border-radius: 18px;
+      box-shadow: var(--shadow-soft);
+    }
+    .loading-state .spinner {
+      width: 40px;
+      height: 40px;
+      margin: 0 auto 16px;
+      border: 3px solid var(--border);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    
+    .alert {
+      padding: 14px 18px;
+      border-radius: 10px;
+      margin-bottom: 14px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    .alert.warning {
+      background: var(--warning-soft);
+      color: #a8612a;
+      border-left: 4px solid var(--warning);
+    }
+    .alert.danger {
+      background: var(--danger-soft);
+      color: #c44545;
+      border-left: 4px solid var(--danger);
+    }
+    
+    @media (max-width: 768px) {
+      main { padding: 24px 18px 80px; }
+      .page-header h2 { font-size: 22px; }
+      .action-bar { flex-direction: column; align-items: stretch; }
+      .action-stats { justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <a class="brand" href="dashboard.html">
+        <div class="brand-mark"><img src="images/logo.png" alt="대전광역시교육청"></div>
+        <span class="brand-name">대전광역시 고등학교 교육과정 업무담당자 워크스페이스</span>
+      </a>
+      <div class="user-info" id="userInfo"></div>
+    </div>
+  </header>
+  
+  <main>
+    <div class="page-header">
+      <div>
+        <h2 id="pageTitle">새 트랙 만들기</h2>
+      </div>
+      <a class="back-btn" href="track.html">← 트랙 목록으로</a>
+    </div>
+    
+    <!-- 1단계: 트랙 기본 정보 -->
+    <div class="form-card">
+      <h3>1. 트랙 기본 정보</h3>
+      <div class="form-row">
+        <div class="field" id="schoolField" style="display:none">
+          <label>학교 *</label>
+          <select id="formSchool" onchange="onSchoolChange()"></select>
+        </div>
+        <div class="field">
+          <label>계열 *</label>
+          <select id="formCategory">
+            <option value="social_science">사회과학계열</option>
+            <option value="business">경영·경제계열</option>
+            <option value="engineering">자연공학계열</option>
+            <option value="medical">의료생명계열</option>
+            <option value="other">기타</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row single">
+        <div class="field">
+          <label>트랙 제목 *</label>
+          <input type="text" id="formTitle" placeholder="예: 2027학년도 입학생 사회과학계열 과목 선택 트랙">
+        </div>
+      </div>
+      <div class="form-row single">
+        <div class="field">
+          <label>설명</label>
+          <textarea id="formDesc" placeholder="이 트랙에 대한 설명이나 진로 안내를 입력하세요"></textarea>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 2단계: 편성표 선택 -->
+    <div class="form-card">
+      <h3>2. 기반 편성표 선택</h3>
+      <div class="form-row single">
+        <div class="field">
+          <label>편성표 *</label>
+          <select id="formCurriculum" onchange="onCurriculumChange()">
+            <option value="">편성표를 선택하세요</option>
+          </select>
+        </div>
+      </div>
+      <div id="curriculumInfo" class="curriculum-info"></div>
+    </div>
+    
+    <!-- 3단계: 과목 선택 -->
+    <div id="subjectSelectionWrap"></div>
+    
+    <!-- 하단 액션 바 -->
+    <div id="actionBar" class="action-bar" style="display:none">
+      <div class="action-stats">
+        <span>선택 과목: <strong id="selectedCount">0개</strong></span>
+        <span>총 학점: <strong id="totalCredit">0</strong></span>
+      </div>
+      <div class="action-buttons">
+        <a class="btn-cancel" href="track.html">취소</a>
+        <button class="btn-save" id="saveBtn" onclick="saveTrack()">저장</button>
+      </div>
+    </div>
+  </main>
+
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+    
+    const SUPABASE_URL = 'https://nzsgvjdotnvqpzhehfsg.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_ALakaYU4jTYEIQas_nWrsQ_An3IK9_h';
+    const GOOGLE_API_KEY = 'AIzaSyBC95kjuGRE0cgsHHWWco0-MnBt9XiPfCY';
+    
+    const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+    
+    let currentUser = null;
+    let currentProfile = null;
+    let isAdmin = false;
+    let editingId = null;  // 수정 모드일 때 트랙 ID
+    let currentSchoolId = null;
+    let currentCurriculumData = null;
+    let selectedSubjects = {};  // {semKey: Set(subjectName)}
+    
+    const SEMESTERS = [
+      { key: '1-1', label: '1학년 1학기' },
+      { key: '1-2', label: '1학년 2학기' },
+      { key: '2-1', label: '2학년 1학기' },
+      { key: '2-2', label: '2학년 2학기' },
+      { key: '3-1', label: '3학년 1학기' },
+      { key: '3-2', label: '3학년 2학기' },
+    ];
+    
+    // ============================================
+    // 초기화
+    // ============================================
+    async function init() {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        alert('로그인이 필요합니다.');
+        window.location.href = 'login.html';
+        return;
+      }
+      currentUser = user;
+      
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('display_name, role, school_id, schools(name, code)')
+        .eq('id', user.id)
+        .single();
+      currentProfile = profile;
+      isAdmin = profile.role === 'admin';
+      
+      const userInfoEl = document.getElementById('userInfo');
+      if (isAdmin) {
+        userInfoEl.innerHTML = `
+          <span class="badge badge-admin">관리자</span>
+          <span class="user-name">${profile.display_name}</span>
+          <button class="logout-btn" onclick="handleLogout()">로그아웃</button>
+        `;
+        document.getElementById('schoolField').style.display = 'block';
+        await loadSchools();
+      } else {
+        userInfoEl.innerHTML = `
+          <span class="badge badge-school">${profile.schools.name}</span>
+          <span class="user-name">${profile.display_name}</span>
+          <button class="logout-btn" onclick="handleLogout()">로그아웃</button>
+        `;
+        currentSchoolId = profile.school_id;
+        await loadCurriculums();
+      }
+      
+      // URL에 id 파라미터 있으면 수정 모드
+      const params = new URLSearchParams(window.location.search);
+      const editId = params.get('id');
+      if (editId) {
+        editingId = editId;
+        await loadExistingTrack(editId);
+      }
+    }
+    
+    async function loadSchools() {
+      const { data } = await supabase
+        .from('schools')
+        .select('id, name, code')
+        .order('name');
+      const select = document.getElementById('formSchool');
+      select.innerHTML = '<option value="">학교를 선택하세요</option>' + 
+        data.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
+    }
+    
+    window.onSchoolChange = async function() {
+      const schoolId = document.getElementById('formSchool').value;
+      currentSchoolId = schoolId || null;
+      await loadCurriculums();
+    };
+    
+    async function loadCurriculums() {
+      const select = document.getElementById('formCurriculum');
+      if (!currentSchoolId) {
+        select.innerHTML = '<option value="">먼저 학교를 선택하세요</option>';
+        return;
+      }
+      const { data } = await supabase
+        .from('curriculums')
+        .select('id, title, sheet_type, spreadsheet_url, updated_at')
+        .eq('school_id', currentSchoolId)
+        .order('created_at', { ascending: false });
+      
+      if (!data || data.length === 0) {
+        select.innerHTML = '<option value="">등록된 편성표가 없습니다</option>';
+        return;
+      }
+      
+      const TYPE_LABELS = { practice: '연습용', first_draft: '1차 제출본', final: '최종본' };
+      select.innerHTML = '<option value="">편성표를 선택하세요</option>' + 
+        data.map(c => `<option value="${c.id}" data-url="${c.spreadsheet_url}">${c.title} (${TYPE_LABELS[c.sheet_type] || c.sheet_type})</option>`).join('');
+    }
+    
+    window.onCurriculumChange = async function() {
+      const select = document.getElementById('formCurriculum');
+      const opt = select.options[select.selectedIndex];
+      const url = opt ? opt.dataset.url : null;
+      if (!url) {
+        document.getElementById('curriculumInfo').classList.remove('show');
+        document.getElementById('subjectSelectionWrap').innerHTML = '';
+        document.getElementById('actionBar').style.display = 'none';
+        currentCurriculumData = null;
+        return;
+      }
+      
+      // 시트 ID 추출
+      const sheetIdMatch = url.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
+      if (!sheetIdMatch) {
+        alert('스프레드시트 URL 형식이 올바르지 않습니다.');
+        return;
+      }
+      const sheetId = sheetIdMatch[1];
+      
+      // 로딩 표시
+      document.getElementById('subjectSelectionWrap').innerHTML = `
+        <div class="loading-state">
+          <div class="spinner"></div>
+          <p>편성표를 분석하는 중입니다...</p>
+        </div>
+      `;
+      
+      try {
+        currentCurriculumData = await loadCurriculumFromSheet(sheetId);
+        showCurriculumInfo(currentCurriculumData);
+        renderSubjectSelection(currentCurriculumData);
+        document.getElementById('actionBar').style.display = 'flex';
+        updateStats();
+      } catch (err) {
+        document.getElementById('subjectSelectionWrap').innerHTML = `
+          <div class="alert danger">
+            편성표를 불러올 수 없습니다: ${err.message}
+            <br><br>
+            <strong>확인사항:</strong>
+            <br>• 스프레드시트가 '링크가 있는 모든 사용자' 공유 설정인지 확인하세요.
+            <br>• 시트 이름이 정확히 '편성표'인지 확인하세요.
+            <br>• 시트 형식이 표준 양식을 따르는지 확인하세요.
+          </div>
+        `;
+      }
+    };
+    
+    function showCurriculumInfo(data) {
+      const info = document.getElementById('curriculumInfo');
+      info.innerHTML = `
+        <strong>${data.schoolName || '학교명 미상'}</strong>
+        <span class="school-type">${data.schoolType || '학교 유형 미상'}</span>
+        <br>
+        총 ${data.totalSubjects}개 과목 · 학교지정 ${data.fixedCount}개 · 선택 ${data.choiceCount}개
+      `;
+      info.classList.add('show');
+    }
+    
+    // ============================================
+    // 편성표 시트 분석 (시뮬레이터 코드 기반)
+    // ============================================
+    async function loadCurriculumFromSheet(sheetId) {
+      const sheetName = encodeURIComponent('편성표');
+      const range = `${sheetName}!A1:M500`;
+      const fields = encodeURIComponent('sheets(merges,data.rowData.values(formattedValue))');
+      const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}?ranges=${range}&fields=${fields}&key=${GOOGLE_API_KEY}`;
+      
+      const res = await fetch(url);
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.error?.message || `${res.status} 오류`);
+      }
+      
+      const data = await res.json();
+      const sheet = data.sheets[0];
+      const merges = sheet.merges || [];
+      const rowData = sheet.data[0]?.rowData || [];
+      
+      const grid = rowData.map(r => 
+        (r.values || []).map(c => (c && c.formattedValue) || '')
+      );
+      
+      const expandedGrid = grid.map(r => [...r]);
+      for (const m of merges) {
+        const startVal = (grid[m.startRowIndex] || [])[m.startColumnIndex] || '';
+        for (let r = m.startRowIndex; r < m.endRowIndex; r++) {
+          for (let c = m.startColumnIndex; c < m.endColumnIndex; c++) {
+            if (!expandedGrid[r]) expandedGrid[r] = [];
+            expandedGrid[r][c] = startVal;
+          }
+        }
+      }
+      
+      // 학교명 / 학교유형 추출
+      const metaRow = expandedGrid[1] || [];
+      let schoolName = '';
+      let schoolType = '';
+      for (let i = 0; i < metaRow.length; i++) {
+        const cell = (metaRow[i] || '').toString().trim();
+        if (cell.replace(/\s/g, '').includes('학교명')) {
+          schoolName = (metaRow[i+1] || '').toString().trim();
+        }
+        if (cell.replace(/\s/g, '').includes('학교유형')) {
+          schoolType = (metaRow[i+1] || '').toString().trim();
+        }
+      }
+      
+      const dataStartRow = 3;
+      const COL = {
+        section: 0, area: 1, subject: 2, type: 3,
+        baseCredit: 4, completion: 5,
+        sem: { '1-1': 6, '1-2': 7, '2-1': 8, '2-2': 9, '3-1': 10, '3-2': 11 },
+        totalCredit: 12,
+      };
+      
+      let endRow = expandedGrid.length;
+      for (let r = dataStartRow; r < expandedGrid.length; r++) {
+        const text = (expandedGrid[r] || []).join(' ');
+        if (text.includes('편성 조건') && text.includes('점검')) {
+          endRow = r;
+          break;
+        }
+      }
+      
+      // 학기별 정리
+      const semesters = {};
+      for (const sem of Object.keys(COL.sem)) {
+        semesters[sem] = { fixed: [], choiceGroups: {} };
+      }
+      
+      let totalSubjects = 0;
+      let fixedCount = 0;
+      let choiceCount = 0;
+      
+      for (let r = dataStartRow; r < endRow; r++) {
+        const row = expandedGrid[r] || [];
+        const sectionRaw = (row[COL.section] || '').toString().trim();
+        const area = (row[COL.area] || '').toString().trim();
+        const subject = (row[COL.subject] || '').toString().trim();
+        const type = (row[COL.type] || '').toString().trim();
+        const baseCredit = parseFloat(row[COL.baseCredit]) || 0;
+        const completion = (row[COL.completion] || '').toString().trim();
+        
+        if (!subject) continue;
+        if (/학기별|이수학점|이수\s*과목수|창의적|체험활동|소계|합계|총계/.test(sectionRaw)) continue;
+        if (/학기별|이수학점|이수\s*과목수|창의적|체험활동|소계|합계|총계/.test(subject)) continue;
+        
+        const isFixed = sectionRaw.includes('학교') && sectionRaw.includes('지정');
+        
+        const totalCreditCell = (row[COL.totalCredit] || '').toString().trim();
+        const totalCreditMatch = totalCreditCell.match(/(\d+(?:\.\d+)?)/);
+        const rowTotalCredit = totalCreditMatch ? parseFloat(totalCreditMatch[1]) : null;
+        
+        for (const [semKey, semCol] of Object.entries(COL.sem)) {
+          const cellVal = (row[semCol] || '').toString().trim();
+          if (!cellVal) continue;
+          
+          const isCrossSem = cellVal.includes('학기교차') || cellVal.includes('교차');
+          const creditMatch = cellVal.match(/(\d+(?:\.\d+)?)/);
+          let cellCredit = creditMatch ? parseFloat(creditMatch[1]) : null;
+          
+          let credit;
+          if (cellCredit !== null && baseCredit > 0 && cellCredit > baseCredit * 1.5) {
+            credit = (rowTotalCredit !== null && rowTotalCredit <= baseCredit + 1) ? rowTotalCredit : baseCredit;
+          } else if (rowTotalCredit !== null && rowTotalCredit <= baseCredit + 1 && rowTotalCredit > 0) {
+            credit = rowTotalCredit;
+          } else if (cellCredit !== null) {
+            credit = cellCredit;
+          } else {
+            credit = baseCredit;
+          }
+          
+          const subjInfo = {
+            name: subject, area: area, type: type,
+            credit: credit, baseCredit: baseCredit,
+            crossSem: isCrossSem, rowIndex: r,
+          };
+          
+          if (isFixed) {
+            semesters[semKey].fixed.push(subjInfo);
+            fixedCount++;
+          } else {
+            let groupName = '선택';
+            let takeN = null;
+            let takeMin = null;
+            let takeMax = null;
+            const groupMatch = completion.match(/(선택군\s*[A-Z\d]+|[A-Z]\s*그룹|선택\s*\w+)/);
+            if (groupMatch) groupName = groupMatch[1].replace(/\s+/g, '');
+            
+            const rangeMatch = completion.match(/택\s*(\d+)\s*[~∼\-–]\s*(\d+)/);
+            if (rangeMatch) {
+              takeMin = parseInt(rangeMatch[1]);
+              takeMax = parseInt(rangeMatch[2]);
+              takeN = takeMax;
+            } else {
+              const takeMatch = completion.match(/택\s*(\d+)/);
+              if (takeMatch) takeN = parseInt(takeMatch[1]);
+            }
+            
+            if (!semesters[semKey].choiceGroups[groupName]) {
+              semesters[semKey].choiceGroups[groupName] = {
+                name: groupName, takeN, takeMin, takeMax, subjects: []
+              };
+            }
+            semesters[semKey].choiceGroups[groupName].subjects.push(subjInfo);
+            choiceCount++;
+          }
+          totalSubjects++;
+        }
+      }
+      
+      // 학기교차 후처리
+      function pairCrossSem(sem1Key, sem2Key) {
+        const sem1Cross = semesters[sem1Key].fixed.filter(s => s.crossSem).sort((a,b) => a.rowIndex - b.rowIndex);
+        const sem2Cross = semesters[sem2Key].fixed.filter(s => s.crossSem).sort((a,b) => a.rowIndex - b.rowIndex);
+        const sem1RowIdx = new Set(sem1Cross.map(s => s.rowIndex));
+        const sem2RowIdx = new Set(sem2Cross.map(s => s.rowIndex));
+        const commonRowIdx = [...sem1RowIdx].filter(idx => sem2RowIdx.has(idx)).sort((a,b) => a - b);
+        commonRowIdx.forEach((rowIdx, i) => {
+          if (i % 2 === 0) {
+            const idx = semesters[sem2Key].fixed.findIndex(s => s.rowIndex === rowIdx);
+            if (idx >= 0) semesters[sem2Key].fixed.splice(idx, 1);
+          } else {
+            const idx = semesters[sem1Key].fixed.findIndex(s => s.rowIndex === rowIdx);
+            if (idx >= 0) semesters[sem1Key].fixed.splice(idx, 1);
+          }
+        });
+      }
+      pairCrossSem('1-1', '1-2');
+      pairCrossSem('2-1', '2-2');
+      pairCrossSem('3-1', '3-2');
+      
+      return { semesters, schoolName, schoolType, totalSubjects, fixedCount, choiceCount };
+    }
+    
+    // ============================================
+    // 과목 선택 UI 렌더링
+    // ============================================
+    function renderSubjectSelection(data) {
+      const wrap = document.getElementById('subjectSelectionWrap');
+      wrap.innerHTML = SEMESTERS.map(sem => renderSemester(sem, data.semesters[sem.key])).join('');
+      
+      // 체크박스 이벤트 바인딩
+      wrap.querySelectorAll('.subject-checkbox').forEach(cb => {
+        cb.addEventListener('change', () => {
+          const semKey = cb.dataset.sem;
+          const name = cb.dataset.name;
+          if (!selectedSubjects[semKey]) selectedSubjects[semKey] = new Set();
+          if (cb.checked) {
+            selectedSubjects[semKey].add(name);
+            cb.closest('.subject-row').classList.add('checked');
+          } else {
+            selectedSubjects[semKey].delete(name);
+            cb.closest('.subject-row').classList.remove('checked');
+          }
+          updateStats();
+        });
+      });
+    }
+    
+    function renderSemester(sem, semData) {
+      if (!semData || (semData.fixed.length === 0 && Object.keys(semData.choiceGroups).length === 0)) {
+        return `
+          <div class="semester-section">
+            <div class="semester-header">
+              <div class="semester-title">${sem.label}</div>
+              <div class="semester-stats"><span class="stat">데이터 없음</span></div>
+            </div>
+            <p style="color:var(--text-light);font-size:13px;text-align:center;padding:20px">
+              이 학기에 등록된 과목이 없습니다.
+            </p>
+          </div>
+        `;
+      }
+      
+      // 학교지정 과목: 자동으로 모두 추천 (체크해제 불가)
+      const fixedHtml = semData.fixed.length > 0 ? `
+        <div class="area-group">
+          <div class="area-title">학교지정 (필수)</div>
+          ${semData.fixed.map(s => `
+            <div class="subject-row fixed">
+              <span style="width:20px;flex-shrink:0;text-align:center">✓</span>
+              <span class="subject-name">${s.name}</span>
+              <span class="subject-credit">${s.credit}학점</span>
+              <span class="subject-tag tag-fixed">필수</span>
+            </div>
+          `).join('')}
+        </div>
+      ` : '';
+      
+      // 선택 그룹별
+      const choiceHtml = Object.values(semData.choiceGroups).map(group => {
+        const takeText = group.takeMin && group.takeMax 
+          ? `${group.takeMin}~${group.takeMax}개 선택`
+          : group.takeN ? `${group.takeN}개 선택` : '선택';
+        return `
+          <div class="area-group">
+            <div class="choice-group-header">
+              <span><strong>${group.name}</strong></span>
+              <span style="font-size:12px">${takeText}</span>
+            </div>
+            ${group.subjects.map(s => `
+              <div class="subject-row" onclick="toggleSubject(event, this)">
+                <input type="checkbox" class="subject-checkbox" 
+                  data-sem="${sem.key}" data-name="${escapeHtml(s.name)}" data-credit="${s.credit}">
+                <span class="subject-name">${s.name}</span>
+                <span class="subject-credit">${s.credit}학점</span>
+                <span class="subject-tag tag-choice">선택</span>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      }).join('');
+      
+      return `
+        <div class="semester-section">
+          <div class="semester-header">
+            <div class="semester-title">${sem.label}</div>
+            <div class="semester-stats">
+              <span class="stat" id="stat-fixed-${sem.key}">필수 <strong>${semData.fixed.length}</strong></span>
+              <span class="stat" id="stat-selected-${sem.key}">추천 <strong>0</strong></span>
+            </div>
+          </div>
+          ${fixedHtml}
+          ${choiceHtml}
+        </div>
+      `;
+    }
+    
+    window.toggleSubject = function(event, row) {
+      // 체크박스 자체를 클릭한 경우는 기본 동작
+      if (event.target.classList.contains('subject-checkbox')) return;
+      const cb = row.querySelector('.subject-checkbox');
+      if (cb && !cb.disabled) {
+        cb.checked = !cb.checked;
+        cb.dispatchEvent(new Event('change'));
+      }
+    };
+    
+    function escapeHtml(s) {
+      return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+    
+    function updateStats() {
+      let totalCount = 0;
+      let totalCredit = 0;
+      
+      // 학교지정 과목 (필수)
+      if (currentCurriculumData) {
+        for (const semKey of Object.keys(currentCurriculumData.semesters)) {
+          const semData = currentCurriculumData.semesters[semKey];
+          for (const s of semData.fixed) {
+            totalCount++;
+            totalCredit += s.credit || 0;
+          }
+          // 선택한 과목들
+          const selected = selectedSubjects[semKey] || new Set();
+          const selectedCount = selected.size;
+          // 선택 그룹에서 학점 합산
+          for (const group of Object.values(semData.choiceGroups)) {
+            for (const s of group.subjects) {
+              if (selected.has(s.name)) {
+                totalCount++;
+                totalCredit += s.credit || 0;
+              }
+            }
+          }
+          // 학기별 추천 수 업데이트
+          const statEl = document.getElementById(`stat-selected-${semKey}`);
+          if (statEl) statEl.innerHTML = `추천 <strong>${selectedCount}</strong>`;
+        }
+      }
+      
+      document.getElementById('selectedCount').textContent = `${totalCount}개`;
+      document.getElementById('totalCredit').textContent = totalCredit;
+    }
+    
+    // ============================================
+    // 저장
+    // ============================================
+    window.saveTrack = async function() {
+      const school_id = isAdmin ? document.getElementById('formSchool').value : currentProfile.school_id;
+      const curriculum_id = document.getElementById('formCurriculum').value;
+      const title = document.getElementById('formTitle').value.trim();
+      const track_category = document.getElementById('formCategory').value;
+      const description = document.getElementById('formDesc').value.trim();
+      
+      if (!school_id) { alert('학교를 선택해주세요.'); return; }
+      if (!curriculum_id) { alert('편성표를 선택해주세요.'); return; }
+      if (!title) { alert('트랙 제목을 입력해주세요.'); return; }
+      
+      // selectedSubjects를 JSON으로 변환
+      const recommended_subjects = {};
+      for (const [semKey, subjSet] of Object.entries(selectedSubjects)) {
+        recommended_subjects[semKey] = Array.from(subjSet);
+      }
+      
+      const payload = {
+        school_id, curriculum_id, title, track_category,
+        description: description || null,
+        recommended_subjects,
+      };
+      
+      const btn = document.getElementById('saveBtn');
+      btn.disabled = true;
+      btn.textContent = '저장 중...';
+      
+      try {
+        if (editingId) {
+          const { error } = await supabase.from('tracks').update(payload).eq('id', editingId);
+          if (error) throw error;
+        } else {
+          payload.created_by = currentUser.id;
+          const { error } = await supabase.from('tracks').insert(payload);
+          if (error) throw error;
+        }
+        alert('저장되었습니다.');
+        window.location.href = 'track.html';
+      } catch (err) {
+        alert('저장 실패: ' + err.message);
+        btn.disabled = false;
+        btn.textContent = '저장';
+      }
+    };
+    
+    // ============================================
+    // 수정 모드: 기존 트랙 불러오기
+    // ============================================
+    async function loadExistingTrack(id) {
+      const { data, error } = await supabase
+        .from('tracks').select('*').eq('id', id).single();
+      if (error || !data) {
+        alert('트랙을 불러올 수 없습니다.');
+        window.location.href = 'track.html';
+        return;
+      }
+      
+      document.getElementById('pageTitle').textContent = '트랙 수정';
+      document.getElementById('formTitle').value = data.title;
+      document.getElementById('formCategory').value = data.track_category;
+      document.getElementById('formDesc').value = data.description || '';
+      
+      if (isAdmin) {
+        document.getElementById('formSchool').value = data.school_id;
+        currentSchoolId = data.school_id;
+        await loadCurriculums();
+      }
+      
+      if (data.curriculum_id) {
+        document.getElementById('formCurriculum').value = data.curriculum_id;
+        // 저장된 추천 과목들을 selectedSubjects로 복원
+        for (const [semKey, arr] of Object.entries(data.recommended_subjects || {})) {
+          if (Array.isArray(arr)) selectedSubjects[semKey] = new Set(arr);
+        }
+        // 편성표 로드 및 체크박스 복원
+        await onCurriculumChange();
+        // 체크박스에 체크 복원
+        setTimeout(() => {
+          document.querySelectorAll('.subject-checkbox').forEach(cb => {
+            const semKey = cb.dataset.sem;
+            const name = cb.dataset.name;
+            if (selectedSubjects[semKey] && selectedSubjects[semKey].has(name)) {
+              cb.checked = true;
+              cb.closest('.subject-row').classList.add('checked');
+            }
+          });
+          updateStats();
+        }, 300);
+      }
+    }
+    
+    window.handleLogout = async function() {
+      const ok = confirm('로그아웃 하시겠습니까?');
+      if (!ok) return;
+      await supabase.auth.signOut();
+      window.location.href = 'login.html';
+    };
+    
+    init();
+  </script>
+</body>
+</html>
