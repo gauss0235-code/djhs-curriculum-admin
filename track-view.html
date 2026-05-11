@@ -167,7 +167,9 @@
       background: var(--primary);
       color: white;
       border: none;
-      box-shadow: 0 2px 8px rgba(74, 144, 217, 0.3);
+      padding: 11px 20px;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(74, 144, 217, 0.25);
     }
     .top-btn.primary:hover { background: var(--primary-hover); color: white; border: none; }
     .top-btn.pdf {
@@ -179,11 +181,12 @@
     .top-btn.pdf:hover { background: #15803D; color: white; border: none; }
     .top-btn.share {
       background: #FEE500;
-      color: #3A1D1D;
+      color: #181600;
       border: none;
+      font-weight: 700;
       box-shadow: 0 2px 8px rgba(254, 229, 0, 0.35);
     }
-    .top-btn.share:hover { background: #fdd400; color: #3A1D1D; border: none; }
+    .top-btn.share:hover { background: #fdd400; color: #181600; border: none; }
     
     .description-box {
       background: var(--surface);
@@ -621,7 +624,19 @@
         .eq('id', trackId)
         .single();
       
-      if (error || !track) { showError('트랙을 찾을 수 없습니다.'); return; }
+      if (error) {
+        console.error('Supabase error:', error);
+        if (isPublic) {
+          showError(`공유 링크를 열 수 없습니다.\n\n관리자 안내: tracks/schools/curriculums 테이블의 공개 SELECT RLS 정책이 필요합니다.\n\n오류 상세: ${error.message}`);
+        } else {
+          showError('트랙을 찾을 수 없습니다: ' + error.message);
+        }
+        return;
+      }
+      if (!track) {
+        showError('해당 ID의 트랙이 존재하지 않습니다.');
+        return;
+      }
       currentTrack = track;
       
       if (!track.curriculum_id || !track.curriculums) {
@@ -892,12 +907,15 @@
     }
     
     function showError(msg) {
+      const params = new URLSearchParams(window.location.search);
+      const isPublicMode = params.get('public') === '1';
+      const backBtn = isPublicMode ? '' : '<a class="top-btn" href="track.html">← 트랙 목록</a>';
       document.getElementById('content').innerHTML = `
         <div class="page-header">
           <div><h2>오류</h2></div>
-          <a class="top-btn" href="track.html">← 트랙 목록</a>
+          ${backBtn}
         </div>
-        <div class="description-box" style="color: #c44545; border-left: 4px solid #e57373;">
+        <div class="description-box" style="color: #c44545; border-left: 4px solid #e57373; white-space: pre-wrap;">
           ${escapeHtml(msg)}
         </div>
       `;
