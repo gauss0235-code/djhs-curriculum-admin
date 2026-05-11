@@ -660,8 +660,8 @@
     
     <!-- 1단계 -->
     <div class="form-card">
-      <h3><span class="step-num">1</span>트랙 기본 정보</h3>
-      <div class="step-desc">트랙의 제목과 계열, 설명을 입력해주세요</div>
+      <h3><span class="step-num">1</span>과목 선택 트랙 기본 정보</h3>
+      <div class="step-desc">과목 선택 트랙의 제목과 계열, 설명을 입력해주세요</div>
       <div class="form-row">
         <div class="field" id="schoolField" style="display:none">
           <label>학교 *</label>
@@ -669,18 +669,22 @@
         </div>
         <div class="field">
           <label>계열 *</label>
-          <select id="formCategory">
-            <option value="social_science">사회과학계열</option>
+          <select id="formCategory" onchange="onCategoryChange()">
             <option value="business">경영경제계열</option>
+            <option value="social_science">사회과학계열</option>
+            <option value="humanities">인문학계열</option>
             <option value="engineering">자연공학계열</option>
             <option value="medical">의료생명계열</option>
-            <option value="other">기타</option>
+            <option value="arts_sports">예체능계열</option>
+            <option value="custom">직접입력</option>
           </select>
+          <input type="text" id="formCategoryCustom" placeholder="계열명을 직접 입력하세요" 
+            style="display:none; margin-top:8px;">
         </div>
       </div>
       <div class="form-row single">
         <div class="field">
-          <label>트랙 제목 *</label>
+          <label>과목 선택 트랙 제목 *</label>
           <input type="text" id="formTitle" placeholder="예: 2027학년도 입학생 사회과학계열 과목 선택 트랙">
         </div>
       </div>
@@ -694,11 +698,11 @@
     
     <!-- 2단계 -->
     <div class="form-card">
-      <h3><span class="step-num">2</span>기반 편성표 선택</h3>
-      <div class="step-desc">트랙의 기반이 될 편성표를 선택해주세요</div>
+      <h3><span class="step-num">2</span>교육과정 편성표 선택</h3>
+      <div class="step-desc">과목 선택 트랙의 기반이 될 교육과정 편성표를 선택해주세요</div>
       <div class="form-row single">
         <div class="field">
-          <label>편성표 *</label>
+          <label>교육과정 편성표 *</label>
           <select id="formCurriculum" onchange="onCurriculumChange()">
             <option value="">편성표를 선택하세요</option>
           </select>
@@ -831,6 +835,18 @@
       const schoolId = document.getElementById('formSchool').value;
       currentSchoolId = schoolId || null;
       await loadCurriculums();
+    };
+    
+    window.onCategoryChange = function() {
+      const cat = document.getElementById('formCategory').value;
+      const customInput = document.getElementById('formCategoryCustom');
+      if (cat === 'custom') {
+        customInput.style.display = 'block';
+        customInput.focus();
+      } else {
+        customInput.style.display = 'none';
+        customInput.value = '';
+      }
     };
     
     async function loadCurriculums() {
@@ -1127,16 +1143,12 @@
       // 선택 그룹별
       const choiceHtml = semData.choiceOrder.map(groupName => {
         const group = semData.choiceGroups[groupName];
-        const takeText = group.takeMin && group.takeMax 
-          ? `${group.takeMin}~${group.takeMax}과목을 골라주세요`
-          : group.takeN ? `${group.takeN}과목을 골라주세요` : '선택해주세요';
         return `
           <div class="choice-group-row">
             <div class="choice-group-left">
               <span class="choice-group-badge">${escapeHtml(group.name)}</span>
-              <span class="choice-group-text">${takeText}</span>
             </div>
-            <span class="choice-group-counter" id="counter-${sem.key}-${escapeAttr(groupName)}"><strong>0</strong>${group.takeN ? `/${group.takeN}` : ''} 선택됨</span>
+            <span class="choice-group-counter" id="counter-${sem.key}-${escapeAttr(groupName)}"><strong>0</strong> 선택됨</span>
           </div>
           ${group.subjects.map(s => `
             <div class="subject-card choice" id="row-${sem.key}-${escapeAttr(s.name)}" data-group="${escapeAttr(groupName)}">
@@ -1258,9 +1270,7 @@
           for (const [groupName, count] of Object.entries(groupCounters)) {
             const counterEl = document.getElementById(`counter-${semKey}-${escapeAttr(groupName)}`);
             if (counterEl) {
-              const group = semData.choiceGroups[groupName];
-              const totalSpec = group.takeN || group.takeMax || '';
-              counterEl.innerHTML = `<strong>${count}</strong>${totalSpec ? '/' + totalSpec : ''} 선택됨`;
+              counterEl.innerHTML = `<strong>${count}</strong> 선택됨`;
             }
           }
         }
@@ -1275,12 +1285,19 @@
       const school_id = isAdmin ? document.getElementById('formSchool').value : currentProfile.school_id;
       const curriculum_id = document.getElementById('formCurriculum').value;
       const title = document.getElementById('formTitle').value.trim();
-      const track_category = document.getElementById('formCategory').value;
+      let track_category = document.getElementById('formCategory').value;
+      const customText = document.getElementById('formCategoryCustom').value.trim();
       const description = document.getElementById('formDesc').value.trim();
       
       if (!school_id) { alert('학교를 선택해주세요.'); return; }
-      if (!curriculum_id) { alert('편성표를 선택해주세요.'); return; }
-      if (!title) { alert('트랙 제목을 입력해주세요.'); return; }
+      if (!curriculum_id) { alert('교육과정 편성표를 선택해주세요.'); return; }
+      if (!title) { alert('과목 선택 트랙 제목을 입력해주세요.'); return; }
+      
+      // 직접입력 처리: 입력한 텍스트를 카테고리로 사용
+      if (track_category === 'custom') {
+        if (!customText) { alert('계열명을 입력해주세요.'); return; }
+        track_category = 'custom:' + customText;
+      }
       
       const recommended_subjects = {};
       for (const [semKey, semSel] of Object.entries(selections)) {
@@ -1333,7 +1350,14 @@
       
       document.getElementById('pageTitle').textContent = '트랙 수정';
       document.getElementById('formTitle').value = data.title;
-      document.getElementById('formCategory').value = data.track_category;
+      // 계열 복원 (직접입력 'custom:...' 형식 처리)
+      if (data.track_category && data.track_category.startsWith('custom:')) {
+        document.getElementById('formCategory').value = 'custom';
+        document.getElementById('formCategoryCustom').value = data.track_category.substring(7);
+        document.getElementById('formCategoryCustom').style.display = 'block';
+      } else {
+        document.getElementById('formCategory').value = data.track_category;
+      }
       document.getElementById('formDesc').value = data.description || '';
       
       if (isAdmin) {

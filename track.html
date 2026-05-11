@@ -323,8 +323,11 @@
     }
     .category-social_science { background: var(--cat-social-bg); color: var(--cat-social-text); }
     .category-business { background: var(--cat-business-bg); color: var(--cat-business-text); }
+    .category-humanities { background: #EDE9FE; color: #6D28D9; }
     .category-engineering { background: var(--cat-engineering-bg); color: var(--cat-engineering-text); }
     .category-medical { background: var(--cat-medical-bg); color: var(--cat-medical-text); }
+    .category-arts_sports { background: #FCE7F3; color: #BE185D; }
+    .category-custom { background: #E0E7FF; color: #4338CA; }
     .category-other { background: var(--cat-other-bg); color: var(--cat-other-text); }
     
     .track-desc {
@@ -389,10 +392,12 @@
       flex-shrink: 0;
       align-items: center;
     }
+    
+    /* 보기 버튼 (하늘색 - 메인 액션) */
     .open-btn {
       background: var(--sim-sky-blue);
       color: white;
-      border: none;
+      border: 2px solid var(--sim-sky-blue);
       padding: 10px 20px;
       border-radius: 10px;
       cursor: pointer;
@@ -402,34 +407,61 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      transition: all 0.15s ease;
+      transition: all 0.2s ease;
       box-shadow: 0 3px 10px rgba(74, 138, 184, 0.25);
       font-family: inherit;
     }
-    .open-btn:hover { background: #3D7AA3; }
-    .icon-btn {
+    .open-btn:hover {
+      background: #3D7AA3;
+      border-color: #3D7AA3;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(74, 138, 184, 0.4);
+    }
+    
+    /* 수정 버튼 (베이지/노랑 - 편집 액션) */
+    .edit-btn {
       background: white;
-      border: 1.5px solid #E5E7EB;
-      padding: 9px 14px;
+      border: 2px solid var(--sim-yellow-border);
+      color: #B45309;
+      padding: 9px 16px;
       border-radius: 10px;
       cursor: pointer;
       font-size: 13px;
-      font-weight: 600;
-      color: var(--sim-text-mid);
+      font-weight: 700;
       font-family: inherit;
-      transition: all 0.15s ease;
+      transition: all 0.2s ease;
       text-decoration: none;
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
     }
-    .icon-btn:hover {
-      border-color: var(--sim-sky-blue);
-      color: var(--sim-sky-blue);
-      background: var(--primary-soft);
+    .edit-btn:hover {
+      background: var(--sim-yellow-banner);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
     }
-    .icon-btn.danger:hover {
-      border-color: var(--danger);
+    
+    /* 삭제 버튼 (빨강 - 위험한 액션) */
+    .delete-btn {
+      background: white;
+      border: 2px solid #FCA5A5;
       color: var(--danger);
+      padding: 9px 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 700;
+      font-family: inherit;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .delete-btn:hover {
       background: var(--danger-soft);
+      border-color: var(--danger);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(220, 38, 38, 0.25);
     }
     
     footer {
@@ -507,13 +539,27 @@
     let isAdmin = false;
     
     const CATEGORY_LABELS = {
-      social_science: '사회과학계열',
       business: '경영경제계열',
+      social_science: '사회과학계열',
+      humanities: '인문학계열',
       engineering: '자연공학계열',
       medical: '의료생명계열',
+      arts_sports: '예체능계열',
       other: '기타'
     };
-    const CATEGORY_ORDER = ['social_science', 'business', 'engineering', 'medical', 'other'];
+    const CATEGORY_ORDER = ['business', 'social_science', 'humanities', 'engineering', 'medical', 'arts_sports', 'other'];
+    
+    // 카테고리 라벨 가져오기 (custom:XXX 형식 처리)
+    function getCategoryLabel(cat) {
+      if (!cat) return '미지정';
+      if (cat.startsWith('custom:')) return cat.substring(7);
+      return CATEGORY_LABELS[cat] || cat;
+    }
+    function getCategoryClass(cat) {
+      if (!cat) return 'category-other';
+      if (cat.startsWith('custom:')) return 'category-custom';
+      return `category-${cat}`;
+    }
     
     async function init() {
       const { data: { user } } = await supabase.auth.getUser();
@@ -620,8 +666,9 @@
       });
       
       listEl.innerHTML = `<div class="track-list">` + data.map(item => {
-        const updatedDate = new Date(item.updated_at).toLocaleDateString('ko-KR', {
-          year: 'numeric', month: 'long', day: 'numeric'
+        const updatedDate = new Date(item.updated_at).toLocaleString('ko-KR', {
+          year: 'numeric', month: 'long', day: 'numeric',
+          hour: '2-digit', minute: '2-digit', hour12: false
         });
         const canEdit = isAdmin || (currentProfile.school_id === item.school_id);
         
@@ -655,12 +702,12 @@
             <div class="track-info">
               <div class="track-title-row">
                 <h3>${item.title}</h3>
-                <span class="category-tag category-${item.track_category}">${CATEGORY_LABELS[item.track_category]}</span>
+                <span class="category-tag ${getCategoryClass(item.track_category)}">${getCategoryLabel(item.track_category)}</span>
               </div>
               ${item.description ? `<div class="track-desc">${item.description}</div>` : ''}
               <div class="track-meta">
                 ${curriculumInfo}
-                <span class="meta-chip subjects">⭐ 핵심 ${totalCore} · ✓ 권장 ${totalRecommend}</span>
+                <span class="meta-chip subjects">⭐ 핵심 권장 ${totalCore} · ✓ 권장 ${totalRecommend}</span>
                 <span>최종 수정 ${updatedDate}</span>
                 ${warningInfo}
               </div>
@@ -668,8 +715,8 @@
             <div class="track-actions">
               <a class="open-btn" href="track-view.html?id=${item.id}">보기 →</a>
               ${canEdit ? `
-                <a class="icon-btn" href="track-edit.html?id=${item.id}">수정</a>
-                <button class="icon-btn danger" onclick="deleteTrack('${item.id}')">삭제</button>
+                <a class="edit-btn" href="track-edit.html?id=${item.id}">✎ 수정</a>
+                <button class="delete-btn" onclick="deleteTrack('${item.id}')">🗑 삭제</button>
               ` : ''}
             </div>
           </div>
