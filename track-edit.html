@@ -14,52 +14,68 @@
       font-display: swap;
     }
     :root {
-      /* 기본 배경 (건드리지 않음) */
+      /* 배경 (건드리지 않음) */
       --bg-sky: #e8f4fc;
       --bg-sky-deep: #d4ecf8;
-      --surface: #ffffff;
       --border: #d8e8f3;
-      --text: #1e3a5f;
-      --text-muted: #5d7894;
-      --text-light: #8ba8c2;
       --primary: #4a90d9;
       --primary-hover: #3a7ec0;
       --primary-soft: #e3f0fa;
       --primary-dark: #2d5a8a;
       --admin: #ec6f8e;
       --admin-soft: #fde7ed;
+      --text-light: #8ba8c2;
+      --text-muted: #5d7894;
       
-      /* 시뮬레이터 톤 (내부 카드용) */
-      --beige: #FFF8E7;
-      --beige-deep: #FFE9B3;
-      --beige-card: #FFFBF0;
-      --beige-soft: #FEF7E0;
-      --brown: #6B4423;
-      --brown-dark: #4A2E14;
-      --sky-blue-dark: #4A8AB8;
-      --sky-blue: #87BAD7;
-      --check-brown: #4A2E14;
+      /* 시뮬레이터 톤 */
+      --sim-bg: #FFFFFF;
+      --sim-text: #2C3E50;
+      --sim-text-mid: #6B7280;
+      --sim-text-brown: #6B4423;
+      --sim-sky-blue: #4A8AB8;
+      --sim-sky-blue-light: #87BAD7;
+      --sim-beige: #FFF8E7;
+      --sim-beige-deep: #FFE9B3;
+      --sim-yellow-banner: #FEF3C7;
+      --sim-yellow-border: #F59E0B;
+      --sim-red-bg: #FEE2E2;
+      --sim-red-text: #B91C1C;
+      --sim-red-strong: #DC2626;
       
       /* 태그 색상 */
       --tag-fixed-bg: #FEF3C7;
       --tag-fixed-text: #B45309;
-      --tag-core-bg: #FED7AA;
-      --tag-core-text: #9A3412;
-      --tag-recommend-bg: #DBEAFE;
-      --tag-recommend-text: #1D4ED8;
-      --tag-credit-bg: #DCFCE7;
-      --tag-credit-text: #15803D;
-      --tag-area-bg: #E0F2FE;
-      --tag-area-text: #0369A1;
+      --tag-suneung-bg: #FCE7F3;
+      --tag-suneung-text: #BE185D;
+      --tag-recommend-bg: #FEF3C7;
+      --tag-recommend-text: #B45309;
+      --tag-area-bg: #F3F4F6;
+      --tag-area-text: #4B5563;
+      --tag-general-bg: #DBEAFE;
+      --tag-general-text: #1D4ED8;
+      --tag-career-bg: #DCFCE7;
+      --tag-career-text: #15803D;
+      --tag-fusion-bg: #F3E8FF;
+      --tag-fusion-text: #7E22CE;
+      --tag-common-bg: #E0F2FE;
+      --tag-common-text: #0369A1;
+      
+      /* 핵심/권장 */
+      --core-border: #F59E0B;
+      --core-bg-tint: #FFFBEB;
+      --recommend-border: #3B82F6;
+      --recommend-bg-tint: #EFF6FF;
+      
+      --check-brown: #4A2E14;
       
       --shadow-soft: 0 4px 20px rgba(74, 144, 217, 0.08);
-      --shadow-beige: 0 4px 14px rgba(120, 80, 30, 0.08);
+      --shadow-card: 0 2px 8px rgba(120, 80, 30, 0.06);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
       background: linear-gradient(180deg, var(--bg-sky) 0%, var(--bg-sky-deep) 100%);
-      color: var(--text);
+      color: var(--sim-text);
       line-height: 1.5;
       -webkit-font-smoothing: antialiased;
       min-height: 100vh;
@@ -103,10 +119,11 @@
       transition: all 0.15s ease;
     }
     .logout-btn:hover { background: var(--primary-soft); border-color: var(--primary); color: var(--primary); }
+    
     main {
-      max-width: 1100px;
+      max-width: 900px;
       margin: 0 auto;
-      padding: 32px 28px 100px;
+      padding: 32px 24px 100px;
     }
     .page-header {
       display: flex;
@@ -119,7 +136,7 @@
     .page-header h2 {
       font-family: 'JalnanGothic', 'Pretendard', sans-serif;
       font-size: 30px;
-      color: var(--primary-dark);
+      color: var(--sim-sky-blue);
       letter-spacing: -0.02em;
       line-height: 1.3;
     }
@@ -132,52 +149,52 @@
       padding: 10px 16px;
       border-radius: 12px;
       font-size: 14px;
-      color: var(--text);
+      color: var(--sim-text);
       text-decoration: none;
       transition: all 0.15s ease;
     }
     .back-btn:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-soft); }
     
-    /* === 시뮬레이터 톤의 카드 (베이지) === */
+    /* === 폼 카드 (흰색 깔끔) === */
     .form-card {
-      background: var(--beige-card);
+      background: white;
       border-radius: 20px;
-      padding: 28px 32px;
-      margin-bottom: 18px;
-      box-shadow: var(--shadow-beige);
+      padding: 26px 28px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow-card);
     }
     .form-card h3 {
       font-family: 'JalnanGothic', 'Pretendard', sans-serif;
-      font-size: 22px;
-      color: var(--sky-blue-dark);
-      margin-bottom: 6px;
+      font-size: 20px;
+      color: var(--sim-sky-blue);
+      margin-bottom: 4px;
       display: flex;
       align-items: center;
       gap: 10px;
     }
-    .form-card .step-num {
-      width: 32px;
-      height: 32px;
-      background: var(--sky-blue-dark);
+    .step-num {
+      width: 30px;
+      height: 30px;
+      background: var(--sim-sky-blue);
       color: white;
       border-radius: 10px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      font-size: 18px;
+      font-size: 16px;
     }
     .form-card .step-desc {
       font-size: 13px;
-      color: var(--brown);
-      margin-bottom: 20px;
+      color: var(--sim-text-mid);
+      margin-bottom: 18px;
       padding-left: 4px;
     }
     
     .form-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin-bottom: 14px;
+      gap: 14px;
+      margin-bottom: 12px;
     }
     .form-row.single { grid-template-columns: 1fr; }
     @media (max-width: 700px) {
@@ -187,52 +204,44 @@
       display: block;
       font-size: 13px;
       font-weight: 700;
-      color: var(--brown);
+      color: var(--sim-text);
       margin-bottom: 6px;
     }
-    .field input,
-    .field select,
-    .field textarea {
+    .field input, .field select, .field textarea {
       width: 100%;
-      padding: 12px 16px;
-      border: 1.5px solid var(--beige-deep);
-      border-radius: 12px;
+      padding: 11px 14px;
+      border: 1.5px solid #E5E7EB;
+      border-radius: 10px;
       font-size: 14px;
       font-family: inherit;
-      color: var(--text);
+      color: var(--sim-text);
       background: white;
       transition: all 0.15s ease;
     }
-    .field input:focus,
-    .field select:focus,
-    .field textarea:focus {
+    .field input:focus, .field select:focus, .field textarea:focus {
       outline: none;
-      border-color: var(--sky-blue-dark);
-      box-shadow: 0 0 0 3px var(--primary-soft);
+      border-color: var(--sim-sky-blue);
+      box-shadow: 0 0 0 3px rgba(74, 138, 184, 0.15);
     }
-    .field textarea {
-      min-height: 75px;
-      resize: vertical;
-      line-height: 1.5;
-    }
+    .field textarea { min-height: 75px; resize: vertical; line-height: 1.5; }
     
     /* 편성표 정보 박스 */
     .curriculum-info {
-      background: var(--beige);
-      border-left: 4px solid #F59E0B;
-      padding: 16px 20px;
-      border-radius: 12px;
+      background: var(--sim-beige);
+      border-left: 4px solid var(--sim-yellow-border);
+      padding: 14px 18px;
+      border-radius: 10px;
       margin-top: 14px;
       font-size: 14px;
-      color: var(--brown);
+      color: var(--sim-text-brown);
       line-height: 1.6;
       display: none;
     }
     .curriculum-info.show { display: block; }
     .curriculum-info strong {
       font-family: 'JalnanGothic', 'Pretendard', sans-serif;
-      color: var(--sky-blue-dark);
-      font-size: 16px;
+      color: var(--sim-sky-blue);
+      font-size: 15px;
     }
     .curriculum-info .school-type {
       display: inline-block;
@@ -241,155 +250,110 @@
       border-radius: 10px;
       font-size: 12px;
       margin-left: 6px;
-      color: var(--brown);
+      color: var(--sim-text-brown);
       font-weight: 600;
     }
     
-    /* 범례 칩들 */
-    .legend-bar {
-      background: var(--beige-card);
-      border-radius: 16px;
-      padding: 14px 20px;
-      margin-bottom: 16px;
-      display: flex;
-      gap: 16px;
-      align-items: center;
-      flex-wrap: wrap;
-      box-shadow: var(--shadow-beige);
-    }
-    .legend-title {
-      font-family: 'JalnanGothic', 'Pretendard', sans-serif;
-      font-size: 14px;
-      color: var(--brown);
-    }
-    .legend-item {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--brown);
-    }
-    .legend-dot {
-      width: 16px;
-      height: 16px;
-      border-radius: 5px;
-      flex-shrink: 0;
-    }
-    .legend-dot.fixed { background: var(--tag-fixed-bg); border: 2px solid var(--tag-fixed-text); }
-    .legend-dot.core { background: var(--tag-core-bg); border: 2px solid var(--tag-core-text); }
-    .legend-dot.recommend { background: var(--tag-recommend-bg); border: 2px solid var(--tag-recommend-text); }
-    
-    /* === 학기 섹션 === */
+    /* === 학기 섹션 (흰 카드) === */
     .semester-section {
-      background: var(--beige-card);
+      background: white;
       border-radius: 20px;
-      padding: 26px 28px;
+      padding: 28px;
       margin-bottom: 16px;
-      box-shadow: var(--shadow-beige);
-    }
-    .semester-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-      padding-bottom: 14px;
-      border-bottom: 2px dashed var(--beige-deep);
+      box-shadow: var(--shadow-card);
     }
     .semester-title {
       font-family: 'JalnanGothic', 'Pretendard', sans-serif;
       font-size: 22px;
-      color: var(--sky-blue-dark);
+      color: var(--sim-sky-blue);
+      margin-bottom: 6px;
       display: flex;
       align-items: center;
       gap: 10px;
     }
-    .semester-icon {
+    .semester-icon-box {
       width: 36px;
       height: 36px;
-      background: var(--sky-blue-dark);
+      background: var(--primary-soft);
+      color: var(--sim-sky-blue);
       border-radius: 10px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      color: white;
-      font-size: 16px;
-      font-family: 'JalnanGothic', sans-serif;
+      font-size: 18px;
     }
-    .semester-stats {
-      font-size: 12px;
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-    .semester-stats .stat {
-      padding: 6px 12px;
-      border-radius: 16px;
-      font-weight: 700;
-      background: white;
-      border: 1.5px solid var(--beige-deep);
-      color: var(--brown);
-    }
-    .semester-stats .stat.core-stat {
-      background: var(--tag-core-bg);
-      color: var(--tag-core-text);
-      border-color: var(--tag-core-text);
-    }
-    .semester-stats .stat.recommend-stat {
-      background: var(--tag-recommend-bg);
-      color: var(--tag-recommend-text);
-      border-color: var(--tag-recommend-text);
-    }
-    .semester-stats .stat strong {
-      font-family: 'JalnanGothic', sans-serif;
-      font-size: 14px;
+    .semester-subtitle {
+      font-size: 13px;
+      color: var(--sim-text-mid);
+      margin-bottom: 18px;
+      padding-left: 4px;
     }
     
-    /* === 학교지정 영역 (시뮬레이터의 노란 알림 박스 느낌) === */
-    .fixed-banner {
-      background: linear-gradient(135deg, #FFF8E7, #FFE9B3);
+    /* === 학점 알림 배너 (베이지/노랑) === */
+    .credit-banner {
+      background: linear-gradient(135deg, var(--sim-yellow-banner), #FFE9B3);
       border-radius: 14px;
-      padding: 12px 18px;
-      margin-bottom: 12px;
+      padding: 16px 22px;
+      margin-bottom: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 15px;
+      color: var(--sim-text-brown);
+      font-weight: 600;
+    }
+    .credit-banner .credit-numbers {
+      font-family: 'JalnanGothic', 'Pretendard', sans-serif;
+      font-size: 18px;
+      color: var(--sim-sky-blue);
+    }
+    .credit-banner .credit-numbers .green { color: #15803D; }
+    
+    /* === 학교지정 라벨 영역 === */
+    .section-label-row {
       display: flex;
       align-items: center;
-      gap: 10px;
-      font-size: 13px;
-      color: var(--brown);
+      gap: 12px;
+      margin: 20px 0 12px;
     }
-    .fixed-banner .badge-fixed {
-      background: #F59E0B;
-      color: white;
-      padding: 5px 12px;
-      border-radius: 10px;
-      font-family: 'JalnanGothic', sans-serif;
+    .section-label {
+      padding: 7px 16px;
+      background: var(--sim-beige-deep);
+      color: var(--sim-text-brown);
+      border-radius: 12px;
+      font-family: 'JalnanGothic', 'Pretendard', sans-serif;
+      font-size: 14px;
+    }
+    .section-label-desc {
       font-size: 13px;
-      flex-shrink: 0;
+      color: var(--sim-text-mid);
     }
     
-    /* === 과목 카드 (시뮬레이터 스타일) === */
+    /* === 과목 카드 (시뮬레이터 그대로) === */
     .subject-card {
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 12px 16px;
-      background: white;
-      border: 2px solid transparent;
+      padding: 14px 18px;
+      background: var(--sim-beige);
+      border: 2px solid #FEE9B3;
       border-radius: 14px;
       margin-bottom: 8px;
       transition: all 0.15s ease;
     }
-    .subject-card.fixed {
-      background: var(--beige);
-      border-color: var(--beige-deep);
+    .subject-card.choice {
+      background: white;
+      border-color: #E5E7EB;
     }
     .subject-card.has-core {
-      background: #FFFBEB;
-      border-left: 5px solid #F59E0B;
+      background: var(--core-bg-tint);
+      border-color: var(--core-border);
+      border-left: 5px solid var(--core-border);
     }
     .subject-card.has-recommend {
-      background: #EFF6FF;
-      border-left: 5px solid #3B82F6;
+      background: var(--recommend-bg-tint);
+      border-color: var(--recommend-border);
+      border-left: 5px solid var(--recommend-border);
     }
     
     .subject-check {
@@ -405,11 +369,17 @@
       font-weight: 700;
       flex-shrink: 0;
     }
+    .subject-check.empty {
+      background: white;
+      border: 2px solid #D1D5DB;
+      color: transparent;
+    }
+    
     .subject-info {
       flex: 1;
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 6px;
       min-width: 0;
     }
     .subject-row-top {
@@ -419,52 +389,60 @@
       flex-wrap: wrap;
     }
     .subject-name {
-      font-size: 15px;
+      font-size: 15.5px;
       font-weight: 700;
-      color: var(--brown-dark);
+      color: var(--sim-text);
     }
-    .subject-tags { display: flex; gap: 4px; flex-wrap: wrap; }
+    .subject-row-tags { display: flex; gap: 4px; flex-wrap: wrap; align-items: center; }
     .stag {
       font-size: 11px;
       padding: 3px 9px;
       border-radius: 7px;
       font-weight: 700;
       white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
     }
-    .stag-fixed { background: var(--tag-fixed-bg); color: var(--tag-fixed-text); }
+    .stag-suneung { background: var(--tag-suneung-bg); color: var(--tag-suneung-text); }
+    .stag-recommend { background: var(--tag-recommend-bg); color: var(--tag-recommend-text); }
     .stag-area { background: var(--tag-area-bg); color: var(--tag-area-text); }
+    .stag-general { background: var(--tag-general-bg); color: var(--tag-general-text); }
+    .stag-career { background: var(--tag-career-bg); color: var(--tag-career-text); }
+    .stag-fusion { background: var(--tag-fusion-bg); color: var(--tag-fusion-text); }
+    .stag-common { background: var(--tag-common-bg); color: var(--tag-common-text); }
+    
     .subject-credit {
       font-family: 'JalnanGothic', 'Pretendard', sans-serif;
-      color: var(--sky-blue-dark);
-      font-size: 16px;
+      color: var(--sim-sky-blue);
+      font-size: 17px;
       flex-shrink: 0;
     }
     
-    /* 3단계 선택 버튼 */
+    /* === 3단계 선택 버튼 === */
     .level-selector {
       display: inline-flex;
       gap: 0;
-      background: #F5F1E8;
-      border: 1.5px solid var(--beige-deep);
+      background: #F3F4F6;
       border-radius: 10px;
       padding: 3px;
       flex-shrink: 0;
     }
     .level-btn {
-      padding: 7px 13px;
+      padding: 7px 12px;
       font-size: 12px;
       font-weight: 700;
       border-radius: 7px;
       cursor: pointer;
       border: none;
       background: transparent;
-      color: var(--brown);
+      color: var(--sim-text-mid);
       font-family: inherit;
       transition: all 0.15s ease;
       white-space: nowrap;
     }
-    .level-btn:hover { background: white; }
-    .level-btn.active.none { background: var(--brown); color: white; }
+    .level-btn:hover { background: white; color: var(--sim-text); }
+    .level-btn.active.none { background: var(--sim-text-mid); color: white; }
     .level-btn.active.core { 
       background: linear-gradient(135deg, #F59E0B, #EA580C); 
       color: white;
@@ -476,75 +454,116 @@
       box-shadow: 0 2px 6px rgba(29, 78, 216, 0.25);
     }
     
-    /* 선택군 헤더 */
-    .choice-group-header {
-      background: linear-gradient(135deg, #FED7AA, #FB923C);
-      color: white;
-      padding: 10px 18px;
-      border-radius: 12px;
-      margin: 16px 0 10px;
-      font-family: 'JalnanGothic', 'Pretendard', sans-serif;
-      font-size: 15px;
+    /* === 선택군 헤더 (시뮬레이터의 노란 라벨) === */
+    .choice-group-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      background: white;
+      border: 2px solid var(--sim-beige-deep);
+      border-radius: 14px;
+      padding: 14px 20px;
+      margin: 18px 0 10px;
     }
-    .choice-group-header .take-info {
-      background: rgba(255,255,255,0.25);
-      padding: 4px 12px;
+    .choice-group-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .choice-group-badge {
+      padding: 6px 14px;
+      background: var(--sim-yellow-banner);
+      color: var(--tag-fixed-text);
       border-radius: 10px;
-      font-size: 12px;
-      font-family: 'Pretendard', sans-serif;
-      font-weight: 700;
-    }
-    
-    .area-group { margin-bottom: 14px; }
-    .area-title {
       font-family: 'JalnanGothic', 'Pretendard', sans-serif;
-      font-size: 15px;
-      color: var(--brown);
-      margin-bottom: 8px;
-      padding-left: 4px;
+      font-size: 14px;
+    }
+    .choice-group-text {
+      font-family: 'JalnanGothic', 'Pretendard', sans-serif;
+      font-size: 16px;
+      color: var(--sim-text);
+    }
+    .choice-group-counter {
+      font-family: 'JalnanGothic', 'Pretendard', sans-serif;
+      font-size: 14px;
+      color: var(--sim-text-mid);
+    }
+    .choice-group-counter strong {
+      color: var(--sim-sky-blue);
+      font-size: 16px;
     }
     
-    /* 하단 액션 바 (시뮬레이터 톤) */
+    /* === 범례 === */
+    .legend-bar {
+      background: white;
+      border-radius: 14px;
+      padding: 14px 22px;
+      margin-bottom: 14px;
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      flex-wrap: wrap;
+      box-shadow: var(--shadow-card);
+    }
+    .legend-title {
+      font-family: 'JalnanGothic', 'Pretendard', sans-serif;
+      font-size: 14px;
+      color: var(--sim-sky-blue);
+    }
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--sim-text);
+    }
+    .legend-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 5px;
+      flex-shrink: 0;
+    }
+    .legend-dot.fixed { background: var(--sim-beige); border: 2px solid var(--sim-yellow-border); }
+    .legend-dot.core { background: var(--core-bg-tint); border: 2px solid var(--core-border); }
+    .legend-dot.recommend { background: var(--recommend-bg-tint); border: 2px solid var(--recommend-border); }
+    
+    /* === 하단 액션 바 === */
     .action-bar {
       position: sticky;
       bottom: 20px;
-      background: var(--beige-card);
+      background: white;
       border-radius: 16px;
-      padding: 16px 24px;
+      padding: 16px 22px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 12px;
-      box-shadow: 0 -4px 20px rgba(120, 80, 30, 0.15);
+      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
       flex-wrap: wrap;
-      border: 2px solid var(--beige-deep);
+      border: 2px solid var(--sim-beige-deep);
     }
     .action-stats {
       font-size: 14px;
       display: flex;
-      gap: 10px;
+      gap: 8px;
       flex-wrap: wrap;
       align-items: center;
     }
     .action-stats .stat-item {
-      padding: 7px 14px;
+      padding: 8px 14px;
       border-radius: 12px;
       font-weight: 700;
       font-size: 13px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
     }
-    .action-stats .stat-item.core { background: var(--tag-core-bg); color: var(--tag-core-text); }
-    .action-stats .stat-item.recommend { background: var(--tag-recommend-bg); color: var(--tag-recommend-text); }
-    .action-stats .stat-item.total {
-      background: var(--tag-credit-bg);
-      color: var(--tag-credit-text);
-    }
-    .action-stats strong {
-      font-family: 'JalnanGothic', sans-serif;
-      font-size: 16px;
-    }
+    .action-stats .stat-item.core { background: var(--tag-fixed-bg); color: var(--tag-fixed-text); }
+    .action-stats .stat-item.recommend { background: var(--tag-general-bg); color: var(--tag-general-text); }
+    .action-stats .stat-item.total { background: #DCFCE7; color: #15803D; }
+    .action-stats strong { font-family: 'JalnanGothic', sans-serif; font-size: 16px; }
     
     .action-buttons { display: flex; gap: 8px; }
     .btn-save {
@@ -561,41 +580,36 @@
       box-shadow: 0 3px 10px rgba(74, 138, 184, 0.3);
     }
     .btn-save:hover { transform: translateY(-1px); box-shadow: 0 5px 14px rgba(74, 138, 184, 0.4); }
-    .btn-save:disabled {
-      background: var(--text-light);
-      cursor: not-allowed;
-      transform: none;
-      box-shadow: none;
-    }
+    .btn-save:disabled { background: var(--text-light); cursor: not-allowed; transform: none; box-shadow: none; }
     .btn-cancel {
       background: white;
-      border: 1.5px solid var(--beige-deep);
+      border: 1.5px solid #E5E7EB;
       padding: 12px 22px;
       border-radius: 12px;
       cursor: pointer;
       font-size: 14px;
-      color: var(--brown);
+      color: var(--sim-text-mid);
       font-family: inherit;
       font-weight: 600;
       text-decoration: none;
       display: inline-block;
     }
-    .btn-cancel:hover { background: var(--beige); }
+    .btn-cancel:hover { background: #F9FAFB; color: var(--sim-text); }
     
-    /* 로딩 / 알림 */
+    /* 로딩 */
     .loading-state, .empty-state {
       text-align: center;
       padding: 80px 20px;
-      color: var(--brown);
-      background: var(--beige-card);
+      color: var(--sim-text-mid);
+      background: white;
       border-radius: 20px;
-      box-shadow: var(--shadow-beige);
+      box-shadow: var(--shadow-card);
     }
     .loading-state .spinner {
       width: 40px; height: 40px;
       margin: 0 auto 16px;
-      border: 3px solid var(--beige-deep);
-      border-top-color: var(--sky-blue-dark);
+      border: 3px solid var(--sim-beige-deep);
+      border-top-color: var(--sim-sky-blue);
       border-radius: 50%;
       animation: spin 0.8s linear infinite;
     }
@@ -609,21 +623,21 @@
       line-height: 1.5;
     }
     .alert.danger {
-      background: #FEE2E2;
-      color: #991B1B;
-      border-left: 4px solid #DC2626;
+      background: var(--sim-red-bg);
+      color: var(--sim-red-text);
+      border-left: 4px solid var(--sim-red-strong);
     }
     
     @media (max-width: 768px) {
-      main { padding: 24px 16px 100px; }
+      main { padding: 24px 14px 100px; }
       .page-header h2 { font-size: 24px; }
       .action-bar { flex-direction: column; align-items: stretch; }
       .action-stats { justify-content: center; }
-      .subject-card { flex-wrap: wrap; }
-      .level-selector { order: 4; width: 100%; }
+      .subject-card { flex-wrap: wrap; gap: 8px; }
+      .level-selector { order: 5; width: 100%; margin-top: 4px; }
       .level-btn { flex: 1; }
-      .form-card { padding: 22px 20px; }
-      .semester-section { padding: 22px 20px; }
+      .form-card, .semester-section { padding: 22px 18px; }
+      .choice-group-row { flex-direction: column; align-items: flex-start; gap: 8px; }
     }
   </style>
 </head>
@@ -644,7 +658,7 @@
       <a class="back-btn" href="track.html">← 트랙 목록으로</a>
     </div>
     
-    <!-- 1단계: 트랙 기본 정보 -->
+    <!-- 1단계 -->
     <div class="form-card">
       <h3><span class="step-num">1</span>트랙 기본 정보</h3>
       <div class="step-desc">트랙의 제목과 계열, 설명을 입력해주세요</div>
@@ -678,7 +692,7 @@
       </div>
     </div>
     
-    <!-- 2단계: 편성표 선택 -->
+    <!-- 2단계 -->
     <div class="form-card">
       <h3><span class="step-num">2</span>기반 편성표 선택</h3>
       <div class="step-desc">트랙의 기반이 될 편성표를 선택해주세요</div>
@@ -728,13 +742,34 @@
     let selections = {};
     
     const SEMESTERS = [
-      { key: '1-1', label: '1학년 1학기', short: '1-1' },
-      { key: '1-2', label: '1학년 2학기', short: '1-2' },
-      { key: '2-1', label: '2학년 1학기', short: '2-1' },
-      { key: '2-2', label: '2학년 2학기', short: '2-2' },
-      { key: '3-1', label: '3학년 1학기', short: '3-1' },
-      { key: '3-2', label: '3학년 2학기', short: '3-2' },
+      { key: '1-1', label: '1학년 1학기' },
+      { key: '1-2', label: '1학년 2학기' },
+      { key: '2-1', label: '2학년 1학기' },
+      { key: '2-2', label: '2학년 2학기' },
+      { key: '3-1', label: '3학년 1학기' },
+      { key: '3-2', label: '3학년 2학기' },
     ];
+    
+    // 수능 출제 과목 키워드 (일부)
+    const SUNEUNG_KEYWORDS = [
+      '공통국어', '공통수학', '공통영어', '한국사', '문학', '독서와 작문', '화법과 언어',
+      '대수', '미적분', '확률과 통계', '기하', '영어Ⅰ', '영어Ⅱ',
+      '통합사회', '통합과학', '물리학', '화학', '생명과학', '지구과학',
+      '사회문제 탐구', '윤리문제 탐구', '융합과학 탐구'
+    ];
+    function isSuneung(subject) {
+      return SUNEUNG_KEYWORDS.some(k => subject.includes(k));
+    }
+    
+    // 과목 유형 → 태그 클래스
+    function getTypeTagClass(type) {
+      if (!type) return 'stag-area';
+      if (type.includes('공통')) return 'stag-common';
+      if (type.includes('일반')) return 'stag-general';
+      if (type.includes('진로')) return 'stag-career';
+      if (type.includes('융합')) return 'stag-fusion';
+      return 'stag-area';
+    }
     
     async function init() {
       const { data: { user } } = await supabase.auth.getUser();
@@ -829,10 +864,7 @@
       }
       
       const sheetIdMatch = url.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
-      if (!sheetIdMatch) {
-        alert('스프레드시트 URL 형식이 올바르지 않습니다.');
-        return;
-      }
+      if (!sheetIdMatch) { alert('스프레드시트 URL 형식이 올바르지 않습니다.'); return; }
       const sheetId = sheetIdMatch[1];
       
       document.getElementById('subjectSelectionWrap').innerHTML = `
@@ -905,8 +937,7 @@
       }
       
       const metaRow = expandedGrid[1] || [];
-      let schoolName = '';
-      let schoolType = '';
+      let schoolName = '', schoolType = '';
       for (let i = 0; i < metaRow.length; i++) {
         const cell = (metaRow[i] || '').toString().trim();
         if (cell.replace(/\s/g, '').includes('학교명')) {
@@ -928,10 +959,7 @@
       let endRow = expandedGrid.length;
       for (let r = dataStartRow; r < expandedGrid.length; r++) {
         const text = (expandedGrid[r] || []).join(' ');
-        if (text.includes('편성 조건') && text.includes('점검')) {
-          endRow = r;
-          break;
-        }
+        if (text.includes('편성 조건') && text.includes('점검')) { endRow = r; break; }
       }
       
       const semesters = {};
@@ -1041,10 +1069,10 @@
       
       const legendHtml = `
         <div class="legend-bar">
-          <span class="legend-title">📌 선택 수준</span>
+          <span class="legend-title">📌 표시 안내</span>
           <span class="legend-item"><span class="legend-dot fixed"></span>학교지정 (자동 필수)</span>
-          <span class="legend-item"><span class="legend-dot core"></span>⭐ 핵심 (꼭 들었으면 하는 과목)</span>
-          <span class="legend-item"><span class="legend-dot recommend"></span>✓ 권장 (들으면 좋은 과목)</span>
+          <span class="legend-item"><span class="legend-dot core"></span>⭐ 핵심</span>
+          <span class="legend-item"><span class="legend-dot recommend"></span>✓ 권장</span>
         </div>
       `;
       
@@ -1056,11 +1084,9 @@
       if (!semData || (semData.fixed.length === 0 && Object.keys(semData.choiceGroups).length === 0)) {
         return `
           <div class="semester-section">
-            <div class="semester-header">
-              <div class="semester-title">
-                <span class="semester-icon">${sem.short}</span>
-                ${sem.label}
-              </div>
+            <div class="semester-title">
+              <span class="semester-icon-box">📅</span>
+              ${sem.label}
             </div>
             <p style="color:var(--text-light);font-size:13px;text-align:center;padding:20px">
               이 학기에 등록된 과목이 없습니다.
@@ -1069,21 +1095,23 @@
         `;
       }
       
-      // 학교지정 영역
+      // 학교지정 과목
+      const fixedCredit = semData.fixed.reduce((s, x) => s + (x.credit || 0), 0);
       const fixedHtml = semData.fixed.length > 0 ? `
-        <div class="fixed-banner">
-          <span class="badge-fixed">학교 지정</span>
-          <span>자동으로 들어가는 필수 과목이에요</span>
+        <div class="section-label-row">
+          <span class="section-label">학교 지정</span>
+          <span class="section-label-desc">자동으로 들어가는 필수 과목이에요</span>
         </div>
         ${semData.fixed.map(s => `
-          <div class="subject-card fixed">
+          <div class="subject-card">
             <span class="subject-check">✓</span>
             <div class="subject-info">
               <div class="subject-row-top">
                 <span class="subject-name">${escapeHtml(s.name)}</span>
-                <span class="subject-tags">
+                <span class="subject-row-tags">
+                  ${isSuneung(s.name) ? '<span class="stag stag-suneung">📋 수능출제과목</span>' : ''}
                   <span class="stag stag-area">${escapeHtml(s.area)}</span>
-                  <span class="stag stag-fixed">학교지정</span>
+                  ${s.type ? `<span class="stag ${getTypeTagClass(s.type)}">${escapeHtml(s.type)}</span>` : ''}
                 </span>
               </div>
             </div>
@@ -1096,52 +1124,56 @@
       const choiceHtml = semData.choiceOrder.map(groupName => {
         const group = semData.choiceGroups[groupName];
         const takeText = group.takeMin && group.takeMax 
-          ? `${group.takeMin}~${group.takeMax}개 선택`
-          : group.takeN ? `${group.takeN}개 선택` : '선택';
+          ? `${group.takeMin}~${group.takeMax}과목을 골라주세요`
+          : group.takeN ? `${group.takeN}과목을 골라주세요` : '선택해주세요';
         return `
-          <div class="area-group">
-            <div class="choice-group-header">
-              <span>${escapeHtml(group.name)}</span>
-              <span class="take-info">${takeText}</span>
+          <div class="choice-group-row">
+            <div class="choice-group-left">
+              <span class="choice-group-badge">${escapeHtml(group.name)}</span>
+              <span class="choice-group-text">${takeText}</span>
             </div>
-            ${group.subjects.map(s => `
-              <div class="subject-card" id="row-${sem.key}-${escapeAttr(s.name)}">
-                <div class="subject-info">
-                  <div class="subject-row-top">
-                    <span class="subject-name">${escapeHtml(s.name)}</span>
-                    <span class="subject-tags">
-                      <span class="stag stag-area">${escapeHtml(s.area)}</span>
-                    </span>
-                  </div>
-                </div>
-                <span class="subject-credit">${s.credit}학점</span>
-                <div class="level-selector">
-                  <button type="button" class="level-btn active none" data-level="none"
-                    onclick="setLevel('${sem.key}', '${escapeJsStr(s.name)}', null, this)">안 함</button>
-                  <button type="button" class="level-btn core" data-level="core"
-                    onclick="setLevel('${sem.key}', '${escapeJsStr(s.name)}', 'core', this)">⭐ 핵심</button>
-                  <button type="button" class="level-btn recommend" data-level="recommend"
-                    onclick="setLevel('${sem.key}', '${escapeJsStr(s.name)}', 'recommend', this)">✓ 권장</button>
+            <span class="choice-group-counter" id="counter-${sem.key}-${escapeAttr(groupName)}"><strong>0</strong>${group.takeN ? `/${group.takeN}` : ''} 선택됨</span>
+          </div>
+          ${group.subjects.map(s => `
+            <div class="subject-card choice" id="row-${sem.key}-${escapeAttr(s.name)}" data-group="${escapeAttr(groupName)}">
+              <span class="subject-check empty">✓</span>
+              <div class="subject-info">
+                <div class="subject-row-top">
+                  <span class="subject-name">${escapeHtml(s.name)}</span>
+                  <span class="subject-row-tags">
+                    ${isSuneung(s.name) ? '<span class="stag stag-suneung">📋 수능출제과목</span>' : ''}
+                    <span class="stag stag-area">${escapeHtml(s.area)}</span>
+                    ${s.type ? `<span class="stag ${getTypeTagClass(s.type)}">${escapeHtml(s.type)}</span>` : ''}
+                  </span>
                 </div>
               </div>
-            `).join('')}
-          </div>
+              <span class="subject-credit">${s.credit}학점</span>
+              <div class="level-selector">
+                <button type="button" class="level-btn active none" data-level="none"
+                  onclick="setLevel('${sem.key}', '${escapeJsStr(s.name)}', null, this)">안 함</button>
+                <button type="button" class="level-btn core" data-level="core"
+                  onclick="setLevel('${sem.key}', '${escapeJsStr(s.name)}', 'core', this)">⭐ 핵심</button>
+                <button type="button" class="level-btn recommend" data-level="recommend"
+                  onclick="setLevel('${sem.key}', '${escapeJsStr(s.name)}', 'recommend', this)">✓ 권장</button>
+              </div>
+            </div>
+          `).join('')}
         `;
       }).join('');
       
       return `
         <div class="semester-section">
-          <div class="semester-header">
-            <div class="semester-title">
-              <span class="semester-icon">${sem.short}</span>
-              ${sem.label}
-            </div>
-            <div class="semester-stats">
-              <span class="stat">필수 <strong>${semData.fixed.length}</strong></span>
-              <span class="stat core-stat" id="stat-core-${sem.key}">⭐ 핵심 <strong>0</strong></span>
-              <span class="stat recommend-stat" id="stat-recommend-${sem.key}">✓ 권장 <strong>0</strong></span>
-            </div>
+          <div class="semester-title">
+            <span class="semester-icon-box">📅</span>
+            ${sem.label}을 채워볼까요?
           </div>
+          <div class="semester-subtitle">학교지정 과목은 자동으로 들어갑니다. 추천 과목을 선택해주세요.</div>
+          
+          <div class="credit-banner" id="banner-${sem.key}">
+            <span>현재 ${sem.label} 학점</span>
+            <span class="credit-numbers"><span class="green">${fixedCredit}</span> 학점</span>
+          </div>
+          
           ${fixedHtml}
           ${choiceHtml}
         </div>
@@ -1161,8 +1193,16 @@
       btn.classList.add('active');
       
       row.classList.remove('has-core', 'has-recommend');
-      if (level === 'core') row.classList.add('has-core');
-      else if (level === 'recommend') row.classList.add('has-recommend');
+      const checkEl = row.querySelector('.subject-check');
+      if (level === 'core') {
+        row.classList.add('has-core');
+        checkEl.classList.remove('empty');
+      } else if (level === 'recommend') {
+        row.classList.add('has-recommend');
+        checkEl.classList.remove('empty');
+      } else {
+        checkEl.classList.add('empty');
+      }
       
       updateStats();
     };
@@ -1183,29 +1223,42 @@
       if (currentCurriculumData) {
         for (const semKey of Object.keys(currentCurriculumData.semesters)) {
           const semData = currentCurriculumData.semesters[semKey];
+          let semCredit = 0;
           for (const s of semData.fixed) {
+            semCredit += s.credit || 0;
             totalCredit += s.credit || 0;
           }
-          let semCore = 0, semRecommend = 0;
           const semSelections = selections[semKey] || {};
+          // 선택군별 카운터
+          const groupCounters = {};
           for (const group of Object.values(semData.choiceGroups)) {
+            groupCounters[group.name] = 0;
             for (const s of group.subjects) {
               const lv = semSelections[s.name];
-              if (lv === 'core') {
-                totalCore++;
-                semCore++;
+              if (lv === 'core' || lv === 'recommend') {
+                semCredit += s.credit || 0;
                 totalCredit += s.credit || 0;
-              } else if (lv === 'recommend') {
-                totalRecommend++;
-                semRecommend++;
-                totalCredit += s.credit || 0;
+                groupCounters[group.name]++;
+                if (lv === 'core') totalCore++;
+                else totalRecommend++;
               }
             }
           }
-          const coreEl = document.getElementById(`stat-core-${semKey}`);
-          if (coreEl) coreEl.innerHTML = `⭐ 핵심 <strong>${semCore}</strong>`;
-          const recEl = document.getElementById(`stat-recommend-${semKey}`);
-          if (recEl) recEl.innerHTML = `✓ 권장 <strong>${semRecommend}</strong>`;
+          // 학기 배너 학점 업데이트
+          const banner = document.getElementById(`banner-${semKey}`);
+          if (banner) {
+            const numEl = banner.querySelector('.credit-numbers');
+            if (numEl) numEl.innerHTML = `<span class="green">${semCredit}</span> 학점`;
+          }
+          // 선택군 카운터 업데이트
+          for (const [groupName, count] of Object.entries(groupCounters)) {
+            const counterEl = document.getElementById(`counter-${semKey}-${escapeAttr(groupName)}`);
+            if (counterEl) {
+              const group = semData.choiceGroups[groupName];
+              const totalSpec = group.takeN || group.takeMax || '';
+              counterEl.innerHTML = `<strong>${count}</strong>${totalSpec ? '/' + totalSpec : ''} 선택됨`;
+            }
+          }
         }
       }
       
@@ -1227,8 +1280,7 @@
       
       const recommended_subjects = {};
       for (const [semKey, semSel] of Object.entries(selections)) {
-        const core = [];
-        const recommend = [];
+        const core = [], recommend = [];
         for (const [name, lv] of Object.entries(semSel)) {
           if (lv === 'core') core.push(name);
           else if (lv === 'recommend') recommend.push(name);
@@ -1311,8 +1363,14 @@
                 row.querySelectorAll('.level-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 row.classList.remove('has-core', 'has-recommend');
-                if (lv === 'core') row.classList.add('has-core');
-                else if (lv === 'recommend') row.classList.add('has-recommend');
+                const checkEl = row.querySelector('.subject-check');
+                if (lv === 'core') {
+                  row.classList.add('has-core');
+                  checkEl.classList.remove('empty');
+                } else if (lv === 'recommend') {
+                  row.classList.add('has-recommend');
+                  checkEl.classList.remove('empty');
+                }
               }
             }
           }
