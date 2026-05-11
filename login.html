@@ -103,13 +103,18 @@
       display: block;
     }
     
+    /* 남자 이미지는 잘라낼 때 더 넓게 자른 만큼 너비를 키워야 사람 크기가 같아짐 */
+    .teacher-right {
+      width: 240px;
+    }
+    
     .teacher-left {
       margin-right: -50px;  /* 오른손이 로그인창을 침범 */
       margin-bottom: -20px;
     }
     
     .teacher-right {
-      margin-left: -90px;   /* 검지손가락이 로그인창을 더 침범 */
+      margin-left: -40px;   /* 손만 살짝 침범 */
       margin-bottom: -20px;
     }
     
@@ -212,8 +217,11 @@
       .teacher {
         width: 160px;
       }
+      .teacher-right {
+        width: 192px;
+      }
       .teacher-left { margin-right: -40px; }
-      .teacher-right { margin-left: -72px; }
+      .teacher-right { margin-left: -32px; }
       .card { max-width: 360px; }
     }
     
@@ -224,8 +232,11 @@
       .teacher {
         width: 120px;
       }
+      .teacher-right {
+        width: 144px;
+      }
       .teacher-left { margin-right: -30px; }
-      .teacher-right { margin-left: -55px; }
+      .teacher-right { margin-left: -24px; }
       .card { 
         max-width: 320px; 
         padding: 28px;
