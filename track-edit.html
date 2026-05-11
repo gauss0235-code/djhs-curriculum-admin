@@ -1148,7 +1148,7 @@
             <div class="choice-group-left">
               <span class="choice-group-badge">${escapeHtml(group.name)}</span>
             </div>
-            <span class="choice-group-counter" id="counter-${sem.key}-${escapeAttr(groupName)}"><strong>0</strong> 선택됨</span>
+            <span class="choice-group-counter" id="counter-${sem.key}-${escapeAttr(groupName)}"><strong>0</strong>과목 선택됨</span>
           </div>
           ${group.subjects.map(s => `
             <div class="subject-card choice" id="row-${sem.key}-${escapeAttr(s.name)}" data-group="${escapeAttr(groupName)}">
@@ -1270,7 +1270,7 @@
           for (const [groupName, count] of Object.entries(groupCounters)) {
             const counterEl = document.getElementById(`counter-${semKey}-${escapeAttr(groupName)}`);
             if (counterEl) {
-              counterEl.innerHTML = `<strong>${count}</strong> 선택됨`;
+              counterEl.innerHTML = `<strong>${count}</strong>과목 선택됨`;
             }
           }
         }

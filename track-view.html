@@ -538,6 +538,27 @@
     ];
     
     async function init() {
+      const params = new URLSearchParams(window.location.search);
+      const trackId = params.get('id');
+      const isPublicMode = params.get('public') === '1';
+      
+      if (!trackId) { showError('트랙 ID가 지정되지 않았습니다.'); return; }
+      
+      // 공개 모드 (공유 링크) - 로그인 없이 접근
+      if (isPublicMode) {
+        // 사용자 정보 영역 숨기기
+        document.getElementById('userInfo').innerHTML = `
+          <span class="badge badge-school" style="background:#FEF3C7;color:#B45309">👁 공유 보기 모드</span>
+        `;
+        try {
+          await loadAndRender(trackId, true);
+        } catch (err) {
+          showError('트랙을 불러올 수 없습니다: ' + err.message);
+        }
+        return;
+      }
+      
+      // 일반 모드: 로그인 필요
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
         alert('로그인이 필요합니다.');
@@ -569,18 +590,14 @@
         `;
       }
       
-      const params = new URLSearchParams(window.location.search);
-      const trackId = params.get('id');
-      if (!trackId) { showError('트랙 ID가 지정되지 않았습니다.'); return; }
-      
       try {
-        await loadAndRender(trackId);
+        await loadAndRender(trackId, false);
       } catch (err) {
         showError('트랙을 불러올 수 없습니다: ' + err.message);
       }
     }
     
-    async function loadAndRender(trackId) {
+    async function loadAndRender(trackId, isPublic) {
       const { data: track, error } = await supabase
         .from('tracks')
         .select('*, schools(name, code), curriculums(title, spreadsheet_url)')
@@ -601,7 +618,7 @@
       const sheetId = sheetIdMatch[1];
       
       const curriculumData = await loadCurriculumFromSheet(sheetId);
-      render(track, curriculumData);
+      render(track, curriculumData, isPublic);
     }
     
     async function loadCurriculumFromSheet(sheetId) {
@@ -729,33 +746,13 @@
         }
       }
       
-      // 학기교차 페어링
-      for (const area of Object.keys(areaMap)) {
-        function pairCrossSem(sem1Key, sem2Key) {
-          const sem1Cross = areaMap[area][sem1Key].fixed.filter(s => s.crossSem).sort((a,b) => a.rowIndex - b.rowIndex);
-          const sem2Cross = areaMap[area][sem2Key].fixed.filter(s => s.crossSem).sort((a,b) => a.rowIndex - b.rowIndex);
-          const sem1RowIdx = new Set(sem1Cross.map(s => s.rowIndex));
-          const sem2RowIdx = new Set(sem2Cross.map(s => s.rowIndex));
-          const commonRowIdx = [...sem1RowIdx].filter(idx => sem2RowIdx.has(idx)).sort((a,b) => a - b);
-          commonRowIdx.forEach((rowIdx, i) => {
-            if (i % 2 === 0) {
-              const idx = areaMap[area][sem2Key].fixed.findIndex(s => s.rowIndex === rowIdx);
-              if (idx >= 0) areaMap[area][sem2Key].fixed.splice(idx, 1);
-            } else {
-              const idx = areaMap[area][sem1Key].fixed.findIndex(s => s.rowIndex === rowIdx);
-              if (idx >= 0) areaMap[area][sem1Key].fixed.splice(idx, 1);
-            }
-          });
-        }
-        pairCrossSem('1-1', '1-2');
-        pairCrossSem('2-1', '2-2');
-        pairCrossSem('3-1', '3-2');
-      }
+      // 학기교차 페어링은 트랙 보기에서 적용하지 않음
+      // (편성표에 표시된 그대로 양쪽 학기에 보여줘야 함)
       
       return { areaMap, areaOrder };
     }
     
-    function render(track, curriculumData) {
+    function render(track, curriculumData, isPublic) {
       const selections = {};
       for (const [semKey, semData] of Object.entries(track.recommended_subjects || {})) {
         selections[semKey] = {};
@@ -786,8 +783,21 @@
         </table>
       `;
       
-      const editLink = isAdmin || (currentProfile.school_id === track.school_id);
-      const editBtn = editLink ? `<a class="top-btn primary" href="track-edit.html?id=${track.id}">✎ 수정</a>` : '';
+      let actionsHtml = '';
+      if (isPublic) {
+        // 공개 보기 모드: PDF 저장만 가능
+        actionsHtml = `<button class="top-btn pdf" onclick="downloadPDF()">📄 PDF 저장</button>`;
+      } else {
+        // 로그인 모드: 모든 버튼
+        const editLink = isAdmin || (currentProfile.school_id === track.school_id);
+        const editBtn = editLink ? `<a class="top-btn primary" href="track-edit.html?id=${track.id}">✎ 수정</a>` : '';
+        actionsHtml = `
+          <button class="top-btn pdf" onclick="downloadPDF()">📄 PDF 저장</button>
+          <button class="top-btn share" onclick="openShareModal()">↗ 공유</button>
+          ${editBtn}
+          <a class="top-btn" href="track.html">← 트랙 목록</a>
+        `;
+      }
       
       const content = `
         <div class="page-header">
@@ -800,10 +810,7 @@
             </div>
           </div>
           <div class="top-actions">
-            <button class="top-btn pdf" onclick="downloadPDF()">📄 PDF 저장</button>
-            <button class="top-btn share" onclick="openShareModal()">↗ 공유</button>
-            ${editBtn}
-            <a class="top-btn" href="track.html">← 트랙 목록</a>
+            ${actionsHtml}
           </div>
         </div>
         ${track.description ? `<div class="description-box">${escapeHtml(track.description)}</div>` : ''}
@@ -827,7 +834,7 @@
         if (!semData) return '<td class="subject-cell"><span class="empty-cell">-</span></td>';
         
         const fixedPills = semData.fixed.map(s => `
-          <span class="subject-pill fixed">${escapeHtml(s.name)}<span class="credit">(${s.credit}학점)</span></span>
+          <span class="subject-pill fixed"><span class="star">✓</span>${escapeHtml(s.name)}<span class="credit">(${s.credit}학점)</span></span>
         `).join('');
         
         const semSelections = selections[sem.key] || {};
@@ -837,7 +844,7 @@
             if (lv === 'core') {
               return `<span class="subject-pill core"><span class="star">⭐</span>${escapeHtml(s.name)}<span class="credit">(${s.credit}학점)</span></span>`;
             } else if (lv === 'recommend') {
-              return `<span class="subject-pill recommend">${escapeHtml(s.name)}<span class="credit">(${s.credit}학점)</span></span>`;
+              return `<span class="subject-pill recommend"><span class="star">✓</span>${escapeHtml(s.name)}<span class="credit">(${s.credit}학점)</span></span>`;
             }
             return null;
           }).filter(Boolean).join('');
@@ -901,24 +908,35 @@
           logging: false,
         });
         
-        const imgWidth = 297; // A4 가로
-        const pageHeight = 210;
-        const imgHeight = (canvas.height * imgWidth) / canvas.width;
-        let heightLeft = imgHeight;
+        // A4 가로: 297 x 210mm, 여백 10mm씩
+        const margin = 10;
+        const a4Width = 297;
+        const a4Height = 210;
+        const availableWidth = a4Width - margin * 2;   // 277mm
+        const availableHeight = a4Height - margin * 2; // 190mm
+        
+        // 캔버스 비율 (캔버스 너비 대비 높이)
+        const canvasRatio = canvas.height / canvas.width;
+        
+        // 가용 영역에 맞추되, 비율 유지
+        let finalWidth = availableWidth;
+        let finalHeight = finalWidth * canvasRatio;
+        
+        // 높이가 가용 높이보다 크면 높이 기준으로 다시 계산
+        if (finalHeight > availableHeight) {
+          finalHeight = availableHeight;
+          finalWidth = finalHeight / canvasRatio;
+        }
+        
+        // 중앙 배치를 위한 오프셋
+        const xOffset = (a4Width - finalWidth) / 2;
+        const yOffset = (a4Height - finalHeight) / 2;
         
         const { jsPDF } = window.jspdf;
         const pdf = new jsPDF('l', 'mm', 'a4');  // 가로 방향
-        let position = 0;
         
-        pdf.addImage(canvas, 'PNG', 0, position, imgWidth, imgHeight);
-        heightLeft -= pageHeight;
-        
-        while (heightLeft > 0) {
-          position -= pageHeight;
-          pdf.addPage();
-          pdf.addImage(canvas, 'PNG', 0, position, imgWidth, imgHeight);
-          heightLeft -= pageHeight;
-        }
+        // 한 페이지에 한 번만 추가 (분할 없이)
+        pdf.addImage(canvas, 'PNG', xOffset, yOffset, finalWidth, finalHeight);
         
         const filename = `${currentTrack.schools.name}_${currentTrack.title}.pdf`.replace(/[\\/:*?"<>|]/g, '_');
         pdf.save(filename);
@@ -937,9 +955,17 @@
       document.getElementById('shareModal').classList.remove('show');
     };
     
+    // 공유용 공개 URL 생성 (?id=xxx&public=1)
+    function getPublicShareUrl() {
+      const baseUrl = window.location.origin + window.location.pathname;
+      const params = new URLSearchParams(window.location.search);
+      const trackId = params.get('id');
+      return `${baseUrl}?id=${trackId}&public=1`;
+    }
+    
     window.shareKakao = function(e) {
       e.preventDefault();
-      const url = window.location.href;
+      const url = getPublicShareUrl();
       const title = `${currentTrack.schools.name} - ${currentTrack.title}`;
       const text = `${title}\n${url}`;
       const isMobile = /Android|iPhone|iPad/i.test(navigator.userAgent);
@@ -960,7 +986,7 @@
     
     window.shareLink = async function(e) {
       e.preventDefault();
-      const url = window.location.href;
+      const url = getPublicShareUrl();
       const title = `${currentTrack.schools.name} - ${currentTrack.title}`;
       
       if (navigator.share) {
@@ -977,9 +1003,9 @@
     
     window.copyLink = function(e) {
       e.preventDefault();
-      const url = window.location.href;
+      const url = getPublicShareUrl();
       navigator.clipboard.writeText(url).then(() => {
-        showToast('URL이 복사되었습니다');
+        showToast('공개 URL이 복사되었습니다');
         closeShareModal();
       }).catch(() => {
         showToast('복사에 실패했습니다');
