@@ -1,0 +1,16 @@
+# 대전광역시 고등학교 교육과정 업무담당자 워크스페이스
+# robots.txt
+
+User-agent: *
+Allow: /
+Allow: /login.html
+Allow: /track-view.html
+
+# 비공개 (로그인 필요) 페이지는 크롤링 제외
+Disallow: /dashboard.html
+Disallow: /curriculum.html
+Disallow: /track.html
+Disallow: /track-edit.html
+
+# Sitemap 위치
+Sitemap: https://admin.djhs-curriculum.kro.kr/sitemap.xml
