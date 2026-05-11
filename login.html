@@ -318,6 +318,13 @@
         return;
       }
       
+      // 이메일 도메인 검증 (@djsch.kr만 허용)
+      if (!email.toLowerCase().endsWith('@djsch.kr')) {
+        messageEl.className = 'message error';
+        messageEl.textContent = '이메일 형식 오류 (@djsch.kr 형식이어야 합니다)';
+        return;
+      }
+      
       btn.disabled = true;
       btn.textContent = '로그인 중...';
       
