@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="images/logo.png">
+  <title>트랙 보기 — 대전광역시 고등학교 교육과정 업무담당자 워크스페이스</title>
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <style>
+    @font-face {
+      font-family: 'JalnanGothic';
+      src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_231029@1.1/JalnanGothic.woff') format('woff');
+      font-weight: normal;
+      font-display: swap;
+    }
+    :root {
+      --bg-sky: #e8f4fc;
+      --bg-sky-deep: #d4ecf8;
+      --surface: #ffffff;
+      --border: #d8e8f3;
+      --border-strong: #b8d4e8;
+      --text: #1e3a5f;
+      --text-muted: #5d7894;
+      --text-light: #8ba8c2;
+      --primary: #4a90d9;
+      --primary-hover: #3a7ec0;
+      --primary-soft: #e3f0fa;
+      --primary-dark: #2d5a8a;
+      --admin: #ec6f8e;
+      --admin-soft: #fde7ed;
+      --core: #f4a261;
+      --core-soft: #fef0e3;
+      --core-dark: #d2691e;
+      --recommend: #5a9fd4;
+      --recommend-soft: #e3f0fa;
+      --recommend-dark: #2d5a8a;
+      --fixed: #7cb342;
+      --fixed-soft: #eef7e3;
+      --fixed-dark: #4d7c0f;
+      --shadow-soft: 0 4px 20px rgba(74, 144, 217, 0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(180deg, var(--bg-sky) 0%, var(--bg-sky-deep) 100%);
+      color: var(--text);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+    header {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .header-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 16px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: inherit;
+    }
+    .brand-mark { width: 42px; height: 42px; }
+    .brand-mark img { width: 100%; height: 100%; object-fit: contain; }
+    .brand-name {
+      font-family: 'JalnanGothic', 'Pretendard', sans-serif;
+      font-size: 17px;
+      color: var(--primary-dark);
+      letter-spacing: -0.01em;
+    }
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 14px;
+    }
+    .badge {
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .badge-school { background: var(--primary-soft); color: var(--primary-dark); }
+    .badge-admin { background: var(--admin-soft); color: var(--admin); }
+    .user-name { font-weight: 500; }
+    .logout-btn {
+      background: white;
+      border: 1.5px solid var(--border);
+      padding: 8px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 13px;
+      color: var(--text-muted);
+      font-family: inherit;
+      transition: all 0.15s ease;
+    }
+    .logout-btn:hover {
+      background: var(--primary-soft);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+    main {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px 32px 80px;
+    }
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 24px;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .page-header h2 {
+      font-family: 'JalnanGothic', 'Pretendard', sans-serif;
+      font-size: 28px;
+      color: var(--primary-dark);
+      letter-spacing: -0.02em;
+      line-height: 1.3;
+      margin-bottom: 8px;
+    }
+    .page-header .meta {
+      font-size: 14px;
+      color: var(--text-muted);
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .category-tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .cat-social_science { background: #e3f0fa; color: #2d5a8a; }
+    .cat-business { background: #fef0e3; color: #a8612a; }
+    .cat-engineering { background: #eef7e3; color: #4d7c0f; }
+    .cat-medical { background: #fdeaea; color: #c44545; }
+    .cat-other { background: #f1f5f9; color: #475569; }
+    
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: white;
+      border: 1.5px solid var(--border);
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-size: 14px;
+      color: var(--text);
+      text-decoration: none;
+      transition: all 0.15s ease;
+    }
+    .back-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      background: var(--primary-soft);
+    }
+    .edit-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.15s ease;
+      box-shadow: 0 2px 8px rgba(74, 144, 217, 0.25);
+    }
+    .edit-btn:hover { background: var(--primary-hover); }
+    
+    .description-box {
+      background: var(--surface);
+      border-radius: 14px;
+      padding: 18px 22px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      color: var(--text);
+      line-height: 1.6;
+      box-shadow: var(--shadow-soft);
+      white-space: pre-wrap;
+    }
+    
+    /* 범례 */
+    .legend-bar {
+      background: var(--surface);
+      border-radius: 14px;
+      padding: 14px 22px;
+      margin-bottom: 16px;
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      flex-wrap: wrap;
+      box-shadow: var(--shadow-soft);
+    }
+    .legend-bar .legend-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+    .legend-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+    .legend-dot.fixed { background: var(--fixed); }
+    .legend-dot.core { background: var(--core); }
+    .legend-dot.recommend { background: var(--recommend); }
+    
+    /* 표 */
+    .track-table-wrap {
+      background: var(--surface);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: var(--shadow-soft);
+      overflow-x: auto;
+    }
+    .track-table {
+      border-collapse: separate;
+      border-spacing: 0;
+      width: 100%;
+      min-width: 1200px;
+      font-size: 13px;
+    }
+    .track-table th,
+    .track-table td {
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      vertical-align: top;
+      text-align: center;
+    }
+    .track-table thead th {
+      background: var(--primary-soft);
+      color: var(--primary-dark);
+      font-weight: 700;
+      font-size: 13px;
+      padding: 12px;
+    }
+    .track-table thead th.grade-header {
+      background: var(--primary);
+      color: white;
+    }
+    .track-table thead th.subject-col {
+      background: white;
+      width: 110px;
+      min-width: 110px;
+    }
+    
+    .area-cell {
+      background: var(--bg-sky);
+      font-weight: 700;
+      color: var(--primary-dark);
+      text-align: center;
+      vertical-align: middle;
+      width: 110px;
+      min-width: 110px;
+    }
+    .area-cell .area-name { font-size: 14px; margin-bottom: 4px; }
+    .area-cell .area-credit { font-size: 11px; color: var(--text-muted); font-weight: 500; }
+    
+    .subject-cell {
+      text-align: left;
+      padding: 8px 10px;
+      background: white;
+    }
+    .subject-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .subject-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 10px;
+      border-radius: 7px;
+      font-size: 12.5px;
+      font-weight: 500;
+      line-height: 1.3;
+    }
+    .subject-pill.fixed {
+      background: var(--fixed-soft);
+      color: var(--fixed-dark);
+      border-left: 3px solid var(--fixed);
+    }
+    .subject-pill.core {
+      background: var(--core-soft);
+      color: var(--core-dark);
+      border-left: 3px solid var(--core);
+      font-weight: 700;
+    }
+    .subject-pill.recommend {
+      background: var(--recommend-soft);
+      color: var(--recommend-dark);
+      border-left: 3px solid var(--recommend);
+    }
+    .subject-pill .star { font-size: 11px; }
+    .subject-pill .credit {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+    
+    .group-label {
+      font-size: 10.5px;
+      color: var(--text-muted);
+      font-weight: 600;
+      text-align: center;
+      padding: 4px 0;
+      background: #f8fbfd;
+      border-radius: 4px;
+      margin: 2px 0;
+    }
+    
+    .empty-cell {
+      color: var(--text-light);
+      font-size: 18px;
+    }
+    
+    .loading-state {
+      text-align: center;
+      padding: 80px 20px;
+      color: var(--text-muted);
+      background: var(--surface);
+      border-radius: 18px;
+      box-shadow: var(--shadow-soft);
+    }
+    .loading-state .spinner {
+      width: 40px;
+      height: 40px;
+      margin: 0 auto 16px;
+      border: 3px solid var(--border);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    
+    @media (max-width: 768px) {
+      .header-inner { padding: 14px 18px; }
+      main { padding: 24px 18px 60px; }
+      .page-header h2 { font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <a class="brand" href="dashboard.html">
+        <div class="brand-mark"><img src="images/logo.png" alt="대전광역시교육청"></div>
+        <span class="brand-name">대전광역시 고등학교 교육과정 업무담당자 워크스페이스</span>
+      </a>
+      <div class="user-info" id="userInfo"></div>
+    </div>
+  </header>
+  
+  <main>
+    <div id="content">
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <p>트랙을 불러오는 중입니다...</p>
+      </div>
+    </div>
+  </main>
+
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+    
+    const SUPABASE_URL = 'https://nzsgvjdotnvqpzhehfsg.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_ALakaYU4jTYEIQas_nWrsQ_An3IK9_h';
+    const GOOGLE_API_KEY = 'AIzaSyBC95kjuGRE0cgsHHWWco0-MnBt9XiPfCY';
+    
+    const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+    
+    let currentUser = null;
+    let currentProfile = null;
+    let isAdmin = false;
+    
+    const CATEGORY_LABELS = {
+      social_science: '사회과학계열',
+      business: '경영경제계열',
+      engineering: '자연공학계열',
+      medical: '의료생명계열',
+      other: '기타'
+    };
+    const SEMESTERS = [
+      { key: '1-1', label: '1학기', grade: 1 },
+      { key: '1-2', label: '2학기', grade: 1 },
+      { key: '2-1', label: '1학기', grade: 2 },
+      { key: '2-2', label: '2학기', grade: 2 },
+      { key: '3-1', label: '1학기', grade: 3 },
+      { key: '3-2', label: '2학기', grade: 3 },
+    ];
+    
+    async function init() {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        alert('로그인이 필요합니다.');
+        window.location.href = 'login.html';
+        return;
+      }
+      currentUser = user;
+      
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('display_name, role, school_id, schools(name, code)')
+        .eq('id', user.id)
+        .single();
+      currentProfile = profile;
+      isAdmin = profile.role === 'admin';
+      
+      const userInfoEl = document.getElementById('userInfo');
+      if (isAdmin) {
+        userInfoEl.innerHTML = `
+          <span class="badge badge-admin">관리자</span>
+          <span class="user-name">${profile.display_name}</span>
+          <button class="logout-btn" onclick="handleLogout()">로그아웃</button>
+        `;
+      } else {
+        userInfoEl.innerHTML = `
+          <span class="badge badge-school">${profile.schools.name}</span>
+          <span class="user-name">${profile.display_name}</span>
+          <button class="logout-btn" onclick="handleLogout()">로그아웃</button>
+        `;
+      }
+      
+      const params = new URLSearchParams(window.location.search);
+      const trackId = params.get('id');
+      if (!trackId) {
+        showError('트랙 ID가 지정되지 않았습니다.');
+        return;
+      }
+      
+      try {
+        await loadAndRender(trackId);
+      } catch (err) {
+        showError('트랙을 불러올 수 없습니다: ' + err.message);
+      }
+    }
+    
+    async function loadAndRender(trackId) {
+      const { data: track, error } = await supabase
+        .from('tracks')
+        .select('*, schools(name, code), curriculums(title, spreadsheet_url)')
+        .eq('id', trackId)
+        .single();
+      
+      if (error || !track) {
+        showError('트랙을 찾을 수 없습니다.');
+        return;
+      }
+      
+      if (!track.curriculum_id || !track.curriculums) {
+        showError('연결된 편성표가 없습니다. 트랙을 수정해주세요.');
+        return;
+      }
+      
+      // 편성표 시트에서 과목 데이터 가져오기
+      const url = track.curriculums.spreadsheet_url;
+      const sheetIdMatch = url.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
+      if (!sheetIdMatch) {
+        showError('편성표 URL 형식이 올바르지 않습니다.');
+        return;
+      }
+      const sheetId = sheetIdMatch[1];
+      
+      const curriculumData = await loadCurriculumFromSheet(sheetId);
+      render(track, curriculumData);
+    }
+    
+    async function loadCurriculumFromSheet(sheetId) {
+      const sheetName = encodeURIComponent('편성표');
+      const range = `${sheetName}!A1:M500`;
+      const fields = encodeURIComponent('sheets(merges,data.rowData.values(formattedValue))');
+      const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}?ranges=${range}&fields=${fields}&key=${GOOGLE_API_KEY}`;
+      
+      const res = await fetch(url);
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.error?.message || `${res.status} 오류`);
+      }
+      
+      const data = await res.json();
+      const sheet = data.sheets[0];
+      const merges = sheet.merges || [];
+      const rowData = sheet.data[0]?.rowData || [];
+      
+      const grid = rowData.map(r => 
+        (r.values || []).map(c => (c && c.formattedValue) || '')
+      );
+      
+      const expandedGrid = grid.map(r => [...r]);
+      for (const m of merges) {
+        const startVal = (grid[m.startRowIndex] || [])[m.startColumnIndex] || '';
+        for (let r = m.startRowIndex; r < m.endRowIndex; r++) {
+          for (let c = m.startColumnIndex; c < m.endColumnIndex; c++) {
+            if (!expandedGrid[r]) expandedGrid[r] = [];
+            expandedGrid[r][c] = startVal;
+          }
+        }
+      }
+      
+      const dataStartRow = 3;
+      const COL = {
+        section: 0, area: 1, subject: 2, type: 3,
+        baseCredit: 4, completion: 5,
+        sem: { '1-1': 6, '1-2': 7, '2-1': 8, '2-2': 9, '3-1': 10, '3-2': 11 },
+        totalCredit: 12,
+      };
+      
+      let endRow = expandedGrid.length;
+      for (let r = dataStartRow; r < expandedGrid.length; r++) {
+        const text = (expandedGrid[r] || []).join(' ');
+        if (text.includes('편성 조건') && text.includes('점검')) {
+          endRow = r;
+          break;
+        }
+      }
+      
+      // 영역별 + 학기별로 정리
+      // areaMap: {area: {semKey: {fixed: [...], choiceGroups: {name: {takeN, takeMin, takeMax, subjects}}}}}
+      const areaMap = {};
+      const areaOrder = [];
+      const areaCredits = {};  // 영역별 총 학점 (편성표에서 가져오기 어려우면 계산)
+      
+      for (let r = dataStartRow; r < endRow; r++) {
+        const row = expandedGrid[r] || [];
+        const sectionRaw = (row[COL.section] || '').toString().trim();
+        const area = (row[COL.area] || '').toString().trim();
+        const subject = (row[COL.subject] || '').toString().trim();
+        const baseCredit = parseFloat(row[COL.baseCredit]) || 0;
+        const completion = (row[COL.completion] || '').toString().trim();
+        
+        if (!subject || !area) continue;
+        if (/학기별|이수학점|이수\s*과목수|창의적|체험활동|소계|합계|총계/.test(sectionRaw)) continue;
+        if (/학기별|이수학점|이수\s*과목수|창의적|체험활동|소계|합계|총계/.test(subject)) continue;
+        
+        if (!areaMap[area]) {
+          areaMap[area] = {};
+          areaOrder.push(area);
+          areaCredits[area] = 0;
+          for (const sem of Object.keys(COL.sem)) {
+            areaMap[area][sem] = { fixed: [], choiceGroups: {} };
+          }
+        }
+        
+        const isFixed = sectionRaw.includes('학교') && sectionRaw.includes('지정');
+        
+        const totalCreditCell = (row[COL.totalCredit] || '').toString().trim();
+        const totalCreditMatch = totalCreditCell.match(/(\d+(?:\.\d+)?)/);
+        const rowTotalCredit = totalCreditMatch ? parseFloat(totalCreditMatch[1]) : null;
+        
+        for (const [semKey, semCol] of Object.entries(COL.sem)) {
+          const cellVal = (row[semCol] || '').toString().trim();
+          if (!cellVal) continue;
+          
+          const isCrossSem = cellVal.includes('학기교차') || cellVal.includes('교차');
+          const creditMatch = cellVal.match(/(\d+(?:\.\d+)?)/);
+          let cellCredit = creditMatch ? parseFloat(creditMatch[1]) : null;
+          
+          let credit;
+          if (cellCredit !== null && baseCredit > 0 && cellCredit > baseCredit * 1.5) {
+            credit = (rowTotalCredit !== null && rowTotalCredit <= baseCredit + 1) ? rowTotalCredit : baseCredit;
+          } else if (rowTotalCredit !== null && rowTotalCredit <= baseCredit + 1 && rowTotalCredit > 0) {
+            credit = rowTotalCredit;
+          } else if (cellCredit !== null) {
+            credit = cellCredit;
+          } else {
+            credit = baseCredit;
+          }
+          
+          const subjInfo = { name: subject, credit, crossSem: isCrossSem, rowIndex: r };
+          
+          if (isFixed) {
+            areaMap[area][semKey].fixed.push(subjInfo);
+          } else {
+            let groupName = '선택';
+            let takeN = null;
+            let takeMin = null;
+            let takeMax = null;
+            const groupMatch = completion.match(/(선택군\s*[A-Z\d]+|[A-Z]\s*그룹|선택\s*\w+)/);
+            if (groupMatch) groupName = groupMatch[1].replace(/\s+/g, '');
+            
+            const rangeMatch = completion.match(/택\s*(\d+)\s*[~∼\-–]\s*(\d+)/);
+            if (rangeMatch) {
+              takeMin = parseInt(rangeMatch[1]);
+              takeMax = parseInt(rangeMatch[2]);
+              takeN = takeMax;
+            } else {
+              const takeMatch = completion.match(/택\s*(\d+)/);
+              if (takeMatch) takeN = parseInt(takeMatch[1]);
+            }
+            
+            if (!areaMap[area][semKey].choiceGroups[groupName]) {
+              areaMap[area][semKey].choiceGroups[groupName] = {
+                name: groupName, takeN, takeMin, takeMax, subjects: []
+              };
+            }
+            areaMap[area][semKey].choiceGroups[groupName].subjects.push(subjInfo);
+          }
+        }
+      }
+      
+      // 학기교차 페어링
+      for (const area of Object.keys(areaMap)) {
+        function pairCrossSem(sem1Key, sem2Key) {
+          const sem1Cross = areaMap[area][sem1Key].fixed.filter(s => s.crossSem).sort((a,b) => a.rowIndex - b.rowIndex);
+          const sem2Cross = areaMap[area][sem2Key].fixed.filter(s => s.crossSem).sort((a,b) => a.rowIndex - b.rowIndex);
+          const sem1RowIdx = new Set(sem1Cross.map(s => s.rowIndex));
+          const sem2RowIdx = new Set(sem2Cross.map(s => s.rowIndex));
+          const commonRowIdx = [...sem1RowIdx].filter(idx => sem2RowIdx.has(idx)).sort((a,b) => a - b);
+          commonRowIdx.forEach((rowIdx, i) => {
+            if (i % 2 === 0) {
+              const idx = areaMap[area][sem2Key].fixed.findIndex(s => s.rowIndex === rowIdx);
+              if (idx >= 0) areaMap[area][sem2Key].fixed.splice(idx, 1);
+            } else {
+              const idx = areaMap[area][sem1Key].fixed.findIndex(s => s.rowIndex === rowIdx);
+              if (idx >= 0) areaMap[area][sem1Key].fixed.splice(idx, 1);
+            }
+          });
+        }
+        pairCrossSem('1-1', '1-2');
+        pairCrossSem('2-1', '2-2');
+        pairCrossSem('3-1', '3-2');
+      }
+      
+      return { areaMap, areaOrder };
+    }
+    
+    function render(track, curriculumData) {
+      // 선택 데이터 정규화 (구/신 형식 모두 호환)
+      const selections = {};  // {semKey: {subjectName: 'core'|'recommend'}}
+      for (const [semKey, semData] of Object.entries(track.recommended_subjects || {})) {
+        selections[semKey] = {};
+        if (Array.isArray(semData)) {
+          for (const name of semData) selections[semKey][name] = 'recommend';
+        } else if (semData && typeof semData === 'object') {
+          for (const name of (semData.core || [])) selections[semKey][name] = 'core';
+          for (const name of (semData.recommend || [])) selections[semKey][name] = 'recommend';
+        }
+      }
+      
+      // 표 만들기
+      let tableHtml = `
+        <table class="track-table">
+          <thead>
+            <tr>
+              <th rowspan="2" class="subject-col">교과(군)</th>
+              <th colspan="2" class="grade-header">1학년</th>
+              <th colspan="2" class="grade-header">2학년</th>
+              <th colspan="2" class="grade-header">3학년</th>
+            </tr>
+            <tr>
+              ${SEMESTERS.map(s => `<th>${s.label}</th>`).join('')}
+            </tr>
+          </thead>
+          <tbody>
+            ${curriculumData.areaOrder.map(area => renderAreaRow(area, curriculumData.areaMap[area], selections)).join('')}
+          </tbody>
+        </table>
+      `;
+      
+      const editLink = isAdmin || (currentProfile.school_id === track.school_id);
+      const editBtn = editLink ? `<a class="edit-btn" href="track-edit.html?id=${track.id}">수정하기</a>` : '';
+      
+      const content = `
+        <div class="page-header">
+          <div>
+            <h2>${escapeHtml(track.title)}</h2>
+            <div class="meta">
+              <span class="category-tag cat-${track.track_category}">${CATEGORY_LABELS[track.track_category]}</span>
+              <span>📋 ${escapeHtml(track.schools.name)}</span>
+              <span>📄 ${escapeHtml(track.curriculums.title)}</span>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            ${editBtn}
+            <a class="back-btn" href="track.html">← 트랙 목록으로</a>
+          </div>
+        </div>
+        ${track.description ? `<div class="description-box">${escapeHtml(track.description)}</div>` : ''}
+        <div class="legend-bar">
+          <span class="legend-title">표시 안내:</span>
+          <span class="legend-item"><span class="legend-dot fixed"></span> 학교지정 (필수)</span>
+          <span class="legend-item"><span class="legend-dot core"></span> ⭐ 핵심 추천</span>
+          <span class="legend-item"><span class="legend-dot recommend"></span> ✓ 권장</span>
+        </div>
+        <div class="track-table-wrap">
+          ${tableHtml}
+        </div>
+      `;
+      
+      document.getElementById('content').innerHTML = content;
+    }
+    
+    function renderAreaRow(area, areaData, selections) {
+      // 각 학기별 셀 내용 만들기
+      const cells = SEMESTERS.map(sem => {
+        const semData = areaData[sem.key];
+        if (!semData) return '<td class="subject-cell"><span class="empty-cell">-</span></td>';
+        
+        // 학교지정 과목
+        const fixedPills = semData.fixed.map(s => `
+          <span class="subject-pill fixed">${escapeHtml(s.name)}<span class="credit">(${s.credit})</span></span>
+        `).join('');
+        
+        // 선택 그룹별 처리
+        const semSelections = selections[sem.key] || {};
+        const groupBlocks = Object.values(semData.choiceGroups).map(group => {
+          const items = group.subjects.map(s => {
+            const lv = semSelections[s.name];
+            if (lv === 'core') {
+              return `<span class="subject-pill core"><span class="star">⭐</span>${escapeHtml(s.name)}<span class="credit">(${s.credit})</span></span>`;
+            } else if (lv === 'recommend') {
+              return `<span class="subject-pill recommend">${escapeHtml(s.name)}<span class="credit">(${s.credit})</span></span>`;
+            }
+            return null;
+          }).filter(Boolean).join('');
+          
+          if (!items) return '';
+          
+          // 그룹 라벨 (택N 정보)
+          const takeText = group.takeMin && group.takeMax 
+            ? `중 택${group.takeMin}~${group.takeMax}`
+            : group.takeN ? `중 택${group.takeN}` : '';
+          const groupLabel = takeText ? `<div class="group-label">${takeText}</div>` : '';
+          
+          return items + groupLabel;
+        }).filter(Boolean).join('');
+        
+        const inner = fixedPills + groupBlocks;
+        if (!inner) return '<td class="subject-cell"><span class="empty-cell">-</span></td>';
+        
+        return `<td class="subject-cell"><div class="subject-list">${inner}</div></td>`;
+      }).join('');
+      
+      return `
+        <tr>
+          <td class="area-cell">
+            <div class="area-name">${escapeHtml(area)}</div>
+          </td>
+          ${cells}
+        </tr>
+      `;
+    }
+    
+    function escapeHtml(s) {
+      return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+    
+    function showError(msg) {
+      document.getElementById('content').innerHTML = `
+        <div class="page-header">
+          <div><h2>오류</h2></div>
+          <a class="back-btn" href="track.html">← 트랙 목록으로</a>
+        </div>
+        <div class="description-box" style="color: #c44545; border-left: 4px solid #e57373;">
+          ${escapeHtml(msg)}
+        </div>
+      `;
+    }
+    
+    window.handleLogout = async function() {
+      const ok = confirm('로그아웃 하시겠습니까?');
+      if (!ok) return;
+      await supabase.auth.signOut();
+      window.location.href = 'login.html';
+    };
+    
+    init();
+  </script>
+</body>
+</html>

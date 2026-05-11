@@ -437,7 +437,7 @@
     
     const CATEGORY_LABELS = {
       social_science: '사회과학계열',
-      business: '경영·경제계열',
+      business: '경영경제계열',
       engineering: '자연공학계열',
       medical: '의료생명계열',
       other: '기타'
@@ -587,12 +587,11 @@
               </div>
             </div>
             <div class="track-actions">
+              <a class="open-btn" href="track-view.html?id=${item.id}">보기 →</a>
               ${canEdit ? `
-                <a class="open-btn" href="track-edit.html?id=${item.id}">수정 →</a>
+                <a class="icon-btn" href="track-edit.html?id=${item.id}">수정</a>
                 <button class="icon-btn danger" onclick="deleteTrack('${item.id}')">삭제</button>
-              ` : `
-                <a class="open-btn" href="track-edit.html?id=${item.id}">보기 →</a>
-              `}
+              ` : ''}
             </div>
           </div>
         `;

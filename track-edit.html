@@ -36,6 +36,12 @@
       --success-soft: #e8f5e9;
       --green: #7cb342;
       --green-soft: #eef7e3;
+      --core: #f4a261;
+      --core-soft: #fef0e3;
+      --core-dark: #d2691e;
+      --recommend: #5a9fd4;
+      --recommend-soft: #e3f0fa;
+      --recommend-dark: #2d5a8a;
       --shadow-soft: 0 4px 20px rgba(74, 144, 217, 0.08);
       --shadow-card: 0 8px 32px rgba(74, 144, 217, 0.12);
     }
@@ -151,7 +157,6 @@
       background: var(--primary-soft);
     }
     
-    /* 폼 카드 */
     .form-card {
       background: var(--surface);
       border-radius: 18px;
@@ -209,7 +214,6 @@
       line-height: 1.5;
     }
     
-    /* 편성표 정보 박스 */
     .curriculum-info {
       background: var(--primary-soft);
       border-left: 4px solid var(--primary);
@@ -231,7 +235,41 @@
       margin-left: 6px;
     }
     
-    /* 학기별 과목 선택 영역 */
+    /* 범례 */
+    .legend-bar {
+      background: var(--surface);
+      border-radius: 14px;
+      padding: 14px 20px;
+      margin-bottom: 16px;
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      flex-wrap: wrap;
+      box-shadow: var(--shadow-soft);
+    }
+    .legend-bar .legend-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+      margin-right: 4px;
+    }
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+    .legend-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+    .legend-dot.core { background: var(--core); }
+    .legend-dot.recommend { background: var(--recommend); }
+    .legend-dot.fixed { background: var(--green); }
+    
     .semester-section {
       background: var(--surface);
       border-radius: 18px;
@@ -256,7 +294,8 @@
       font-size: 13px;
       color: var(--text-muted);
       display: flex;
-      gap: 12px;
+      gap: 8px;
+      flex-wrap: wrap;
     }
     .semester-stats .stat {
       padding: 4px 10px;
@@ -264,13 +303,11 @@
       border-radius: 8px;
       font-weight: 500;
     }
-    .semester-stats .stat strong {
-      color: var(--primary-dark);
-    }
+    .semester-stats .stat.core-stat { background: var(--core-soft); color: var(--core-dark); }
+    .semester-stats .stat.recommend-stat { background: var(--recommend-soft); color: var(--recommend-dark); }
+    .semester-stats .stat strong { font-weight: 700; }
     
-    .area-group {
-      margin-bottom: 14px;
-    }
+    .area-group { margin-bottom: 14px; }
     .area-title {
       font-size: 13px;
       font-weight: 600;
@@ -288,31 +325,49 @@
       border: 1.5px solid transparent;
       border-radius: 10px;
       margin-bottom: 6px;
-      cursor: pointer;
       transition: all 0.15s ease;
-    }
-    .subject-row:hover {
-      background: var(--primary-soft);
-      border-color: var(--border-strong);
-    }
-    .subject-row.checked {
-      background: var(--primary-soft);
-      border-color: var(--primary);
     }
     .subject-row.fixed {
       background: var(--green-soft);
       border-color: var(--green);
-      cursor: default;
     }
-    .subject-row.fixed:hover { background: var(--green-soft); }
+    .subject-row.has-core {
+      background: var(--core-soft);
+      border-color: var(--core);
+    }
+    .subject-row.has-recommend {
+      background: var(--recommend-soft);
+      border-color: var(--recommend);
+    }
     
-    .subject-checkbox {
-      width: 20px;
-      height: 20px;
+    /* 3단계 선택 버튼 (라디오 그룹) */
+    .level-selector {
+      display: inline-flex;
+      gap: 0;
+      background: white;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      padding: 2px;
       flex-shrink: 0;
-      accent-color: var(--primary);
-      cursor: pointer;
     }
+    .level-btn {
+      padding: 5px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-family: inherit;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+    .level-btn:hover { background: var(--bg-sky); }
+    .level-btn.active.none { background: var(--text-muted); color: white; }
+    .level-btn.active.core { background: var(--core); color: white; }
+    .level-btn.active.recommend { background: var(--recommend); color: white; }
+    
     .subject-name {
       flex: 1;
       font-size: 14px;
@@ -332,9 +387,9 @@
       padding: 2px 8px;
       border-radius: 6px;
       font-weight: 600;
+      flex-shrink: 0;
     }
     .tag-fixed { background: var(--green); color: white; }
-    .tag-choice { background: var(--warning); color: white; }
     
     .choice-group-header {
       background: var(--warning-soft);
@@ -353,50 +408,6 @@
       color: #a8612a;
     }
     
-    /* 진로별 추천 영역 */
-    .career-recommend {
-      background: var(--surface);
-      border: 1.5px solid var(--primary);
-      border-radius: 14px;
-      padding: 16px 20px;
-      margin-bottom: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-    .career-recommend .label {
-      font-size: 14px;
-      color: var(--text);
-      font-weight: 600;
-    }
-    .career-recommend .desc {
-      font-size: 12px;
-      color: var(--text-muted);
-      margin-top: 2px;
-    }
-    .career-btn {
-      background: var(--primary);
-      color: white;
-      border: none;
-      padding: 9px 18px;
-      border-radius: 10px;
-      cursor: pointer;
-      font-size: 13px;
-      font-weight: 600;
-      font-family: inherit;
-      transition: all 0.15s ease;
-    }
-    .career-btn:hover { background: var(--primary-hover); }
-    .career-btn.secondary {
-      background: white;
-      color: var(--text);
-      border: 1.5px solid var(--border);
-    }
-    .career-btn.secondary:hover { background: var(--bg-sky); }
-    
-    /* 하단 액션 바 */
     .action-bar {
       position: sticky;
       bottom: 20px;
@@ -414,13 +425,20 @@
       font-size: 14px;
       color: var(--text);
       display: flex;
-      gap: 16px;
+      gap: 12px;
       flex-wrap: wrap;
+      align-items: center;
     }
-    .action-stats span strong {
-      color: var(--primary-dark);
-      font-size: 16px;
+    .action-stats .stat-item {
+      padding: 4px 12px;
+      border-radius: 8px;
+      font-weight: 500;
     }
+    .action-stats .stat-item.core { background: var(--core-soft); color: var(--core-dark); }
+    .action-stats .stat-item.recommend { background: var(--recommend-soft); color: var(--recommend-dark); }
+    .action-stats .stat-item.total { background: var(--bg-sky); color: var(--primary-dark); }
+    .action-stats strong { font-weight: 700; }
+    
     .action-buttons {
       display: flex;
       gap: 8px;
@@ -454,11 +472,8 @@
       text-decoration: none;
       display: inline-block;
     }
-    .btn-cancel:hover {
-      border-color: var(--text-muted);
-    }
+    .btn-cancel:hover { border-color: var(--text-muted); }
     
-    /* 로딩 / 빈 상태 */
     .loading-state, .empty-state {
       text-align: center;
       padding: 80px 20px;
@@ -501,6 +516,9 @@
       .page-header h2 { font-size: 22px; }
       .action-bar { flex-direction: column; align-items: stretch; }
       .action-stats { justify-content: center; }
+      .subject-row { flex-wrap: wrap; }
+      .level-selector { order: 4; width: 100%; }
+      .level-btn { flex: 1; }
     }
   </style>
 </head>
@@ -535,7 +553,7 @@
           <label>계열 *</label>
           <select id="formCategory">
             <option value="social_science">사회과학계열</option>
-            <option value="business">경영·경제계열</option>
+            <option value="business">경영경제계열</option>
             <option value="engineering">자연공학계열</option>
             <option value="medical">의료생명계열</option>
             <option value="other">기타</option>
@@ -576,8 +594,9 @@
     <!-- 하단 액션 바 -->
     <div id="actionBar" class="action-bar" style="display:none">
       <div class="action-stats">
-        <span>선택 과목: <strong id="selectedCount">0개</strong></span>
-        <span>총 학점: <strong id="totalCredit">0</strong></span>
+        <span class="stat-item core">⭐ 핵심 <strong id="coreCount">0</strong></span>
+        <span class="stat-item recommend">✓ 권장 <strong id="recommendCount">0</strong></span>
+        <span class="stat-item total">총 학점 <strong id="totalCredit">0</strong></span>
       </div>
       <div class="action-buttons">
         <a class="btn-cancel" href="track.html">취소</a>
@@ -598,10 +617,11 @@
     let currentUser = null;
     let currentProfile = null;
     let isAdmin = false;
-    let editingId = null;  // 수정 모드일 때 트랙 ID
+    let editingId = null;
     let currentSchoolId = null;
     let currentCurriculumData = null;
-    let selectedSubjects = {};  // {semKey: Set(subjectName)}
+    // 새 구조: {semKey: {subjectName: 'core'|'recommend'|null}}
+    let selections = {};
     
     const SEMESTERS = [
       { key: '1-1', label: '1학년 1학기' },
@@ -612,9 +632,6 @@
       { key: '3-2', label: '3학년 2학기' },
     ];
     
-    // ============================================
-    // 초기화
-    // ============================================
     async function init() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
@@ -651,7 +668,6 @@
         await loadCurriculums();
       }
       
-      // URL에 id 파라미터 있으면 수정 모드
       const params = new URLSearchParams(window.location.search);
       const editId = params.get('id');
       if (editId) {
@@ -710,7 +726,6 @@
         return;
       }
       
-      // 시트 ID 추출
       const sheetIdMatch = url.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
       if (!sheetIdMatch) {
         alert('스프레드시트 URL 형식이 올바르지 않습니다.');
@@ -718,7 +733,6 @@
       }
       const sheetId = sheetIdMatch[1];
       
-      // 로딩 표시
       document.getElementById('subjectSelectionWrap').innerHTML = `
         <div class="loading-state">
           <div class="spinner"></div>
@@ -740,7 +754,6 @@
             <strong>확인사항:</strong>
             <br>• 스프레드시트가 '링크가 있는 모든 사용자' 공유 설정인지 확인하세요.
             <br>• 시트 이름이 정확히 '편성표'인지 확인하세요.
-            <br>• 시트 형식이 표준 양식을 따르는지 확인하세요.
           </div>
         `;
       }
@@ -757,9 +770,6 @@
       info.classList.add('show');
     }
     
-    // ============================================
-    // 편성표 시트 분석 (시뮬레이터 코드 기반)
-    // ============================================
     async function loadCurriculumFromSheet(sheetId) {
       const sheetName = encodeURIComponent('편성표');
       const range = `${sheetName}!A1:M500`;
@@ -792,7 +802,6 @@
         }
       }
       
-      // 학교명 / 학교유형 추출
       const metaRow = expandedGrid[1] || [];
       let schoolName = '';
       let schoolType = '';
@@ -823,7 +832,6 @@
         }
       }
       
-      // 학기별 정리
       const semesters = {};
       for (const sem of Object.keys(COL.sem)) {
         semesters[sem] = { fixed: [], choiceGroups: {} };
@@ -910,7 +918,6 @@
         }
       }
       
-      // 학기교차 후처리
       function pairCrossSem(sem1Key, sem2Key) {
         const sem1Cross = semesters[sem1Key].fixed.filter(s => s.crossSem).sort((a,b) => a.rowIndex - b.rowIndex);
         const sem2Cross = semesters[sem2Key].fixed.filter(s => s.crossSem).sort((a,b) => a.rowIndex - b.rowIndex);
@@ -934,29 +941,21 @@
       return { semesters, schoolName, schoolType, totalSubjects, fixedCount, choiceCount };
     }
     
-    // ============================================
-    // 과목 선택 UI 렌더링
-    // ============================================
     function renderSubjectSelection(data) {
       const wrap = document.getElementById('subjectSelectionWrap');
-      wrap.innerHTML = SEMESTERS.map(sem => renderSemester(sem, data.semesters[sem.key])).join('');
       
-      // 체크박스 이벤트 바인딩
-      wrap.querySelectorAll('.subject-checkbox').forEach(cb => {
-        cb.addEventListener('change', () => {
-          const semKey = cb.dataset.sem;
-          const name = cb.dataset.name;
-          if (!selectedSubjects[semKey]) selectedSubjects[semKey] = new Set();
-          if (cb.checked) {
-            selectedSubjects[semKey].add(name);
-            cb.closest('.subject-row').classList.add('checked');
-          } else {
-            selectedSubjects[semKey].delete(name);
-            cb.closest('.subject-row').classList.remove('checked');
-          }
-          updateStats();
-        });
-      });
+      // 범례
+      const legendHtml = `
+        <div class="legend-bar">
+          <span class="legend-title">선택 수준:</span>
+          <span class="legend-item"><span class="legend-dot fixed"></span> 필수 (자동)</span>
+          <span class="legend-item"><span class="legend-dot core"></span> ⭐ 핵심 (꼭 들었으면 하는 과목)</span>
+          <span class="legend-item"><span class="legend-dot recommend"></span> ✓ 권장 (들으면 좋은 과목)</span>
+        </div>
+      `;
+      
+      const semHtml = SEMESTERS.map(sem => renderSemester(sem, data.semesters[sem.key])).join('');
+      wrap.innerHTML = legendHtml + semHtml;
     }
     
     function renderSemester(sem, semData) {
@@ -974,14 +973,13 @@
         `;
       }
       
-      // 학교지정 과목: 자동으로 모두 추천 (체크해제 불가)
       const fixedHtml = semData.fixed.length > 0 ? `
         <div class="area-group">
           <div class="area-title">학교지정 (필수)</div>
           ${semData.fixed.map(s => `
             <div class="subject-row fixed">
               <span style="width:20px;flex-shrink:0;text-align:center">✓</span>
-              <span class="subject-name">${s.name}</span>
+              <span class="subject-name">${escapeHtml(s.name)}</span>
               <span class="subject-credit">${s.credit}학점</span>
               <span class="subject-tag tag-fixed">필수</span>
             </div>
@@ -989,7 +987,6 @@
         </div>
       ` : '';
       
-      // 선택 그룹별
       const choiceHtml = Object.values(semData.choiceGroups).map(group => {
         const takeText = group.takeMin && group.takeMax 
           ? `${group.takeMin}~${group.takeMax}개 선택`
@@ -997,16 +994,21 @@
         return `
           <div class="area-group">
             <div class="choice-group-header">
-              <span><strong>${group.name}</strong></span>
+              <span><strong>${escapeHtml(group.name)}</strong></span>
               <span style="font-size:12px">${takeText}</span>
             </div>
             ${group.subjects.map(s => `
-              <div class="subject-row" onclick="toggleSubject(event, this)">
-                <input type="checkbox" class="subject-checkbox" 
-                  data-sem="${sem.key}" data-name="${escapeHtml(s.name)}" data-credit="${s.credit}">
-                <span class="subject-name">${s.name}</span>
+              <div class="subject-row" id="row-${sem.key}-${escapeHtml(s.name)}">
+                <span class="subject-name">${escapeHtml(s.name)}</span>
                 <span class="subject-credit">${s.credit}학점</span>
-                <span class="subject-tag tag-choice">선택</span>
+                <div class="level-selector">
+                  <button type="button" class="level-btn active none" data-level="none"
+                    onclick="setLevel('${sem.key}', '${escapeJsStr(s.name)}', null, this)">안 함</button>
+                  <button type="button" class="level-btn core" data-level="core"
+                    onclick="setLevel('${sem.key}', '${escapeJsStr(s.name)}', 'core', this)">⭐ 핵심</button>
+                  <button type="button" class="level-btn recommend" data-level="recommend"
+                    onclick="setLevel('${sem.key}', '${escapeJsStr(s.name)}', 'recommend', this)">✓ 권장</button>
+                </div>
               </div>
             `).join('')}
           </div>
@@ -1018,8 +1020,9 @@
           <div class="semester-header">
             <div class="semester-title">${sem.label}</div>
             <div class="semester-stats">
-              <span class="stat" id="stat-fixed-${sem.key}">필수 <strong>${semData.fixed.length}</strong></span>
-              <span class="stat" id="stat-selected-${sem.key}">추천 <strong>0</strong></span>
+              <span class="stat">필수 <strong>${semData.fixed.length}</strong></span>
+              <span class="stat core-stat" id="stat-core-${sem.key}">⭐ 핵심 <strong>0</strong></span>
+              <span class="stat recommend-stat" id="stat-recommend-${sem.key}">✓ 권장 <strong>0</strong></span>
             </div>
           </div>
           ${fixedHtml}
@@ -1028,57 +1031,75 @@
       `;
     }
     
-    window.toggleSubject = function(event, row) {
-      // 체크박스 자체를 클릭한 경우는 기본 동작
-      if (event.target.classList.contains('subject-checkbox')) return;
-      const cb = row.querySelector('.subject-checkbox');
-      if (cb && !cb.disabled) {
-        cb.checked = !cb.checked;
-        cb.dispatchEvent(new Event('change'));
+    window.setLevel = function(semKey, subjectName, level, btn) {
+      if (!selections[semKey]) selections[semKey] = {};
+      if (level === null) {
+        delete selections[semKey][subjectName];
+      } else {
+        selections[semKey][subjectName] = level;
       }
+      
+      // 같은 행의 모든 버튼 active 해제
+      const row = btn.closest('.subject-row');
+      row.querySelectorAll('.level-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      
+      // 행 색상 업데이트
+      row.classList.remove('has-core', 'has-recommend');
+      if (level === 'core') row.classList.add('has-core');
+      else if (level === 'recommend') row.classList.add('has-recommend');
+      
+      updateStats();
     };
     
     function escapeHtml(s) {
       return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
     }
+    function escapeJsStr(s) {
+      return String(s).replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/"/g, '\\"');
+    }
     
     function updateStats() {
-      let totalCount = 0;
+      let totalCore = 0;
+      let totalRecommend = 0;
       let totalCredit = 0;
       
-      // 학교지정 과목 (필수)
       if (currentCurriculumData) {
         for (const semKey of Object.keys(currentCurriculumData.semesters)) {
           const semData = currentCurriculumData.semesters[semKey];
+          // 학교지정 (필수) 학점
           for (const s of semData.fixed) {
-            totalCount++;
             totalCredit += s.credit || 0;
           }
-          // 선택한 과목들
-          const selected = selectedSubjects[semKey] || new Set();
-          const selectedCount = selected.size;
-          // 선택 그룹에서 학점 합산
+          // 선택 과목의 핵심/권장
+          let semCore = 0, semRecommend = 0;
+          const semSelections = selections[semKey] || {};
           for (const group of Object.values(semData.choiceGroups)) {
             for (const s of group.subjects) {
-              if (selected.has(s.name)) {
-                totalCount++;
+              const lv = semSelections[s.name];
+              if (lv === 'core') {
+                totalCore++;
+                semCore++;
+                totalCredit += s.credit || 0;
+              } else if (lv === 'recommend') {
+                totalRecommend++;
+                semRecommend++;
                 totalCredit += s.credit || 0;
               }
             }
           }
-          // 학기별 추천 수 업데이트
-          const statEl = document.getElementById(`stat-selected-${semKey}`);
-          if (statEl) statEl.innerHTML = `추천 <strong>${selectedCount}</strong>`;
+          const coreEl = document.getElementById(`stat-core-${semKey}`);
+          if (coreEl) coreEl.innerHTML = `⭐ 핵심 <strong>${semCore}</strong>`;
+          const recEl = document.getElementById(`stat-recommend-${semKey}`);
+          if (recEl) recEl.innerHTML = `✓ 권장 <strong>${semRecommend}</strong>`;
         }
       }
       
-      document.getElementById('selectedCount').textContent = `${totalCount}개`;
+      document.getElementById('coreCount').textContent = totalCore;
+      document.getElementById('recommendCount').textContent = totalRecommend;
       document.getElementById('totalCredit').textContent = totalCredit;
     }
     
-    // ============================================
-    // 저장
-    // ============================================
     window.saveTrack = async function() {
       const school_id = isAdmin ? document.getElementById('formSchool').value : currentProfile.school_id;
       const curriculum_id = document.getElementById('formCurriculum').value;
@@ -1090,10 +1111,18 @@
       if (!curriculum_id) { alert('편성표를 선택해주세요.'); return; }
       if (!title) { alert('트랙 제목을 입력해주세요.'); return; }
       
-      // selectedSubjects를 JSON으로 변환
+      // 새 구조: {semKey: {core: [...], recommend: [...]}}
       const recommended_subjects = {};
-      for (const [semKey, subjSet] of Object.entries(selectedSubjects)) {
-        recommended_subjects[semKey] = Array.from(subjSet);
+      for (const [semKey, semSel] of Object.entries(selections)) {
+        const core = [];
+        const recommend = [];
+        for (const [name, lv] of Object.entries(semSel)) {
+          if (lv === 'core') core.push(name);
+          else if (lv === 'recommend') recommend.push(name);
+        }
+        if (core.length > 0 || recommend.length > 0) {
+          recommended_subjects[semKey] = { core, recommend };
+        }
       }
       
       const payload = {
@@ -1124,9 +1153,6 @@
       }
     };
     
-    // ============================================
-    // 수정 모드: 기존 트랙 불러오기
-    // ============================================
     async function loadExistingTrack(id) {
       const { data, error } = await supabase
         .from('tracks').select('*').eq('id', id).single();
@@ -1149,24 +1175,45 @@
       
       if (data.curriculum_id) {
         document.getElementById('formCurriculum').value = data.curriculum_id;
-        // 저장된 추천 과목들을 selectedSubjects로 복원
-        for (const [semKey, arr] of Object.entries(data.recommended_subjects || {})) {
-          if (Array.isArray(arr)) selectedSubjects[semKey] = new Set(arr);
-        }
-        // 편성표 로드 및 체크박스 복원
-        await onCurriculumChange();
-        // 체크박스에 체크 복원
-        setTimeout(() => {
-          document.querySelectorAll('.subject-checkbox').forEach(cb => {
-            const semKey = cb.dataset.sem;
-            const name = cb.dataset.name;
-            if (selectedSubjects[semKey] && selectedSubjects[semKey].has(name)) {
-              cb.checked = true;
-              cb.closest('.subject-row').classList.add('checked');
+        
+        // 새/구 형식 모두 호환
+        for (const [semKey, semData] of Object.entries(data.recommended_subjects || {})) {
+          if (!selections[semKey]) selections[semKey] = {};
+          if (Array.isArray(semData)) {
+            // 구 형식: 배열 → 모두 recommend로 처리
+            for (const name of semData) {
+              selections[semKey][name] = 'recommend';
             }
-          });
+          } else if (semData && typeof semData === 'object') {
+            // 새 형식: {core: [...], recommend: [...]}
+            for (const name of (semData.core || [])) {
+              selections[semKey][name] = 'core';
+            }
+            for (const name of (semData.recommend || [])) {
+              selections[semKey][name] = 'recommend';
+            }
+          }
+        }
+        
+        await onCurriculumChange();
+        
+        setTimeout(() => {
+          for (const [semKey, semSel] of Object.entries(selections)) {
+            for (const [name, lv] of Object.entries(semSel)) {
+              const row = document.getElementById(`row-${semKey}-${escapeHtml(name)}`);
+              if (!row) continue;
+              const btn = row.querySelector(`.level-btn[data-level="${lv}"]`);
+              if (btn) {
+                row.querySelectorAll('.level-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                row.classList.remove('has-core', 'has-recommend');
+                if (lv === 'core') row.classList.add('has-core');
+                else if (lv === 'recommend') row.classList.add('has-recommend');
+              }
+            }
+          }
           updateStats();
-        }, 300);
+        }, 400);
       }
     }
     
