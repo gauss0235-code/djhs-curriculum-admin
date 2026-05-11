@@ -567,19 +567,19 @@
     
     .action-buttons { display: flex; gap: 8px; }
     .btn-save {
-      background: linear-gradient(135deg, #4A8AB8, #2D5A8A);
+      background: var(--sim-sky-blue);
       color: white;
       border: none;
       padding: 12px 28px;
       border-radius: 12px;
       cursor: pointer;
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 700;
-      font-family: 'JalnanGothic', 'Pretendard', sans-serif;
+      font-family: inherit;
       transition: all 0.15s ease;
       box-shadow: 0 3px 10px rgba(74, 138, 184, 0.3);
     }
-    .btn-save:hover { transform: translateY(-1px); box-shadow: 0 5px 14px rgba(74, 138, 184, 0.4); }
+    .btn-save:hover { background: #3D7AA3; transform: translateY(-1px); box-shadow: 0 5px 14px rgba(74, 138, 184, 0.4); }
     .btn-save:disabled { background: var(--text-light); cursor: not-allowed; transform: none; box-shadow: none; }
     .btn-cancel {
       background: white;
