@@ -367,42 +367,48 @@
       flex-shrink: 0;
       align-items: center;
     }
-    .open-btn {
-      background: var(--primary);
-      color: white;
-      border: none;
+    /* 열기/수정/삭제 버튼 공통 (Track의 보기/수정/삭제와 동일) */
+    .open-btn, .icon-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
       padding: 11px 20px;
+      border: none;
       border-radius: 10px;
       cursor: pointer;
       font-size: 14px;
       font-weight: 600;
       text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
+      font-family: inherit;
+      color: white;
       transition: all 0.15s ease;
+    }
+    
+    /* 열기 버튼 (베이지 - Track의 보기 버튼과 동일) */
+    .open-btn {
+      background: #D4A574;
+      box-shadow: 0 2px 8px rgba(212, 165, 116, 0.25);
+    }
+    .open-btn:hover {
+      background: #B8895A;
+    }
+    
+    /* 수정 버튼 (하늘색 - Track의 수정과 동일) */
+    .icon-btn {
+      background: var(--primary);
       box-shadow: 0 2px 8px rgba(74, 144, 217, 0.25);
     }
-    .open-btn:hover { background: var(--primary-hover); }
-    .icon-btn {
-      background: white;
-      border: 1.5px solid var(--border);
-      padding: 10px 14px;
-      border-radius: 10px;
-      cursor: pointer;
-      font-size: 13px;
-      color: var(--text-muted);
-      font-family: inherit;
-      transition: all 0.15s ease;
-    }
     .icon-btn:hover {
-      border-color: var(--border-strong);
-      color: var(--text);
+      background: var(--primary-hover);
+    }
+    
+    /* 삭제 버튼 (핑크 - Track의 삭제와 동일) */
+    .icon-btn.danger {
+      background: #ec6f8e;
+      box-shadow: 0 2px 8px rgba(236, 111, 142, 0.25);
     }
     .icon-btn.danger:hover {
-      border-color: var(--danger);
-      color: var(--danger);
-      background: var(--danger-soft);
+      background: #d65878;
     }
     .modal-bg {
       position: fixed;
