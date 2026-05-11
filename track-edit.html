@@ -750,15 +750,19 @@
       { key: '3-2', label: '3학년 2학기' },
     ];
     
-    // 수능 출제 과목 키워드 (일부)
-    const SUNEUNG_KEYWORDS = [
-      '공통국어', '공통수학', '공통영어', '한국사', '문학', '독서와 작문', '화법과 언어',
-      '대수', '미적분', '확률과 통계', '기하', '영어Ⅰ', '영어Ⅱ',
-      '통합사회', '통합과학', '물리학', '화학', '생명과학', '지구과학',
-      '사회문제 탐구', '윤리문제 탐구', '융합과학 탐구'
-    ];
+    // 수능 출제 과목 (정확한 과목명 일치)
+    const SUNEUNG_SUBJECTS = new Set([
+      '화법과 언어', '문학', '독서와 작문',
+      '대수', '미적분Ⅰ', '확률과 통계',
+      '영어Ⅰ', '영어Ⅱ',
+      '한국사1', '한국사2',
+      '통합사회1', '통합사회2',
+      '통합과학1', '통합과학2'
+    ]);
     function isSuneung(subject) {
-      return SUNEUNG_KEYWORDS.some(k => subject.includes(k));
+      // 공백 정규화 후 정확히 일치하는지 확인
+      const normalized = subject.replace(/\s+/g, ' ').trim();
+      return SUNEUNG_SUBJECTS.has(normalized);
     }
     
     // 과목 유형 → 태그 클래스
