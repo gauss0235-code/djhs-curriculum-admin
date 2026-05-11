@@ -14,11 +14,11 @@
       font-display: swap;
     }
     :root {
+      /* 기본 배경 (건드리지 않음) */
       --bg-sky: #e8f4fc;
       --bg-sky-deep: #d4ecf8;
       --surface: #ffffff;
       --border: #d8e8f3;
-      --border-strong: #b8d4e8;
       --text: #1e3a5f;
       --text-muted: #5d7894;
       --text-light: #8ba8c2;
@@ -28,22 +28,32 @@
       --primary-dark: #2d5a8a;
       --admin: #ec6f8e;
       --admin-soft: #fde7ed;
-      --danger: #e57373;
-      --danger-soft: #fdeaea;
-      --warning: #f4a261;
-      --warning-soft: #fef0e3;
-      --success: #66bb6a;
-      --success-soft: #e8f5e9;
-      --green: #7cb342;
-      --green-soft: #eef7e3;
-      --core: #f4a261;
-      --core-soft: #fef0e3;
-      --core-dark: #d2691e;
-      --recommend: #5a9fd4;
-      --recommend-soft: #e3f0fa;
-      --recommend-dark: #2d5a8a;
+      
+      /* 시뮬레이터 톤 (내부 카드용) */
+      --beige: #FFF8E7;
+      --beige-deep: #FFE9B3;
+      --beige-card: #FFFBF0;
+      --beige-soft: #FEF7E0;
+      --brown: #6B4423;
+      --brown-dark: #4A2E14;
+      --sky-blue-dark: #4A8AB8;
+      --sky-blue: #87BAD7;
+      --check-brown: #4A2E14;
+      
+      /* 태그 색상 */
+      --tag-fixed-bg: #FEF3C7;
+      --tag-fixed-text: #B45309;
+      --tag-core-bg: #FED7AA;
+      --tag-core-text: #9A3412;
+      --tag-recommend-bg: #DBEAFE;
+      --tag-recommend-text: #1D4ED8;
+      --tag-credit-bg: #DCFCE7;
+      --tag-credit-text: #15803D;
+      --tag-area-bg: #E0F2FE;
+      --tag-area-text: #0369A1;
+      
       --shadow-soft: 0 4px 20px rgba(74, 144, 217, 0.08);
-      --shadow-card: 0 8px 32px rgba(74, 144, 217, 0.12);
+      --shadow-beige: 0 4px 14px rgba(120, 80, 30, 0.08);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -72,13 +82,7 @@
       gap: 16px;
       flex-wrap: wrap;
     }
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      text-decoration: none;
-      color: inherit;
-    }
+    .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: inherit; }
     .brand-mark { width: 42px; height: 42px; }
     .brand-mark img { width: 100%; height: 100%; object-fit: contain; }
     .brand-name {
@@ -87,53 +91,34 @@
       color: var(--primary-dark);
       letter-spacing: -0.01em;
     }
-    .user-info {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      font-size: 14px;
-    }
-    .badge {
-      padding: 6px 14px;
-      border-radius: 20px;
-      font-size: 13px;
-      font-weight: 600;
-    }
+    .user-info { display: flex; align-items: center; gap: 14px; font-size: 14px; }
+    .badge { padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; }
     .badge-school { background: var(--primary-soft); color: var(--primary-dark); }
     .badge-admin { background: var(--admin-soft); color: var(--admin); }
     .user-name { font-weight: 500; }
     .logout-btn {
-      background: white;
-      border: 1.5px solid var(--border);
-      padding: 8px 16px;
-      border-radius: 20px;
-      cursor: pointer;
-      font-size: 13px;
-      color: var(--text-muted);
-      font-family: inherit;
+      background: white; border: 1.5px solid var(--border);
+      padding: 8px 16px; border-radius: 20px; cursor: pointer;
+      font-size: 13px; color: var(--text-muted); font-family: inherit;
       transition: all 0.15s ease;
     }
-    .logout-btn:hover {
-      background: var(--primary-soft);
-      border-color: var(--primary);
-      color: var(--primary);
-    }
+    .logout-btn:hover { background: var(--primary-soft); border-color: var(--primary); color: var(--primary); }
     main {
-      max-width: 1200px;
+      max-width: 1100px;
       margin: 0 auto;
-      padding: 32px 32px 80px;
+      padding: 32px 28px 100px;
     }
     .page-header {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
+      align-items: center;
       margin-bottom: 24px;
       gap: 16px;
       flex-wrap: wrap;
     }
     .page-header h2 {
       font-family: 'JalnanGothic', 'Pretendard', sans-serif;
-      font-size: 28px;
+      font-size: 30px;
       color: var(--primary-dark);
       letter-spacing: -0.02em;
       line-height: 1.3;
@@ -145,31 +130,49 @@
       background: white;
       border: 1.5px solid var(--border);
       padding: 10px 16px;
-      border-radius: 10px;
+      border-radius: 12px;
       font-size: 14px;
       color: var(--text);
       text-decoration: none;
       transition: all 0.15s ease;
     }
-    .back-btn:hover {
-      border-color: var(--primary);
-      color: var(--primary);
-      background: var(--primary-soft);
-    }
+    .back-btn:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-soft); }
     
+    /* === 시뮬레이터 톤의 카드 (베이지) === */
     .form-card {
-      background: var(--surface);
-      border-radius: 18px;
-      padding: 28px;
-      margin-bottom: 20px;
-      box-shadow: var(--shadow-soft);
+      background: var(--beige-card);
+      border-radius: 20px;
+      padding: 28px 32px;
+      margin-bottom: 18px;
+      box-shadow: var(--shadow-beige);
     }
     .form-card h3 {
-      font-size: 17px;
-      font-weight: 700;
-      margin-bottom: 18px;
-      color: var(--text);
+      font-family: 'JalnanGothic', 'Pretendard', sans-serif;
+      font-size: 22px;
+      color: var(--sky-blue-dark);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
+    .form-card .step-num {
+      width: 32px;
+      height: 32px;
+      background: var(--sky-blue-dark);
+      color: white;
+      border-radius: 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+    .form-card .step-desc {
+      font-size: 13px;
+      color: var(--brown);
+      margin-bottom: 20px;
+      padding-left: 4px;
+    }
+    
     .form-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -183,342 +186,444 @@
     .field label {
       display: block;
       font-size: 13px;
-      font-weight: 600;
-      color: var(--text);
+      font-weight: 700;
+      color: var(--brown);
       margin-bottom: 6px;
     }
     .field input,
     .field select,
     .field textarea {
       width: 100%;
-      padding: 11px 14px;
-      border: 1.5px solid var(--border);
-      border-radius: 10px;
+      padding: 12px 16px;
+      border: 1.5px solid var(--beige-deep);
+      border-radius: 12px;
       font-size: 14px;
       font-family: inherit;
       color: var(--text);
-      background: #f8fbfd;
+      background: white;
       transition: all 0.15s ease;
     }
     .field input:focus,
     .field select:focus,
     .field textarea:focus {
       outline: none;
-      border-color: var(--primary);
-      background: white;
+      border-color: var(--sky-blue-dark);
       box-shadow: 0 0 0 3px var(--primary-soft);
     }
     .field textarea {
-      min-height: 70px;
+      min-height: 75px;
       resize: vertical;
       line-height: 1.5;
     }
     
+    /* 편성표 정보 박스 */
     .curriculum-info {
-      background: var(--primary-soft);
-      border-left: 4px solid var(--primary);
-      padding: 14px 18px;
-      border-radius: 10px;
-      margin-top: 12px;
+      background: var(--beige);
+      border-left: 4px solid #F59E0B;
+      padding: 16px 20px;
+      border-radius: 12px;
+      margin-top: 14px;
       font-size: 14px;
-      color: var(--primary-dark);
+      color: var(--brown);
       line-height: 1.6;
       display: none;
     }
     .curriculum-info.show { display: block; }
+    .curriculum-info strong {
+      font-family: 'JalnanGothic', 'Pretendard', sans-serif;
+      color: var(--sky-blue-dark);
+      font-size: 16px;
+    }
     .curriculum-info .school-type {
       display: inline-block;
-      padding: 2px 10px;
+      padding: 3px 10px;
       background: white;
       border-radius: 10px;
       font-size: 12px;
       margin-left: 6px;
+      color: var(--brown);
+      font-weight: 600;
     }
     
-    /* 범례 */
+    /* 범례 칩들 */
     .legend-bar {
-      background: var(--surface);
-      border-radius: 14px;
+      background: var(--beige-card);
+      border-radius: 16px;
       padding: 14px 20px;
       margin-bottom: 16px;
       display: flex;
-      gap: 18px;
+      gap: 16px;
       align-items: center;
       flex-wrap: wrap;
-      box-shadow: var(--shadow-soft);
+      box-shadow: var(--shadow-beige);
     }
-    .legend-bar .legend-title {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--text);
-      margin-right: 4px;
+    .legend-title {
+      font-family: 'JalnanGothic', 'Pretendard', sans-serif;
+      font-size: 14px;
+      color: var(--brown);
     }
     .legend-item {
       display: inline-flex;
       align-items: center;
       gap: 6px;
       font-size: 13px;
-      color: var(--text-muted);
+      font-weight: 600;
+      color: var(--brown);
     }
     .legend-dot {
-      width: 14px;
-      height: 14px;
-      border-radius: 4px;
+      width: 16px;
+      height: 16px;
+      border-radius: 5px;
       flex-shrink: 0;
     }
-    .legend-dot.core { background: var(--core); }
-    .legend-dot.recommend { background: var(--recommend); }
-    .legend-dot.fixed { background: var(--green); }
+    .legend-dot.fixed { background: var(--tag-fixed-bg); border: 2px solid var(--tag-fixed-text); }
+    .legend-dot.core { background: var(--tag-core-bg); border: 2px solid var(--tag-core-text); }
+    .legend-dot.recommend { background: var(--tag-recommend-bg); border: 2px solid var(--tag-recommend-text); }
     
+    /* === 학기 섹션 === */
     .semester-section {
-      background: var(--surface);
-      border-radius: 18px;
-      padding: 24px;
-      margin-bottom: 14px;
-      box-shadow: var(--shadow-soft);
+      background: var(--beige-card);
+      border-radius: 20px;
+      padding: 26px 28px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow-beige);
     }
     .semester-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 16px;
-      padding-bottom: 12px;
-      border-bottom: 2px solid var(--border);
+      margin-bottom: 20px;
+      padding-bottom: 14px;
+      border-bottom: 2px dashed var(--beige-deep);
     }
     .semester-title {
-      font-size: 17px;
-      font-weight: 700;
-      color: var(--primary-dark);
-    }
-    .semester-stats {
-      font-size: 13px;
-      color: var(--text-muted);
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-    .semester-stats .stat {
-      padding: 4px 10px;
-      background: var(--bg-sky);
-      border-radius: 8px;
-      font-weight: 500;
-    }
-    .semester-stats .stat.core-stat { background: var(--core-soft); color: var(--core-dark); }
-    .semester-stats .stat.recommend-stat { background: var(--recommend-soft); color: var(--recommend-dark); }
-    .semester-stats .stat strong { font-weight: 700; }
-    
-    .area-group { margin-bottom: 14px; }
-    .area-title {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text-muted);
-      margin-bottom: 8px;
-      padding-left: 4px;
-    }
-    
-    .subject-row {
+      font-family: 'JalnanGothic', 'Pretendard', sans-serif;
+      font-size: 22px;
+      color: var(--sky-blue-dark);
       display: flex;
       align-items: center;
       gap: 10px;
-      padding: 10px 12px;
-      background: #f8fbfd;
-      border: 1.5px solid transparent;
+    }
+    .semester-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--sky-blue-dark);
       border-radius: 10px;
-      margin-bottom: 6px;
-      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 16px;
+      font-family: 'JalnanGothic', sans-serif;
     }
-    .subject-row.fixed {
-      background: var(--green-soft);
-      border-color: var(--green);
+    .semester-stats {
+      font-size: 12px;
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
     }
-    .subject-row.has-core {
-      background: var(--core-soft);
-      border-color: var(--core);
+    .semester-stats .stat {
+      padding: 6px 12px;
+      border-radius: 16px;
+      font-weight: 700;
+      background: white;
+      border: 1.5px solid var(--beige-deep);
+      color: var(--brown);
     }
-    .subject-row.has-recommend {
-      background: var(--recommend-soft);
-      border-color: var(--recommend);
+    .semester-stats .stat.core-stat {
+      background: var(--tag-core-bg);
+      color: var(--tag-core-text);
+      border-color: var(--tag-core-text);
+    }
+    .semester-stats .stat.recommend-stat {
+      background: var(--tag-recommend-bg);
+      color: var(--tag-recommend-text);
+      border-color: var(--tag-recommend-text);
+    }
+    .semester-stats .stat strong {
+      font-family: 'JalnanGothic', sans-serif;
+      font-size: 14px;
     }
     
-    /* 3단계 선택 버튼 (라디오 그룹) */
+    /* === 학교지정 영역 (시뮬레이터의 노란 알림 박스 느낌) === */
+    .fixed-banner {
+      background: linear-gradient(135deg, #FFF8E7, #FFE9B3);
+      border-radius: 14px;
+      padding: 12px 18px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      color: var(--brown);
+    }
+    .fixed-banner .badge-fixed {
+      background: #F59E0B;
+      color: white;
+      padding: 5px 12px;
+      border-radius: 10px;
+      font-family: 'JalnanGothic', sans-serif;
+      font-size: 13px;
+      flex-shrink: 0;
+    }
+    
+    /* === 과목 카드 (시뮬레이터 스타일) === */
+    .subject-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      background: white;
+      border: 2px solid transparent;
+      border-radius: 14px;
+      margin-bottom: 8px;
+      transition: all 0.15s ease;
+    }
+    .subject-card.fixed {
+      background: var(--beige);
+      border-color: var(--beige-deep);
+    }
+    .subject-card.has-core {
+      background: #FFFBEB;
+      border-left: 5px solid #F59E0B;
+    }
+    .subject-card.has-recommend {
+      background: #EFF6FF;
+      border-left: 5px solid #3B82F6;
+    }
+    
+    .subject-check {
+      width: 26px;
+      height: 26px;
+      border-radius: 7px;
+      background: var(--check-brown);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 15px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .subject-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-width: 0;
+    }
+    .subject-row-top {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .subject-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--brown-dark);
+    }
+    .subject-tags { display: flex; gap: 4px; flex-wrap: wrap; }
+    .stag {
+      font-size: 11px;
+      padding: 3px 9px;
+      border-radius: 7px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .stag-fixed { background: var(--tag-fixed-bg); color: var(--tag-fixed-text); }
+    .stag-area { background: var(--tag-area-bg); color: var(--tag-area-text); }
+    .subject-credit {
+      font-family: 'JalnanGothic', 'Pretendard', sans-serif;
+      color: var(--sky-blue-dark);
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+    
+    /* 3단계 선택 버튼 */
     .level-selector {
       display: inline-flex;
       gap: 0;
-      background: white;
-      border: 1.5px solid var(--border);
-      border-radius: 8px;
-      padding: 2px;
+      background: #F5F1E8;
+      border: 1.5px solid var(--beige-deep);
+      border-radius: 10px;
+      padding: 3px;
       flex-shrink: 0;
     }
     .level-btn {
-      padding: 5px 12px;
+      padding: 7px 13px;
       font-size: 12px;
-      font-weight: 600;
-      border-radius: 6px;
+      font-weight: 700;
+      border-radius: 7px;
       cursor: pointer;
       border: none;
       background: transparent;
-      color: var(--text-muted);
+      color: var(--brown);
       font-family: inherit;
       transition: all 0.15s ease;
       white-space: nowrap;
     }
-    .level-btn:hover { background: var(--bg-sky); }
-    .level-btn.active.none { background: var(--text-muted); color: white; }
-    .level-btn.active.core { background: var(--core); color: white; }
-    .level-btn.active.recommend { background: var(--recommend); color: white; }
+    .level-btn:hover { background: white; }
+    .level-btn.active.none { background: var(--brown); color: white; }
+    .level-btn.active.core { 
+      background: linear-gradient(135deg, #F59E0B, #EA580C); 
+      color: white;
+      box-shadow: 0 2px 6px rgba(234, 88, 12, 0.25);
+    }
+    .level-btn.active.recommend { 
+      background: linear-gradient(135deg, #3B82F6, #1D4ED8); 
+      color: white;
+      box-shadow: 0 2px 6px rgba(29, 78, 216, 0.25);
+    }
     
-    .subject-name {
-      flex: 1;
-      font-size: 14px;
-      color: var(--text);
-      font-weight: 500;
-    }
-    .subject-credit {
-      font-size: 12px;
-      color: var(--text-muted);
-      padding: 2px 8px;
-      background: white;
-      border-radius: 6px;
-      font-weight: 600;
-    }
-    .subject-tag {
-      font-size: 11px;
-      padding: 2px 8px;
-      border-radius: 6px;
-      font-weight: 600;
-      flex-shrink: 0;
-    }
-    .tag-fixed { background: var(--green); color: white; }
-    
+    /* 선택군 헤더 */
     .choice-group-header {
-      background: var(--warning-soft);
-      border-left: 4px solid var(--warning);
-      padding: 8px 14px;
-      border-radius: 8px;
-      margin: 12px 0 8px;
-      font-size: 13px;
-      color: var(--text);
+      background: linear-gradient(135deg, #FED7AA, #FB923C);
+      color: white;
+      padding: 10px 18px;
+      border-radius: 12px;
+      margin: 16px 0 10px;
+      font-family: 'JalnanGothic', 'Pretendard', sans-serif;
+      font-size: 15px;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
-    .choice-group-header strong {
+    .choice-group-header .take-info {
+      background: rgba(255,255,255,0.25);
+      padding: 4px 12px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-family: 'Pretendard', sans-serif;
       font-weight: 700;
-      color: #a8612a;
     }
     
+    .area-group { margin-bottom: 14px; }
+    .area-title {
+      font-family: 'JalnanGothic', 'Pretendard', sans-serif;
+      font-size: 15px;
+      color: var(--brown);
+      margin-bottom: 8px;
+      padding-left: 4px;
+    }
+    
+    /* 하단 액션 바 (시뮬레이터 톤) */
     .action-bar {
       position: sticky;
       bottom: 20px;
-      background: var(--surface);
-      border-radius: 14px;
+      background: var(--beige-card);
+      border-radius: 16px;
       padding: 16px 24px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 12px;
-      box-shadow: 0 -2px 20px rgba(74, 144, 217, 0.15);
+      box-shadow: 0 -4px 20px rgba(120, 80, 30, 0.15);
       flex-wrap: wrap;
+      border: 2px solid var(--beige-deep);
     }
     .action-stats {
       font-size: 14px;
-      color: var(--text);
       display: flex;
-      gap: 12px;
+      gap: 10px;
       flex-wrap: wrap;
       align-items: center;
     }
     .action-stats .stat-item {
-      padding: 4px 12px;
-      border-radius: 8px;
-      font-weight: 500;
+      padding: 7px 14px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 13px;
     }
-    .action-stats .stat-item.core { background: var(--core-soft); color: var(--core-dark); }
-    .action-stats .stat-item.recommend { background: var(--recommend-soft); color: var(--recommend-dark); }
-    .action-stats .stat-item.total { background: var(--bg-sky); color: var(--primary-dark); }
-    .action-stats strong { font-weight: 700; }
+    .action-stats .stat-item.core { background: var(--tag-core-bg); color: var(--tag-core-text); }
+    .action-stats .stat-item.recommend { background: var(--tag-recommend-bg); color: var(--tag-recommend-text); }
+    .action-stats .stat-item.total {
+      background: var(--tag-credit-bg);
+      color: var(--tag-credit-text);
+    }
+    .action-stats strong {
+      font-family: 'JalnanGothic', sans-serif;
+      font-size: 16px;
+    }
     
-    .action-buttons {
-      display: flex;
-      gap: 8px;
-    }
+    .action-buttons { display: flex; gap: 8px; }
     .btn-save {
-      background: var(--primary);
+      background: linear-gradient(135deg, #4A8AB8, #2D5A8A);
       color: white;
       border: none;
-      padding: 11px 22px;
-      border-radius: 10px;
+      padding: 12px 28px;
+      border-radius: 12px;
       cursor: pointer;
       font-size: 15px;
-      font-weight: 600;
-      font-family: inherit;
+      font-weight: 700;
+      font-family: 'JalnanGothic', 'Pretendard', sans-serif;
       transition: all 0.15s ease;
+      box-shadow: 0 3px 10px rgba(74, 138, 184, 0.3);
     }
-    .btn-save:hover { background: var(--primary-hover); }
+    .btn-save:hover { transform: translateY(-1px); box-shadow: 0 5px 14px rgba(74, 138, 184, 0.4); }
     .btn-save:disabled {
       background: var(--text-light);
       cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
     }
     .btn-cancel {
       background: white;
-      border: 1.5px solid var(--border);
-      padding: 11px 20px;
-      border-radius: 10px;
+      border: 1.5px solid var(--beige-deep);
+      padding: 12px 22px;
+      border-radius: 12px;
       cursor: pointer;
       font-size: 14px;
-      color: var(--text);
+      color: var(--brown);
       font-family: inherit;
+      font-weight: 600;
       text-decoration: none;
       display: inline-block;
     }
-    .btn-cancel:hover { border-color: var(--text-muted); }
+    .btn-cancel:hover { background: var(--beige); }
     
+    /* 로딩 / 알림 */
     .loading-state, .empty-state {
       text-align: center;
       padding: 80px 20px;
-      color: var(--text-muted);
-      background: var(--surface);
-      border-radius: 18px;
-      box-shadow: var(--shadow-soft);
+      color: var(--brown);
+      background: var(--beige-card);
+      border-radius: 20px;
+      box-shadow: var(--shadow-beige);
     }
     .loading-state .spinner {
-      width: 40px;
-      height: 40px;
+      width: 40px; height: 40px;
       margin: 0 auto 16px;
-      border: 3px solid var(--border);
-      border-top-color: var(--primary);
+      border: 3px solid var(--beige-deep);
+      border-top-color: var(--sky-blue-dark);
       border-radius: 50%;
       animation: spin 0.8s linear infinite;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
     
     .alert {
-      padding: 14px 18px;
-      border-radius: 10px;
+      padding: 16px 20px;
+      border-radius: 12px;
       margin-bottom: 14px;
       font-size: 14px;
       line-height: 1.5;
     }
-    .alert.warning {
-      background: var(--warning-soft);
-      color: #a8612a;
-      border-left: 4px solid var(--warning);
-    }
     .alert.danger {
-      background: var(--danger-soft);
-      color: #c44545;
-      border-left: 4px solid var(--danger);
+      background: #FEE2E2;
+      color: #991B1B;
+      border-left: 4px solid #DC2626;
     }
     
     @media (max-width: 768px) {
-      main { padding: 24px 18px 80px; }
-      .page-header h2 { font-size: 22px; }
+      main { padding: 24px 16px 100px; }
+      .page-header h2 { font-size: 24px; }
       .action-bar { flex-direction: column; align-items: stretch; }
       .action-stats { justify-content: center; }
-      .subject-row { flex-wrap: wrap; }
+      .subject-card { flex-wrap: wrap; }
       .level-selector { order: 4; width: 100%; }
       .level-btn { flex: 1; }
+      .form-card { padding: 22px 20px; }
+      .semester-section { padding: 22px 20px; }
     }
   </style>
 </head>
@@ -535,15 +640,14 @@
   
   <main>
     <div class="page-header">
-      <div>
-        <h2 id="pageTitle">새 트랙 만들기</h2>
-      </div>
+      <h2 id="pageTitle">새 트랙 만들기</h2>
       <a class="back-btn" href="track.html">← 트랙 목록으로</a>
     </div>
     
     <!-- 1단계: 트랙 기본 정보 -->
     <div class="form-card">
-      <h3>1. 트랙 기본 정보</h3>
+      <h3><span class="step-num">1</span>트랙 기본 정보</h3>
+      <div class="step-desc">트랙의 제목과 계열, 설명을 입력해주세요</div>
       <div class="form-row">
         <div class="field" id="schoolField" style="display:none">
           <label>학교 *</label>
@@ -576,7 +680,8 @@
     
     <!-- 2단계: 편성표 선택 -->
     <div class="form-card">
-      <h3>2. 기반 편성표 선택</h3>
+      <h3><span class="step-num">2</span>기반 편성표 선택</h3>
+      <div class="step-desc">트랙의 기반이 될 편성표를 선택해주세요</div>
       <div class="form-row single">
         <div class="field">
           <label>편성표 *</label>
@@ -600,7 +705,7 @@
       </div>
       <div class="action-buttons">
         <a class="btn-cancel" href="track.html">취소</a>
-        <button class="btn-save" id="saveBtn" onclick="saveTrack()">저장</button>
+        <button class="btn-save" id="saveBtn" onclick="saveTrack()">저장하기</button>
       </div>
     </div>
   </main>
@@ -620,16 +725,15 @@
     let editingId = null;
     let currentSchoolId = null;
     let currentCurriculumData = null;
-    // 새 구조: {semKey: {subjectName: 'core'|'recommend'|null}}
     let selections = {};
     
     const SEMESTERS = [
-      { key: '1-1', label: '1학년 1학기' },
-      { key: '1-2', label: '1학년 2학기' },
-      { key: '2-1', label: '2학년 1학기' },
-      { key: '2-2', label: '2학년 2학기' },
-      { key: '3-1', label: '3학년 1학기' },
-      { key: '3-2', label: '3학년 2학기' },
+      { key: '1-1', label: '1학년 1학기', short: '1-1' },
+      { key: '1-2', label: '1학년 2학기', short: '1-2' },
+      { key: '2-1', label: '2학년 1학기', short: '2-1' },
+      { key: '2-2', label: '2학년 2학기', short: '2-2' },
+      { key: '3-1', label: '3학년 1학기', short: '3-1' },
+      { key: '3-2', label: '3학년 2학기', short: '3-2' },
     ];
     
     async function init() {
@@ -678,9 +782,7 @@
     
     async function loadSchools() {
       const { data } = await supabase
-        .from('schools')
-        .select('id, name, code')
-        .order('name');
+        .from('schools').select('id, name, code').order('name');
       const select = document.getElementById('formSchool');
       select.innerHTML = '<option value="">학교를 선택하세요</option>' + 
         data.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
@@ -834,12 +936,10 @@
       
       const semesters = {};
       for (const sem of Object.keys(COL.sem)) {
-        semesters[sem] = { fixed: [], choiceGroups: {} };
+        semesters[sem] = { fixed: [], choiceGroups: {}, choiceOrder: [] };
       }
       
-      let totalSubjects = 0;
-      let fixedCount = 0;
-      let choiceCount = 0;
+      let totalSubjects = 0, fixedCount = 0, choiceCount = 0;
       
       for (let r = dataStartRow; r < endRow; r++) {
         const row = expandedGrid[r] || [];
@@ -879,20 +979,14 @@
             credit = baseCredit;
           }
           
-          const subjInfo = {
-            name: subject, area: area, type: type,
-            credit: credit, baseCredit: baseCredit,
-            crossSem: isCrossSem, rowIndex: r,
-          };
+          const subjInfo = { name: subject, area, type, credit, baseCredit, crossSem: isCrossSem, rowIndex: r };
           
           if (isFixed) {
             semesters[semKey].fixed.push(subjInfo);
             fixedCount++;
           } else {
             let groupName = '선택';
-            let takeN = null;
-            let takeMin = null;
-            let takeMax = null;
+            let takeN = null, takeMin = null, takeMax = null;
             const groupMatch = completion.match(/(선택군\s*[A-Z\d]+|[A-Z]\s*그룹|선택\s*\w+)/);
             if (groupMatch) groupName = groupMatch[1].replace(/\s+/g, '');
             
@@ -910,6 +1004,7 @@
               semesters[semKey].choiceGroups[groupName] = {
                 name: groupName, takeN, takeMin, takeMax, subjects: []
               };
+              semesters[semKey].choiceOrder.push(groupName);
             }
             semesters[semKey].choiceGroups[groupName].subjects.push(subjInfo);
             choiceCount++;
@@ -944,13 +1039,12 @@
     function renderSubjectSelection(data) {
       const wrap = document.getElementById('subjectSelectionWrap');
       
-      // 범례
       const legendHtml = `
         <div class="legend-bar">
-          <span class="legend-title">선택 수준:</span>
-          <span class="legend-item"><span class="legend-dot fixed"></span> 필수 (자동)</span>
-          <span class="legend-item"><span class="legend-dot core"></span> ⭐ 핵심 (꼭 들었으면 하는 과목)</span>
-          <span class="legend-item"><span class="legend-dot recommend"></span> ✓ 권장 (들으면 좋은 과목)</span>
+          <span class="legend-title">📌 선택 수준</span>
+          <span class="legend-item"><span class="legend-dot fixed"></span>학교지정 (자동 필수)</span>
+          <span class="legend-item"><span class="legend-dot core"></span>⭐ 핵심 (꼭 들었으면 하는 과목)</span>
+          <span class="legend-item"><span class="legend-dot recommend"></span>✓ 권장 (들으면 좋은 과목)</span>
         </div>
       `;
       
@@ -963,8 +1057,10 @@
         return `
           <div class="semester-section">
             <div class="semester-header">
-              <div class="semester-title">${sem.label}</div>
-              <div class="semester-stats"><span class="stat">데이터 없음</span></div>
+              <div class="semester-title">
+                <span class="semester-icon">${sem.short}</span>
+                ${sem.label}
+              </div>
             </div>
             <p style="color:var(--text-light);font-size:13px;text-align:center;padding:20px">
               이 학기에 등록된 과목이 없습니다.
@@ -973,33 +1069,51 @@
         `;
       }
       
+      // 학교지정 영역
       const fixedHtml = semData.fixed.length > 0 ? `
-        <div class="area-group">
-          <div class="area-title">학교지정 (필수)</div>
-          ${semData.fixed.map(s => `
-            <div class="subject-row fixed">
-              <span style="width:20px;flex-shrink:0;text-align:center">✓</span>
-              <span class="subject-name">${escapeHtml(s.name)}</span>
-              <span class="subject-credit">${s.credit}학점</span>
-              <span class="subject-tag tag-fixed">필수</span>
-            </div>
-          `).join('')}
+        <div class="fixed-banner">
+          <span class="badge-fixed">학교 지정</span>
+          <span>자동으로 들어가는 필수 과목이에요</span>
         </div>
+        ${semData.fixed.map(s => `
+          <div class="subject-card fixed">
+            <span class="subject-check">✓</span>
+            <div class="subject-info">
+              <div class="subject-row-top">
+                <span class="subject-name">${escapeHtml(s.name)}</span>
+                <span class="subject-tags">
+                  <span class="stag stag-area">${escapeHtml(s.area)}</span>
+                  <span class="stag stag-fixed">학교지정</span>
+                </span>
+              </div>
+            </div>
+            <span class="subject-credit">${s.credit}학점</span>
+          </div>
+        `).join('')}
       ` : '';
       
-      const choiceHtml = Object.values(semData.choiceGroups).map(group => {
+      // 선택 그룹별
+      const choiceHtml = semData.choiceOrder.map(groupName => {
+        const group = semData.choiceGroups[groupName];
         const takeText = group.takeMin && group.takeMax 
           ? `${group.takeMin}~${group.takeMax}개 선택`
           : group.takeN ? `${group.takeN}개 선택` : '선택';
         return `
           <div class="area-group">
             <div class="choice-group-header">
-              <span><strong>${escapeHtml(group.name)}</strong></span>
-              <span style="font-size:12px">${takeText}</span>
+              <span>${escapeHtml(group.name)}</span>
+              <span class="take-info">${takeText}</span>
             </div>
             ${group.subjects.map(s => `
-              <div class="subject-row" id="row-${sem.key}-${escapeHtml(s.name)}">
-                <span class="subject-name">${escapeHtml(s.name)}</span>
+              <div class="subject-card" id="row-${sem.key}-${escapeAttr(s.name)}">
+                <div class="subject-info">
+                  <div class="subject-row-top">
+                    <span class="subject-name">${escapeHtml(s.name)}</span>
+                    <span class="subject-tags">
+                      <span class="stag stag-area">${escapeHtml(s.area)}</span>
+                    </span>
+                  </div>
+                </div>
                 <span class="subject-credit">${s.credit}학점</span>
                 <div class="level-selector">
                   <button type="button" class="level-btn active none" data-level="none"
@@ -1018,7 +1132,10 @@
       return `
         <div class="semester-section">
           <div class="semester-header">
-            <div class="semester-title">${sem.label}</div>
+            <div class="semester-title">
+              <span class="semester-icon">${sem.short}</span>
+              ${sem.label}
+            </div>
             <div class="semester-stats">
               <span class="stat">필수 <strong>${semData.fixed.length}</strong></span>
               <span class="stat core-stat" id="stat-core-${sem.key}">⭐ 핵심 <strong>0</strong></span>
@@ -1039,12 +1156,10 @@
         selections[semKey][subjectName] = level;
       }
       
-      // 같은 행의 모든 버튼 active 해제
-      const row = btn.closest('.subject-row');
+      const row = btn.closest('.subject-card');
       row.querySelectorAll('.level-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       
-      // 행 색상 업데이트
       row.classList.remove('has-core', 'has-recommend');
       if (level === 'core') row.classList.add('has-core');
       else if (level === 'recommend') row.classList.add('has-recommend');
@@ -1055,23 +1170,22 @@
     function escapeHtml(s) {
       return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
     }
+    function escapeAttr(s) {
+      return String(s).replace(/["'<>\s]/g, '_');
+    }
     function escapeJsStr(s) {
       return String(s).replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/"/g, '\\"');
     }
     
     function updateStats() {
-      let totalCore = 0;
-      let totalRecommend = 0;
-      let totalCredit = 0;
+      let totalCore = 0, totalRecommend = 0, totalCredit = 0;
       
       if (currentCurriculumData) {
         for (const semKey of Object.keys(currentCurriculumData.semesters)) {
           const semData = currentCurriculumData.semesters[semKey];
-          // 학교지정 (필수) 학점
           for (const s of semData.fixed) {
             totalCredit += s.credit || 0;
           }
-          // 선택 과목의 핵심/권장
           let semCore = 0, semRecommend = 0;
           const semSelections = selections[semKey] || {};
           for (const group of Object.values(semData.choiceGroups)) {
@@ -1111,7 +1225,6 @@
       if (!curriculum_id) { alert('편성표를 선택해주세요.'); return; }
       if (!title) { alert('트랙 제목을 입력해주세요.'); return; }
       
-      // 새 구조: {semKey: {core: [...], recommend: [...]}}
       const recommended_subjects = {};
       for (const [semKey, semSel] of Object.entries(selections)) {
         const core = [];
@@ -1149,7 +1262,7 @@
       } catch (err) {
         alert('저장 실패: ' + err.message);
         btn.disabled = false;
-        btn.textContent = '저장';
+        btn.textContent = '저장하기';
       }
     };
     
@@ -1176,22 +1289,13 @@
       if (data.curriculum_id) {
         document.getElementById('formCurriculum').value = data.curriculum_id;
         
-        // 새/구 형식 모두 호환
         for (const [semKey, semData] of Object.entries(data.recommended_subjects || {})) {
           if (!selections[semKey]) selections[semKey] = {};
           if (Array.isArray(semData)) {
-            // 구 형식: 배열 → 모두 recommend로 처리
-            for (const name of semData) {
-              selections[semKey][name] = 'recommend';
-            }
+            for (const name of semData) selections[semKey][name] = 'recommend';
           } else if (semData && typeof semData === 'object') {
-            // 새 형식: {core: [...], recommend: [...]}
-            for (const name of (semData.core || [])) {
-              selections[semKey][name] = 'core';
-            }
-            for (const name of (semData.recommend || [])) {
-              selections[semKey][name] = 'recommend';
-            }
+            for (const name of (semData.core || [])) selections[semKey][name] = 'core';
+            for (const name of (semData.recommend || [])) selections[semKey][name] = 'recommend';
           }
         }
         
@@ -1200,7 +1304,7 @@
         setTimeout(() => {
           for (const [semKey, semSel] of Object.entries(selections)) {
             for (const [name, lv] of Object.entries(semSel)) {
-              const row = document.getElementById(`row-${semKey}-${escapeHtml(name)}`);
+              const row = document.getElementById(`row-${semKey}-${escapeAttr(name)}`);
               if (!row) continue;
               const btn = row.querySelector(`.level-btn[data-level="${lv}"]`);
               if (btn) {
