@@ -223,70 +223,73 @@
       box-shadow: 0 5px 14px rgba(107, 114, 128, 0.4);
     }
     .filter-bar {
-      background: var(--surface);
-      border: 1.5px solid var(--border);
+      background: white;
+      border: 1.5px solid #E5E7EB;
       padding: 18px 24px;
       border-radius: 16px;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
       display: flex;
       align-items: center;
       gap: 14px;
       flex-wrap: wrap;
-      box-shadow: var(--shadow-soft);
+      box-shadow: 0 2px 8px rgba(120, 80, 30, 0.06);
     }
     .filter-bar label {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text);
+      font-family: 'JalnanGothic', 'Pretendard', sans-serif;
+      font-size: 15px;
+      color: #4A8AB8;
     }
     .filter-bar select {
       padding: 11px 16px;
-      border: 1.5px solid var(--border);
+      border: 1.5px solid #E5E7EB;
       border-radius: 10px;
-      font-size: 15px;
+      font-size: 14px;
       font-family: inherit;
-      background: #f8fbfd;
-      color: var(--text);
+      background: white;
+      color: #2C3E50;
       flex: 1;
       max-width: 320px;
       cursor: pointer;
     }
     .filter-bar select:focus {
       outline: none;
-      border-color: var(--primary);
-      background: white;
+      border-color: #4A8AB8;
+      box-shadow: 0 0 0 3px rgba(74, 138, 184, 0.15);
     }
     .empty-state {
       text-align: center;
       padding: 80px 20px;
-      color: var(--text-muted);
-      background: var(--surface);
+      color: #6B7280;
+      background: white;
       border-radius: 20px;
-      box-shadow: var(--shadow-soft);
+      box-shadow: 0 2px 8px rgba(120, 80, 30, 0.06);
     }
     .empty-state .icon {
-      width: 64px;
-      height: 64px;
+      width: 72px;
+      height: 72px;
       margin: 0 auto 20px;
-      color: var(--primary);
-      background: var(--primary-soft);
+      color: #4A8AB8;
+      background: #FFF8E7;
+      border: 2px dashed #F59E0B;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
     }
     .empty-state .icon svg {
-      width: 32px;
-      height: 32px;
+      width: 34px;
+      height: 34px;
+      color: #F59E0B;
     }
     .empty-state p {
-      font-size: 16px;
-      margin-bottom: 6px;
-      color: var(--text);
-      font-weight: 500;
+      font-family: 'JalnanGothic', 'Pretendard', sans-serif;
+      font-size: 18px;
+      margin-bottom: 8px;
+      color: #4A8AB8;
     }
     .empty-state p:last-child {
-      color: var(--text-light);
+      font-family: 'Pretendard', sans-serif;
+      color: #6B7280;
       font-size: 14px;
       font-weight: 400;
     }
@@ -518,7 +521,7 @@
     </div>
     
     <div id="schoolFilter" class="filter-bar hidden">
-      <label>학교 선택</label>
+      <label>🏫 학교 선택</label>
       <select id="schoolSelect" onchange="loadSheets()">
         <option value="">학교를 선택하세요</option>
       </select>
@@ -593,7 +596,7 @@
     
     const EMPTY_ICONS = {
       school: `<svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5z"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/></svg>`,
-      empty: `<svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/></svg>`
+      empty: `<svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>`
     };
     
     window.updateTitlePlaceholder = function() {
@@ -671,7 +674,7 @@
             <div class="empty-state">
               <div class="icon">${EMPTY_ICONS.school}</div>
               <p>위에서 학교를 선택하세요</p>
-              <p>선택한 학교의 시트가 표시됩니다.</p>
+              <p>선택한 학교의 시트가 표시됩니다</p>
             </div>
           `;
           return;
@@ -696,8 +699,8 @@
         listEl.innerHTML = `
           <div class="empty-state">
             <div class="icon">${EMPTY_ICONS.empty}</div>
-            <p>아직 등록된 시트가 없습니다</p>
-            <p>${isAdmin ? '위 버튼으로 새 시트를 등록해주세요.' : '지원단에서 시트를 등록하면 여기에 표시됩니다.'}</p>
+            <p>아직 등록된 시트가 없어요</p>
+            <p>${isAdmin ? '위 버튼으로 새 시트를 등록해보세요' : '지원단에서 시트를 등록하면 여기에 표시됩니다'}</p>
           </div>
         `;
         return;
