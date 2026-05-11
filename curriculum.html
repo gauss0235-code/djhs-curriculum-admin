@@ -517,7 +517,7 @@
         <div class="desc" id="pageDesc">교육과정 편성표를 확인하세요.</div>
       </div>
       <div class="page-header-actions">
-        <button id="addBtn" class="btn-primary hidden" onclick="showAddForm()">+ 새 편성표 등록</button>
+        <button id="addBtn" class="btn-primary hidden" onclick="showAddForm()">+ 새 교육과정 편성표 등록</button>
         <a class="back-btn" href="dashboard.html">← 대시보드로</a>
       </div>
     </div>
@@ -545,7 +545,7 @@
   
   <div id="modal" class="modal-bg hidden">
     <div class="modal">
-      <h3 id="modalTitle">새 편성표 등록</h3>
+      <h3 id="modalTitle">새 교육과정 편성표 등록</h3>
       <div class="field">
         <label>학교 *</label>
         <select id="formSchool"></select>
@@ -638,7 +638,7 @@
         `;
         document.getElementById('addBtn').classList.remove('hidden');
         document.getElementById('schoolFilter').classList.remove('hidden');
-        document.getElementById('pageDesc').textContent = '학교를 선택해서 등록된 편성표를 관리하세요.';
+        document.getElementById('pageDesc').textContent = '학교를 선택해서 등록된 교육과정 편성표를 관리하세요.';
         await loadSchools();
       } else if (isSupport) {
         userInfoEl.innerHTML = `
@@ -646,9 +646,9 @@
           <span class="user-name">${profile.display_name}</span>
           <button class="logout-btn" onclick="handleLogout()">로그아웃</button>
         `;
-        // 지원단은 조회만 가능: 새 편성표 등록 버튼 숨김, 학교 선택은 표시
+        // 지원단은 조회만 가능: 새 교육과정 편성표 등록 버튼 숨김, 학교 선택은 표시
         document.getElementById('schoolFilter').classList.remove('hidden');
-        document.getElementById('pageDesc').textContent = '학교를 선택해서 등록된 편성표를 조회하세요.';
+        document.getElementById('pageDesc').textContent = '학교를 선택해서 등록된 교육과정 편성표를 조회하세요.';
         await loadSchools();
       } else {
         userInfoEl.innerHTML = `
@@ -688,7 +688,7 @@
             <div class="empty-state">
               <div class="icon">${EMPTY_ICONS.school}</div>
               <p>위에서 학교를 선택하세요</p>
-              <p>선택한 학교의 편성표가 표시됩니다</p>
+              <p>선택한 학교의 교육과정 편성표가 표시됩니다</p>
             </div>
           `;
           return;
@@ -713,8 +713,8 @@
         listEl.innerHTML = `
           <div class="empty-state">
             <div class="icon">${EMPTY_ICONS.empty}</div>
-            <p>아직 등록된 편성표가 없어요</p>
-            <p>${isAdmin ? '위 버튼으로 새 편성표를 등록해보세요' : '지원단에서 편성표를 등록하면 여기에 표시됩니다'}</p>
+            <p>아직 등록된 교육과정 편성표가 없어요</p>
+            <p>${isAdmin ? '위 버튼으로 새 교육과정 편성표를 등록해보세요' : '지원단에서 교육과정 편성표를 등록하면 여기에 표시됩니다'}</p>
           </div>
         `;
         return;
@@ -749,7 +749,7 @@
     
     window.showAddForm = function() {
       editingId = null;
-      document.getElementById('modalTitle').textContent = '새 편성표 등록';
+      document.getElementById('modalTitle').textContent = '새 교육과정 편성표 등록';
       document.getElementById('formTitle').value = '';
       document.getElementById('formType').value = 'practice';
       document.getElementById('formUrl').value = '';
@@ -769,7 +769,7 @@
       if (!data) return;
       
       editingId = id;
-      document.getElementById('modalTitle').textContent = '편성표 수정';
+      document.getElementById('modalTitle').textContent = '교육과정 편성표 수정';
       document.getElementById('formSchool').value = data.school_id;
       document.getElementById('formTitle').value = data.title;
       document.getElementById('formType').value = data.sheet_type;
