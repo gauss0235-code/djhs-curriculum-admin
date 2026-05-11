@@ -30,7 +30,6 @@
       --danger-soft: #fdeaea;
       --success: #66bb6a;
       --success-soft: #e8f5e9;
-      --shadow-soft: 0 4px 20px rgba(74, 144, 217, 0.08);
       --shadow-card: 0 8px 32px rgba(74, 144, 217, 0.12);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -42,44 +41,21 @@
       padding: 24px;
       line-height: 1.5;
       -webkit-font-smoothing: antialiased;
-      position: relative;
-      overflow-x: hidden;
     }
     
-    /* 배경 일러스트 - 로그인창과 비례하여 크기 조절 */
-    .background-image {
-      position: fixed;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: clamp(420px, 55vw, 800px);
-      height: auto;
-      z-index: 0;
-      pointer-events: none;
-      opacity: 0.95;
-    }
-    .background-image img {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-    
-    .container {
-      width: 100%;
-      max-width: 420px;
-      margin: 0 auto;
-      position: relative;
-      z-index: 5;
+    /* 페이지 전체 - 중앙 정렬 */
+    .page {
       min-height: calc(100vh - 48px);
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
     }
+    
+    /* 상단 브랜드 영역 */
     .brand {
       text-align: center;
       margin-bottom: 32px;
-      width: 100%;
     }
     .brand-mark {
       display: inline-flex;
@@ -102,14 +78,51 @@
       color: var(--primary-dark);
       letter-spacing: -0.01em;
       line-height: 1.4;
-      margin-bottom: 8px;
     }
+    
+    /* 핵심: 선생님 2명 + 로그인창을 한 몸으로 묶음 */
+    .login-row {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 0;
+      width: 100%;
+      max-width: 880px;
+    }
+    
+    .teacher {
+      flex-shrink: 0;
+      width: 200px;
+      height: auto;
+      position: relative;
+      z-index: 3;
+    }
+    .teacher img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    
+    .teacher-left {
+      margin-right: -50px;  /* 오른손이 로그인창을 침범 */
+      margin-bottom: -20px;
+    }
+    
+    .teacher-right {
+      margin-left: -50px;   /* 검지손가락이 로그인창을 침범 */
+      margin-bottom: -20px;
+    }
+    
+    /* 로그인 카드 */
     .card {
       background: var(--surface);
       border-radius: 24px;
       padding: 36px;
       box-shadow: var(--shadow-card);
       width: 100%;
+      max-width: 400px;
+      position: relative;
+      z-index: 2;
     }
     .card h2 {
       font-size: 19px;
@@ -185,54 +198,90 @@
     }
     .footer {
       text-align: center;
-      margin-top: 24px;
+      margin-top: 32px;
       font-size: 12px;
       color: var(--text-light);
       line-height: 1.6;
-      width: 100%;
     }
     
-    @media (max-width: 700px) {
-      .background-image {
-        width: 90vw;
-        opacity: 0.4;
+    /* 반응형: 화면이 좁아지면 모든 게 함께 작아짐 */
+    @media (max-width: 900px) {
+      .login-row {
+        max-width: 720px;
       }
+      .teacher {
+        width: 160px;
+      }
+      .teacher-left { margin-right: -40px; }
+      .teacher-right { margin-left: -40px; }
+      .card { max-width: 360px; }
     }
-    @media (max-width: 480px) {
-      .background-image {
-        opacity: 0.25;
+    
+    @media (max-width: 720px) {
+      .login-row {
+        max-width: 580px;
+      }
+      .teacher {
+        width: 120px;
+      }
+      .teacher-left { margin-right: -30px; }
+      .teacher-right { margin-left: -30px; }
+      .card { 
+        max-width: 320px; 
+        padding: 28px;
+      }
+      .brand h1 { font-size: 20px; }
+    }
+    
+    @media (max-width: 540px) {
+      .login-row {
+        flex-direction: column;
+        align-items: center;
+        max-width: 360px;
+      }
+      .teacher {
+        display: none;
+      }
+      .card { 
+        max-width: 100%;
       }
     }
   </style>
 </head>
 <body>
-  <!-- 배경 일러스트 -->
-  <div class="background-image">
-    <img src="images/group-project.svg" alt="">
-  </div>
-  
-  <div class="container">
+  <div class="page">
     <div class="brand">
       <div class="brand-mark"><img src="images/logo.png" alt="대전광역시교육청"></div>
       <h1>대전광역시 고등학교<br>교육과정 업무담당자 워크스페이스</h1>
     </div>
     
-    <div class="card">
-      <h2>교육과정 업무담당자 로그인</h2>
-      
-      <div class="field">
-        <label for="email">이메일</label>
-        <input type="email" id="email" placeholder="이메일 주소를 입력하세요">
+    <!-- 한 몸으로 묶인 영역: 왼쪽 선생님 + 로그인창 + 오른쪽 선생님 -->
+    <div class="login-row">
+      <div class="teacher teacher-left">
+        <img src="images/teacher-woman.png" alt="">
       </div>
       
-      <div class="field">
-        <label for="password">비밀번호</label>
-        <input type="password" id="password" placeholder="비밀번호를 입력하세요">
+      <div class="card">
+        <h2>교육과정 업무담당자 로그인</h2>
+        
+        <div class="field">
+          <label for="email">이메일</label>
+          <input type="email" id="email" placeholder="이메일 주소를 입력하세요">
+        </div>
+        
+        <div class="field">
+          <label for="password">비밀번호</label>
+          <input type="password" id="password" placeholder="비밀번호를 입력하세요">
+        </div>
+        
+        <button id="loginBtn" onclick="handleLogin()">로그인</button>
+        
+        <div id="message" class="message"></div>
       </div>
       
-      <button id="loginBtn" onclick="handleLogin()">로그인</button>
-      
-      <div id="message" class="message"></div>
+      <div class="teacher teacher-right">
+        <img src="images/teacher-man.png" alt="">
+      </div>
     </div>
     
     <div class="footer">Copyright © 대전광역시교육청 고등학교 교육과정지원단. All rights reserved.</div>
