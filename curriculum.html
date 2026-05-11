@@ -203,21 +203,24 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      background: white;
-      border: 1.5px solid var(--border);
-      padding: 12px 18px;
+      background: #6B7280;
+      color: white;
+      border: none;
+      padding: 12px 22px;
       border-radius: 12px;
+      cursor: pointer;
       font-size: 14px;
-      color: var(--text);
-      text-decoration: none;
-      font-weight: 500;
+      font-weight: 700;
+      font-family: inherit;
       transition: all 0.15s ease;
       white-space: nowrap;
+      box-shadow: 0 3px 10px rgba(107, 114, 128, 0.3);
+      text-decoration: none;
     }
     .back-btn:hover {
-      border-color: var(--primary);
-      color: var(--primary);
-      background: var(--primary-soft);
+      background: #4B5563;
+      transform: translateY(-1px);
+      box-shadow: 0 5px 14px rgba(107, 114, 128, 0.4);
     }
     .filter-bar {
       background: var(--surface);
@@ -351,7 +354,7 @@
     }
     .sheet-meta {
       font-size: 13px;
-      color: var(--text-light);
+      color: #6B7280;
     }
     .sheet-actions {
       display: flex;
@@ -636,7 +639,7 @@
           <span class="user-name">${profile.display_name}</span>
           <button class="logout-btn" onclick="handleLogout()">로그아웃</button>
         `;
-        document.getElementById('pageDesc').textContent = `${profile.schools.name}의 편성표 시트입니다. 클릭하면 새 탭에서 열립니다.`;
+        document.getElementById('pageDesc').textContent = `${profile.schools.name}의 교육과정 편성표 시트입니다. 클릭하면 새 탭에서 시트가 열립니다.`;
         loadSheets();
       }
     }
@@ -701,8 +704,9 @@
       }
       
       listEl.innerHTML = `<div class="sheet-list">` + data.map(item => {
-        const updatedDate = new Date(item.updated_at).toLocaleDateString('ko-KR', {
-          year: 'numeric', month: 'long', day: 'numeric'
+        const updatedDate = new Date(item.updated_at).toLocaleString('ko-KR', {
+          year: 'numeric', month: 'long', day: 'numeric',
+          hour: '2-digit', minute: '2-digit', hour12: false
         });
         return `
           <div class="sheet-item">
