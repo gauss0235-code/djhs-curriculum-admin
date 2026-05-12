@@ -614,6 +614,22 @@
       empty: `<svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>`
     };
     
+    // 구글 스프레드시트 URL을 읽기 전용(preview) 모드로 변환
+    // 지원단(support)이 학교 시트를 실수로 수정하지 않도록 보호
+    // PDF, 일반 URL은 변환하지 않고 그대로 반환
+    function toReadOnlyUrl(url) {
+      if (!url) return url;
+      // 구글 스프레드시트 URL 패턴 감지
+      const sheetsPattern = /docs\.google\.com\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/;
+      const match = url.match(sheetsPattern);
+      if (!match) return url; // 구글 시트가 아니면 변환 안 함
+      
+      // 시트 ID 추출
+      const sheetId = match[1];
+      // preview 모드 URL로 변환 (편집 불가, 모든 탭 보기 가능)
+      return `https://docs.google.com/spreadsheets/d/${sheetId}/preview`;
+    }
+    
     window.updateTitlePlaceholder = function() {
       const type = document.getElementById('formType').value;
       const label = TYPE_LABELS[type];
@@ -660,7 +676,7 @@
         `;
         // 지원단은 조회만 가능: 새 교육과정 편성표 등록 버튼 숨김, 학교 선택은 표시
         document.getElementById('schoolFilter').classList.remove('hidden');
-        document.getElementById('pageDesc').textContent = '학교를 선택해서 등록된 교육과정 편성표를 조회하세요.';
+        document.getElementById('pageDesc').textContent = '학교를 선택해서 등록된 교육과정 편성표를 조회하세요. (구글 스프레드시트는 읽기 전용으로 열립니다)';
         await loadSchools();
       } else {
         userInfoEl.innerHTML = `
@@ -748,7 +764,7 @@
               <div class="sheet-meta">최종 수정 ${updatedDate}</div>
             </div>
             <div class="sheet-actions">
-              <a class="open-btn" href="${item.spreadsheet_url}" target="_blank">열기 ↗</a>
+              <a class="open-btn" href="${isSupport ? toReadOnlyUrl(item.spreadsheet_url) : item.spreadsheet_url}" target="_blank">열기 ↗</a>
               ${isAdmin ? `
                 <button class="icon-btn" onclick="editSheet('${item.id}')">✎ 수정</button>
                 <button class="icon-btn danger" onclick="deleteSheet('${item.id}')">🗑 삭제</button>
