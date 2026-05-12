@@ -137,7 +137,7 @@
       color: var(--primary);
     }
     main {
-      max-width: 1100px;
+      max-width: 1200px;
       margin: 0 auto;
       padding: 56px 32px 80px;
     }
@@ -171,7 +171,7 @@
     .menu-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 24px;
+      gap: 20px;
     }
     @media (max-width: 768px) {
       .menu-grid { grid-template-columns: 1fr; }
@@ -179,16 +179,16 @@
     .menu-card {
       background: var(--surface);
       border: 2px solid transparent;
-      padding: 36px 28px;
-      border-radius: 24px;
+      padding: 22px 24px;
+      border-radius: 18px;
       cursor: pointer;
       transition: all 0.25s ease;
       display: flex;
       flex-direction: column;
-      gap: 18px;
+      gap: 12px;
       text-decoration: none;
       color: inherit;
-      min-height: 220px;
+      min-height: 150px;
       box-shadow: var(--shadow-soft);
     }
     .menu-card:hover {
@@ -206,35 +206,35 @@
       box-shadow: var(--shadow-soft);
     }
     .menu-icon {
-      width: 64px;
-      height: 64px;
+      width: 48px;
+      height: 48px;
       background: var(--primary-soft);
       color: var(--primary);
-      border-radius: 18px;
+      border-radius: 14px;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
     }
     .menu-icon svg {
-      width: 32px;
-      height: 32px;
+      width: 24px;
+      height: 24px;
     }
     .menu-card.disabled .menu-icon {
       background: #eef3f7;
       color: var(--text-light);
     }
     .menu-card h3 {
-      font-size: 20px;
+      font-size: 17px;
       font-weight: 700;
       color: var(--text);
-      margin-bottom: 6px;
+      margin-bottom: 4px;
       letter-spacing: -0.01em;
     }
     .menu-card p {
-      font-size: 14px;
+      font-size: 13px;
       color: var(--text-muted);
-      line-height: 1.6;
+      line-height: 1.5;
     }
     .menu-card .arrow {
       margin-top: auto;
