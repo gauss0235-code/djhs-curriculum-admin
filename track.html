@@ -6,7 +6,7 @@
   <link rel="icon" type="image/png" href="images/logo.png">
   <link rel="shortcut icon" type="image/png" href="images/logo.png">
   <link rel="apple-touch-icon" href="images/logo.png">
-  <title>과목 선택 트랙 작성 — 대전광역시 고등학교 교육과정 업무담당자 워크스페이스</title>
+  <title>과목 선택 트랙 관리 — 대전광역시 고등학교 교육과정 업무담당자 워크스페이스</title>
   <meta name="description" content="대전광역시 고등학교별 과목 선택 트랙을 관리합니다.">
   <meta name="robots" content="noindex, nofollow">
   <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
@@ -483,7 +483,7 @@
   <main>
     <div class="page-header">
       <div>
-        <h2>과목 선택 트랙 작성</h2>
+        <h2 id="pageTitle">과목 선택 트랙 관리</h2>
         <div class="desc" id="pageDesc">계열별 추천 과목 트랙을 확인하세요.</div>
       </div>
       <div class="page-header-actions">
@@ -574,6 +574,7 @@
           <span class="user-name">${profile.display_name}</span>
           <button class="logout-btn" onclick="handleLogout()">로그아웃</button>
         `;
+        document.getElementById('pageTitle').textContent = '과목 선택 트랙 관리';
         document.getElementById('addBtn').style.display = 'inline-block';
         document.getElementById('schoolFilter').style.display = 'flex';
         document.getElementById('pageDesc').textContent = '학교를 선택해서 등록된 트랙을 관리하세요.';
@@ -585,6 +586,7 @@
           <button class="logout-btn" onclick="handleLogout()">로그아웃</button>
         `;
         // 지원단은 조회만: 새 트랙 만들기 버튼 숨김, 학교 선택은 표시
+        document.getElementById('pageTitle').textContent = '과목 선택 트랙 조회';
         document.getElementById('schoolFilter').style.display = 'flex';
         document.getElementById('pageDesc').textContent = '학교를 선택해서 등록된 트랙을 조회하세요.';
         await loadSchools();
@@ -594,6 +596,7 @@
           <span class="user-name">${profile.display_name}</span>
           <button class="logout-btn" onclick="handleLogout()">로그아웃</button>
         `;
+        document.getElementById('pageTitle').textContent = '과목 선택 트랙 작성';
         document.getElementById('addBtn').style.display = 'inline-block';
         document.getElementById('pageDesc').textContent = `${profile.schools.name}의 과목 선택 트랙입니다.`;
         loadTracks();

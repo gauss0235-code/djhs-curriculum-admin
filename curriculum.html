@@ -6,7 +6,7 @@
   <link rel="icon" type="image/png" href="images/logo.png">
   <link rel="shortcut icon" type="image/png" href="images/logo.png">
   <link rel="apple-touch-icon" href="images/logo.png">
-  <title>교육과정 편성표 작성 — 대전광역시 고등학교 교육과정 업무담당자 워크스페이스</title>
+  <title>교육과정 편성표 관리 — 대전광역시 고등학교 교육과정 업무담당자 워크스페이스</title>
   <meta name="description" content="대전광역시 고등학교별 교육과정 편성표를 관리합니다.">
   <meta name="robots" content="noindex, nofollow">
   <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
@@ -525,7 +525,7 @@
   <main>
     <div class="page-header">
       <div>
-        <h2>교육과정 편성표 작성</h2>
+        <h2 id="pageTitle">교육과정 편성표 관리</h2>
         <div class="desc" id="pageDesc">교육과정 편성표를 확인하세요.</div>
       </div>
       <div class="page-header-actions">
@@ -664,6 +664,7 @@
           <span class="user-name">${profile.display_name}</span>
           <button class="logout-btn" onclick="handleLogout()">로그아웃</button>
         `;
+        document.getElementById('pageTitle').textContent = '교육과정 편성표 관리';
         document.getElementById('addBtn').classList.remove('hidden');
         document.getElementById('schoolFilter').classList.remove('hidden');
         document.getElementById('pageDesc').textContent = '학교를 선택해서 등록된 교육과정 편성표를 관리하세요.';
@@ -675,6 +676,7 @@
           <button class="logout-btn" onclick="handleLogout()">로그아웃</button>
         `;
         // 지원단은 조회만 가능: 새 교육과정 편성표 등록 버튼 숨김, 학교 선택은 표시
+        document.getElementById('pageTitle').textContent = '교육과정 편성표 조회';
         document.getElementById('schoolFilter').classList.remove('hidden');
         document.getElementById('pageDesc').textContent = '학교를 선택해서 등록된 교육과정 편성표를 조회하세요. (구글 스프레드시트는 읽기 전용으로 열립니다)';
         await loadSchools();
@@ -684,6 +686,7 @@
           <span class="user-name">${profile.display_name}</span>
           <button class="logout-btn" onclick="handleLogout()">로그아웃</button>
         `;
+        document.getElementById('pageTitle').textContent = '교육과정 편성표 작성';
         document.getElementById('pageDesc').textContent = `${profile.schools.name}의 교육과정 편성표입니다. 클릭하면 새 탭에서 열립니다.`;
         loadSheets();
       }
