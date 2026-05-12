@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="images/logo.png">
+  <title>트랙 보기 — 대전광역시 고등학교 교육과정 업무담당자 워크스페이스</title>
+  <meta name="description" content="대전광역시 고등학교 과목 선택 트랙 상세보기. 학교별 추천 과목 선택 정보를 확인할 수 있습니다.">
+  <meta name="robots" content="index, follow">
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <!-- PDF 저장용 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    @font-face {
+      font-family: 'JalnanGothic';
+      src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_231029@1.1/JalnanGothic.woff') format('woff');
+      font-weight: normal;
+      font-display: swap;
+    }
+    :root {
+      --bg-sky: #e8f4fc;
+      --bg-sky-deep: #d4ecf8;
+      --surface: #ffffff;
+      --border: #d8e8f3;
+      --border-strong: #b8d4e8;
+      --text: #1e3a5f;
+      --text-muted: #5d7894;
+      --text-light: #8ba8c2;
+      --primary: #4a90d9;
+      --primary-hover: #3a7ec0;
+      --primary-soft: #e3f0fa;
+      --primary-dark: #2d5a8a;
+      --admin: #ec6f8e;
+      --admin-soft: #fde7ed;
+      --core: #f4a261;
+      --core-soft: #fef0e3;
+      --core-dark: #d2691e;
+      --recommend: #5a9fd4;
+      --recommend-soft: #e3f0fa;
+      --recommend-dark: #2d5a8a;
+      --fixed: #7cb342;
+      --fixed-soft: #eef7e3;
+      --fixed-dark: #4d7c0f;
+      --shadow-soft: 0 4px 20px rgba(74, 144, 217, 0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(180deg, var(--bg-sky) 0%, var(--bg-sky-deep) 100%);
+      color: var(--text);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+    header {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .header-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 16px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: inherit; }
+    .brand-mark { width: 42px; height: 42px; }
+    .brand-mark img { width: 100%; height: 100%; object-fit: contain; }
+    .brand-name {
+      font-family: 'JalnanGothic', 'Pretendard', sans-serif;
+      font-size: 17px;
+      color: var(--primary-dark);
+      letter-spacing: -0.01em;
+    }
+    .user-info { display: flex; align-items: center; gap: 14px; font-size: 14px; }
+    .badge { padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; }
+    .badge-school { background: var(--primary-soft); color: var(--primary-dark); }
+    .badge-admin { background: var(--admin-soft); color: var(--admin); }
+    .user-name { font-weight: 500; }
+    .logout-btn {
+      background: white; border: 1.5px solid var(--border);
+      padding: 8px 16px; border-radius: 20px; cursor: pointer;
+      font-size: 13px; color: var(--text-muted); font-family: inherit;
+      transition: all 0.15s ease;
+    }
+    .logout-btn:hover { background: var(--primary-soft); border-color: var(--primary); color: var(--primary); }
+    main {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px 32px 80px;
+    }
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 36px;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .page-header h2 {
+      font-family: 'JalnanGothic', 'Pretendard', sans-serif;
+      font-size: 32px;
+      font-weight: normal;
+      color: var(--primary-dark);
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+    .page-header .meta {
+      font-size: 14px;
+      color: var(--text-muted);
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .category-tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .cat-social_science { background: #e3f0fa; color: #2d5a8a; }
+    .cat-business { background: #fef0e3; color: #a8612a; }
+    .cat-humanities { background: #EDE9FE; color: #6D28D9; }
+    .cat-engineering { background: #eef7e3; color: #4d7c0f; }
+    .cat-medical { background: #fdeaea; color: #c44545; }
+    .cat-arts_sports { background: #FCE7F3; color: #BE185D; }
+    .cat-custom { background: #E0E7FF; color: #4338CA; }
+    .cat-other { background: #f1f5f9; color: #475569; }
+    
+    .top-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .top-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      background: white;
+      border: 1.5px solid var(--border);
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-size: 14px;
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 700;
+      font-family: inherit;
+      line-height: 1.2;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-sizing: border-box;
+      vertical-align: middle;
+    }
+    .top-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      background: var(--primary-soft);
+    }
+    .top-btn.primary {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      font-weight: 700;
+      box-shadow: 0 2px 8px rgba(74, 144, 217, 0.25);
+    }
+    .top-btn.primary:hover { background: var(--primary-hover); color: white; border: none; }
+    .top-btn.pdf {
+      background: #16A34A;
+      color: white;
+      border: none;
+      box-shadow: 0 2px 8px rgba(22, 163, 74, 0.3);
+    }
+    .top-btn.pdf:hover { background: #15803D; color: white; border: none; }
+    .top-btn.share {
+      background: #FEE500;
+      color: #181600;
+      border: none;
+      font-weight: 700;
+      box-shadow: 0 2px 8px rgba(254, 229, 0, 0.35);
+    }
+    .top-btn.share:hover { background: #fdd400; color: #181600; border: none; }
+    
+    .description-box {
+      background: var(--surface);
+      border-radius: 14px;
+      padding: 18px 22px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      color: var(--text);
+      line-height: 1.6;
+      box-shadow: var(--shadow-soft);
+      white-space: pre-wrap;
+    }
+    
+    .legend-bar {
+      background: white;
+      border-radius: 14px;
+      padding: 14px 22px;
+      margin-bottom: 16px;
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      flex-wrap: wrap;
+      box-shadow: var(--shadow-soft);
+    }
+    .legend-bar .legend-title { 
+      font-family: 'JalnanGothic', 'Pretendard', sans-serif;
+      font-size: 14px; 
+      color: #4A8AB8;
+    }
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .legend-dot { width: 16px; height: 16px; border-radius: 5px; flex-shrink: 0; }
+    .legend-dot.fixed { background: #FFF8E7; border: 2px solid #F59E0B; }
+    .legend-dot.core { background: #FFFBEB; border: 2px solid #F59E0B; }
+    .legend-dot.recommend { background: #EFF6FF; border: 2px solid #3B82F6; }
+    
+    .track-table-wrap {
+      background: var(--surface);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: var(--shadow-soft);
+      overflow-x: auto;
+    }
+    .track-table {
+      border-collapse: separate;
+      border-spacing: 0;
+      width: 100%;
+      min-width: 1280px;
+      font-size: 13px;
+    }
+    .track-table th, .track-table td {
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      vertical-align: top;
+      text-align: center;
+    }
+    .track-table thead th {
+    .track-table thead th { 
+      background: var(--primary-soft);
+      color: var(--primary-dark);
+      font-weight: 700;
+      font-size: 14px;
+      padding: 12px;
+      font-family: 'JalnanGothic', 'Pretendard', sans-serif;
+    }
+    .track-table thead th.grade-header { 
+      background: var(--primary); 
+      color: white; 
+      font-family: 'JalnanGothic', 'Pretendard', sans-serif;
+      font-size: 15px;
+    }
+    .track-table thead th.subject-col { 
+      background: var(--primary); 
+      width: 140px; 
+      min-width: 140px;
+      text-align: center;
+      vertical-align: middle;
+      color: white;
+    }
+    
+    .area-cell {
+      background: var(--bg-sky);
+      font-weight: 700;
+      color: var(--primary-dark);
+      text-align: center !important;
+      vertical-align: middle !important;
+      width: 140px;
+      min-width: 140px;
+      padding: 12px 8px;
+    }
+    .area-cell .area-name { 
+      font-family: 'JalnanGothic', 'Pretendard', sans-serif;
+      font-size: 14px; 
+      margin-bottom: 4px;
+      word-break: keep-all;
+      line-height: 1.4;
+    }
+    
+    .subject-cell {
+      text-align: left;
+      padding: 8px 10px;
+      background: white;
+    }
+    .subject-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .subject-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 10px;
+      border-radius: 7px;
+      font-size: 12.5px;
+      font-weight: 500;
+      line-height: 1.3;
+    }
+    .subject-pill.fixed {
+      background: #FFF8E7;
+      color: #B45309;
+      border-left: 3px solid #F59E0B;
+    }
+    .subject-pill.core {
+      background: #FFFBEB;
+      color: #9A3412;
+      border-left: 3px solid #F59E0B;
+      font-weight: 700;
+    }
+    .subject-pill.recommend {
+      background: #EFF6FF;
+      color: #1D4ED8;
+      border-left: 3px solid #3B82F6;
+    }
+    .subject-pill .star { font-size: 11px; }
+    .subject-pill .credit { font-size: 11px; color: var(--text-muted); font-weight: 400; }
+    
+    .group-label {
+      font-size: 10.5px;
+      color: var(--text-muted);
+      font-weight: 600;
+      text-align: center;
+      padding: 4px 0;
+      background: #f8fbfd;
+      border-radius: 4px;
+      margin: 2px 0;
+    }
+    
+    .empty-cell { color: var(--text-light); font-size: 18px; }
+    
+    .loading-state {
+      text-align: center;
+      padding: 80px 20px;
+      color: var(--text-muted);
+      background: var(--surface);
+      border-radius: 18px;
+      box-shadow: var(--shadow-soft);
+    }
+    .loading-state .spinner {
+      width: 40px; height: 40px;
+      margin: 0 auto 16px;
+      border: 3px solid var(--border);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    
+    /* 공유 모달 */
+    .modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 20px;
+    }
+    .modal-overlay.show { display: flex; }
+    .modal-card {
+      background: white;
+      border-radius: 20px;
+      padding: 28px;
+      max-width: 420px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    }
+    .modal-card h3 {
+      font-family: 'JalnanGothic', 'Pretendard', sans-serif;
+      font-size: 22px;
+      color: var(--primary-dark);
+      margin-bottom: 8px;
+      text-align: center;
+    }
+    .modal-card p {
+      font-size: 14px;
+      color: var(--text-muted);
+      text-align: center;
+      margin-bottom: 22px;
+    }
+    .share-options {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .share-opt {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding: 16px 10px;
+      background: #f8fbfd;
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text);
+      transition: all 0.15s ease;
+      text-decoration: none;
+    }
+    .share-opt:hover {
+      border-color: var(--primary);
+      background: var(--primary-soft);
+    }
+    .share-opt .icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+    }
+    .share-opt.kakao .icon { background: #FEE500; }
+    .share-opt.link .icon { background: var(--primary-soft); color: var(--primary); }
+    .share-opt.copy .icon { background: #f1f5f9; }
+    .modal-close {
+      background: #f1f5f9;
+      border: none;
+      padding: 11px 22px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      width: 100%;
+      font-family: inherit;
+      color: var(--text);
+    }
+    .modal-close:hover { background: #e2e8f0; }
+    
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--text);
+      color: white;
+      padding: 14px 24px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 500;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+      z-index: 200;
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+    
+    @media (max-width: 768px) {
+      .header-inner { padding: 14px 18px; }
+      main { padding: 24px 18px 60px; }
+      .page-header h2 { font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <a class="brand" href="dashboard.html">
+        <div class="brand-mark"><img src="images/logo.png" alt="대전광역시교육청"></div>
+        <span class="brand-name">대전광역시 고등학교 교육과정 업무담당자 워크스페이스</span>
+      </a>
+      <div class="user-info" id="userInfo"></div>
+    </div>
+  </header>
+  
+  <main>
+    <div id="content">
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <p>트랙을 불러오는 중입니다...</p>
+      </div>
+    </div>
+  </main>
+
+  <div class="modal-overlay" id="shareModal" onclick="if(event.target===this)closeShareModal()">
+    <div class="modal-card">
+      <h3>트랙 공유하기</h3>
+      <p>이 트랙을 다른 사람과 공유해보세요</p>
+      <div class="share-options">
+        <a class="share-opt kakao" href="#" onclick="shareKakao(event)">
+          <span class="icon">💬</span>
+          <span>카카오톡</span>
+        </a>
+        <a class="share-opt link" href="#" onclick="shareLink(event)">
+          <span class="icon">🔗</span>
+          <span>링크 공유</span>
+        </a>
+        <a class="share-opt copy" href="#" onclick="copyLink(event)">
+          <span class="icon">📋</span>
+          <span>URL 복사</span>
+        </a>
+      </div>
+      <button class="modal-close" onclick="closeShareModal()">닫기</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+    
+    const SUPABASE_URL = 'https://nzsgvjdotnvqpzhehfsg.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_ALakaYU4jTYEIQas_nWrsQ_An3IK9_h';
+    const GOOGLE_API_KEY = 'AIzaSyBC95kjuGRE0cgsHHWWco0-MnBt9XiPfCY';
+    
+    const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+    
+    let currentUser = null;
+    let currentProfile = null;
+    let isAdmin = false;
+    let isSupport = false;
+    let currentTrack = null;
+    
+    const CATEGORY_LABELS = {
+      business: '경영경제계열',
+      social_science: '사회과학계열',
+      humanities: '인문학계열',
+      engineering: '자연공학계열',
+      medical: '의료생명계열',
+      arts_sports: '예체능계열',
+      other: '기타'
+    };
+    
+    // 카테고리 라벨/클래스 가져오기 (custom:XXX 형식 처리)
+    function getCategoryLabel(cat) {
+      if (!cat) return '미지정';
+      if (cat.startsWith('custom:')) return cat.substring(7);
+      return CATEGORY_LABELS[cat] || cat;
+    }
+    function getCategoryClass(cat) {
+      if (!cat) return 'cat-other';
+      if (cat.startsWith('custom:')) return 'cat-custom';
+      return `cat-${cat}`;
+    }
+    const SEMESTERS = [
+      { key: '1-1', label: '1학기', grade: 1 },
+      { key: '1-2', label: '2학기', grade: 1 },
+      { key: '2-1', label: '1학기', grade: 2 },
+      { key: '2-2', label: '2학기', grade: 2 },
+      { key: '3-1', label: '1학기', grade: 3 },
+      { key: '3-2', label: '2학기', grade: 3 },
+    ];
+    
+    async function init() {
+      const params = new URLSearchParams(window.location.search);
+      const trackId = params.get('id');
+      const isPublicMode = params.get('public') === '1';
+      
+      if (!trackId) { showError('트랙 ID가 지정되지 않았습니다.'); return; }
+      
+      // 공개 모드 (공유 링크) - 로그인 없이 접근
+      if (isPublicMode) {
+        // 사용자 정보 영역 숨기기
+        document.getElementById('userInfo').innerHTML = `
+          <span class="badge badge-school" style="background:#FEF3C7;color:#B45309">👁 공유 보기 모드</span>
+        `;
+        try {
+          await loadAndRender(trackId, true);
+        } catch (err) {
+          showError('트랙을 불러올 수 없습니다: ' + err.message);
+        }
+        return;
+      }
+      
+      // 일반 모드: 로그인 필요
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        alert('로그인이 필요합니다.');
+        window.location.href = 'login.html';
+        return;
+      }
+      currentUser = user;
+      
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('display_name, role, school_id, schools(name, code)')
+        .eq('id', user.id)
+        .single();
+      currentProfile = profile;
+      isAdmin = profile.role === 'admin';
+      isSupport = profile.role === 'support';
+      
+      const userInfoEl = document.getElementById('userInfo');
+      if (isAdmin) {
+        userInfoEl.innerHTML = `
+          <span class="badge badge-admin">교육과정지원단 관리자</span>
+          <span class="user-name">${profile.display_name}</span>
+          <button class="logout-btn" onclick="handleLogout()">로그아웃</button>
+        `;
+      } else if (isSupport) {
+        userInfoEl.innerHTML = `
+          <span class="badge badge-admin">교육과정지원단</span>
+          <span class="user-name">${profile.display_name}</span>
+          <button class="logout-btn" onclick="handleLogout()">로그아웃</button>
+        `;
+      } else {
+        userInfoEl.innerHTML = `
+          <span class="badge badge-school">${profile.schools.name}</span>
+          <span class="user-name">${profile.display_name}</span>
+          <button class="logout-btn" onclick="handleLogout()">로그아웃</button>
+        `;
+      }
+      
+      try {
+        await loadAndRender(trackId, false);
+      } catch (err) {
+        showError('트랙을 불러올 수 없습니다: ' + err.message);
+      }
+    }
+    
+    async function loadAndRender(trackId, isPublic) {
+      const { data: track, error } = await supabase
+        .from('tracks')
+        .select('*, schools(name, code), curriculums(title, spreadsheet_url)')
+        .eq('id', trackId)
+        .single();
+      
+      if (error) {
+        console.error('Supabase error:', error);
+        if (isPublic) {
+          showError(`공유 링크를 열 수 없습니다.\n\n관리자 안내: tracks/schools/curriculums 테이블의 공개 SELECT RLS 정책이 필요합니다.\n\n오류 상세: ${error.message}`);
+        } else {
+          showError('트랙을 찾을 수 없습니다: ' + error.message);
+        }
+        return;
+      }
+      if (!track) {
+        showError('해당 ID의 트랙이 존재하지 않습니다.');
+        return;
+      }
+      currentTrack = track;
+      
+      if (!track.curriculum_id || !track.curriculums) {
+        showError('연결된 편성표가 없습니다. 트랙을 수정해주세요.');
+        return;
+      }
+      
+      const url = track.curriculums.spreadsheet_url;
+      const sheetIdMatch = url.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
+      if (!sheetIdMatch) { showError('편성표 URL 형식이 올바르지 않습니다.'); return; }
+      const sheetId = sheetIdMatch[1];
+      
+      const curriculumData = await loadCurriculumFromSheet(sheetId);
+      render(track, curriculumData, isPublic);
+    }
+    
+    async function loadCurriculumFromSheet(sheetId) {
+      const sheetName = encodeURIComponent('편성표');
+      const range = `${sheetName}!A1:M500`;
+      const fields = encodeURIComponent('sheets(merges,data.rowData.values(formattedValue))');
+      const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}?ranges=${range}&fields=${fields}&key=${GOOGLE_API_KEY}`;
+      
+      const res = await fetch(url);
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.error?.message || `${res.status} 오류`);
+      }
+      
+      const data = await res.json();
+      const sheet = data.sheets[0];
+      const merges = sheet.merges || [];
+      const rowData = sheet.data[0]?.rowData || [];
+      
+      const grid = rowData.map(r => 
+        (r.values || []).map(c => (c && c.formattedValue) || '')
+      );
+      
+      const expandedGrid = grid.map(r => [...r]);
+      for (const m of merges) {
+        const startVal = (grid[m.startRowIndex] || [])[m.startColumnIndex] || '';
+        for (let r = m.startRowIndex; r < m.endRowIndex; r++) {
+          for (let c = m.startColumnIndex; c < m.endColumnIndex; c++) {
+            if (!expandedGrid[r]) expandedGrid[r] = [];
+            expandedGrid[r][c] = startVal;
+          }
+        }
+      }
+      
+      const dataStartRow = 3;
+      const COL = {
+        section: 0, area: 1, subject: 2, type: 3,
+        baseCredit: 4, completion: 5,
+        sem: { '1-1': 6, '1-2': 7, '2-1': 8, '2-2': 9, '3-1': 10, '3-2': 11 },
+        totalCredit: 12,
+      };
+      
+      let endRow = expandedGrid.length;
+      for (let r = dataStartRow; r < expandedGrid.length; r++) {
+        const text = (expandedGrid[r] || []).join(' ');
+        if (text.includes('편성 조건') && text.includes('점검')) { endRow = r; break; }
+      }
+      
+      // 영역별 + 학기별로 정리
+      const areaMap = {};
+      const areaOrder = [];
+      
+      for (let r = dataStartRow; r < endRow; r++) {
+        const row = expandedGrid[r] || [];
+        const sectionRaw = (row[COL.section] || '').toString().trim();
+        const area = (row[COL.area] || '').toString().trim();
+        const subject = (row[COL.subject] || '').toString().trim();
+        const baseCredit = parseFloat(row[COL.baseCredit]) || 0;
+        const completion = (row[COL.completion] || '').toString().trim();
+        
+        if (!subject || !area) continue;
+        if (/학기별|이수학점|이수\s*과목수|창의적|체험활동|소계|합계|총계/.test(sectionRaw)) continue;
+        if (/학기별|이수학점|이수\s*과목수|창의적|체험활동|소계|합계|총계/.test(subject)) continue;
+        
+        if (!areaMap[area]) {
+          areaMap[area] = {};
+          areaOrder.push(area);
+          for (const sem of Object.keys(COL.sem)) {
+            areaMap[area][sem] = { fixed: [], choiceGroups: {} };
+          }
+        }
+        
+        const isFixed = sectionRaw.includes('학교') && sectionRaw.includes('지정');
+        
+        const totalCreditCell = (row[COL.totalCredit] || '').toString().trim();
+        const totalCreditMatch = totalCreditCell.match(/(\d+(?:\.\d+)?)/);
+        const rowTotalCredit = totalCreditMatch ? parseFloat(totalCreditMatch[1]) : null;
+        
+        for (const [semKey, semCol] of Object.entries(COL.sem)) {
+          const cellVal = (row[semCol] || '').toString().trim();
+          if (!cellVal) continue;
+          
+          const isCrossSem = cellVal.includes('학기교차') || cellVal.includes('교차');
+          const creditMatch = cellVal.match(/(\d+(?:\.\d+)?)/);
+          let cellCredit = creditMatch ? parseFloat(creditMatch[1]) : null;
+          
+          let credit;
+          if (cellCredit !== null && baseCredit > 0 && cellCredit > baseCredit * 1.5) {
+            credit = (rowTotalCredit !== null && rowTotalCredit <= baseCredit + 1) ? rowTotalCredit : baseCredit;
+          } else if (rowTotalCredit !== null && rowTotalCredit <= baseCredit + 1 && rowTotalCredit > 0) {
+            credit = rowTotalCredit;
+          } else if (cellCredit !== null) {
+            credit = cellCredit;
+          } else {
+            credit = baseCredit;
+          }
+          
+          const subjInfo = { name: subject, credit, crossSem: isCrossSem, rowIndex: r };
+          
+          if (isFixed) {
+            areaMap[area][semKey].fixed.push(subjInfo);
+          } else {
+            let groupName = '선택';
+            let takeN = null, takeMin = null, takeMax = null;
+            const groupMatch = completion.match(/(선택군\s*[A-Z\d]+|[A-Z]\s*그룹|선택\s*\w+)/);
+            if (groupMatch) groupName = groupMatch[1].replace(/\s+/g, '');
+            
+            const rangeMatch = completion.match(/택\s*(\d+)\s*[~∼\-–]\s*(\d+)/);
+            if (rangeMatch) {
+              takeMin = parseInt(rangeMatch[1]);
+              takeMax = parseInt(rangeMatch[2]);
+              takeN = takeMax;
+            } else {
+              const takeMatch = completion.match(/택\s*(\d+)/);
+              if (takeMatch) takeN = parseInt(takeMatch[1]);
+            }
+            
+            if (!areaMap[area][semKey].choiceGroups[groupName]) {
+              areaMap[area][semKey].choiceGroups[groupName] = {
+                name: groupName, takeN, takeMin, takeMax, subjects: []
+              };
+            }
+            areaMap[area][semKey].choiceGroups[groupName].subjects.push(subjInfo);
+          }
+        }
+      }
+      
+      // 학기교차 페어링은 트랙 보기에서 적용하지 않음
+      // (편성표에 표시된 그대로 양쪽 학기에 보여줘야 함)
+      
+      return { areaMap, areaOrder };
+    }
+    
+    function render(track, curriculumData, isPublic) {
+      const selections = {};
+      for (const [semKey, semData] of Object.entries(track.recommended_subjects || {})) {
+        selections[semKey] = {};
+        if (Array.isArray(semData)) {
+          for (const name of semData) selections[semKey][name] = 'recommend';
+        } else if (semData && typeof semData === 'object') {
+          for (const name of (semData.core || [])) selections[semKey][name] = 'core';
+          for (const name of (semData.recommend || [])) selections[semKey][name] = 'recommend';
+        }
+      }
+      
+      let tableHtml = `
+        <table class="track-table">
+          <thead>
+            <tr>
+              <th rowspan="2" class="subject-col">교과(군)</th>
+              <th colspan="2" class="grade-header">1학년</th>
+              <th colspan="2" class="grade-header">2학년</th>
+              <th colspan="2" class="grade-header">3학년</th>
+            </tr>
+            <tr>
+              ${SEMESTERS.map(s => `<th>${s.label}</th>`).join('')}
+            </tr>
+          </thead>
+          <tbody>
+            ${curriculumData.areaOrder.map(area => renderAreaRow(area, curriculumData.areaMap[area], selections)).join('')}
+          </tbody>
+        </table>
+      `;
+      
+      let actionsHtml = '';
+      if (isPublic) {
+        // 공개 보기 모드: PDF 저장만 가능
+        actionsHtml = `<button class="top-btn pdf" onclick="downloadPDF()">⬇ PDF 저장</button>`;
+      } else {
+        // 로그인 모드: 모든 버튼
+        const editLink = isAdmin || (currentProfile.school_id === track.school_id);
+        const editBtn = editLink ? `<a class="top-btn primary" href="track-edit.html?id=${track.id}">✎ 수정</a>` : '';
+        actionsHtml = `
+          <button class="top-btn pdf" onclick="downloadPDF()">⬇ PDF 저장</button>
+          <button class="top-btn share" onclick="openShareModal()">↗ 공유</button>
+          ${editBtn}
+          <a class="top-btn" href="track.html">← 트랙 목록</a>
+        `;
+      }
+      
+      const content = `
+        <div class="page-header">
+          <div>
+            <h2>${escapeHtml(track.title)}</h2>
+            <div class="meta">
+              <span class="category-tag ${getCategoryClass(track.track_category)}">${getCategoryLabel(track.track_category)}</span>
+              <span>📋 ${escapeHtml(track.schools.name)}</span>
+              <span>📄 ${escapeHtml(track.curriculums.title)}</span>
+            </div>
+          </div>
+          <div class="top-actions">
+            ${actionsHtml}
+          </div>
+        </div>
+        ${track.description ? `<div class="description-box">${escapeHtml(track.description)}</div>` : ''}
+        <div class="legend-bar">
+          <span class="legend-title">📌 표시 안내</span>
+          <span class="legend-item"><span class="legend-dot fixed"></span>학교지정 (필수)</span>
+          <span class="legend-item"><span class="legend-dot core"></span>⭐ 핵심 권장</span>
+          <span class="legend-item"><span class="legend-dot recommend"></span>✓ 권장</span>
+        </div>
+        <div class="track-table-wrap" id="trackTableForPdf">
+          ${tableHtml}
+        </div>
+      `;
+      
+      document.getElementById('content').innerHTML = content;
+    }
+    
+    function renderAreaRow(area, areaData, selections) {
+      const cells = SEMESTERS.map(sem => {
+        const semData = areaData[sem.key];
+        if (!semData) return '<td class="subject-cell"><span class="empty-cell">-</span></td>';
+        
+        const fixedPills = semData.fixed.map(s => `
+          <span class="subject-pill fixed"><span class="star">✓</span>${escapeHtml(s.name)}<span class="credit">(${s.credit}학점)</span></span>
+        `).join('');
+        
+        const semSelections = selections[sem.key] || {};
+        const groupBlocks = Object.values(semData.choiceGroups).map(group => {
+          const items = group.subjects.map(s => {
+            const lv = semSelections[s.name];
+            if (lv === 'core') {
+              return `<span class="subject-pill core"><span class="star">⭐</span>${escapeHtml(s.name)}<span class="credit">(${s.credit}학점)</span></span>`;
+            } else if (lv === 'recommend') {
+              return `<span class="subject-pill recommend"><span class="star">✓</span>${escapeHtml(s.name)}<span class="credit">(${s.credit}학점)</span></span>`;
+            }
+            return null;
+          }).filter(Boolean).join('');
+          
+          if (!items) return '';
+          
+          return items;
+        }).filter(Boolean).join('');
+        
+        const inner = fixedPills + groupBlocks;
+        if (!inner) return '<td class="subject-cell"><span class="empty-cell">-</span></td>';
+        
+        return `<td class="subject-cell"><div class="subject-list">${inner}</div></td>`;
+      }).join('');
+      
+      return `
+        <tr>
+          <td class="area-cell">
+            <div class="area-name">${escapeHtml(area)}</div>
+          </td>
+          ${cells}
+        </tr>
+      `;
+    }
+    
+    function escapeHtml(s) {
+      return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+    
+    function showError(msg) {
+      const params = new URLSearchParams(window.location.search);
+      const isPublicMode = params.get('public') === '1';
+      const backBtn = isPublicMode ? '' : '<a class="top-btn" href="track.html">← 트랙 목록</a>';
+      document.getElementById('content').innerHTML = `
+        <div class="page-header">
+          <div><h2>오류</h2></div>
+          ${backBtn}
+        </div>
+        <div class="description-box" style="color: #c44545; border-left: 4px solid #e57373; white-space: pre-wrap;">
+          ${escapeHtml(msg)}
+        </div>
+      `;
+    }
+    
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2500);
+    }
+    
+    // PDF 저장
+    window.downloadPDF = async function() {
+      const target = document.getElementById('trackTableForPdf');
+      if (!target) return;
+      
+      showToast('PDF를 만드는 중입니다...');
+      
+      try {
+        const canvas = await html2canvas(target, {
+          scale: 2,
+          backgroundColor: '#ffffff',
+          useCORS: true,
+          logging: false,
+        });
+        
+        // A4 가로: 297 x 210mm, 여백 10mm씩
+        const margin = 10;
+        const a4Width = 297;
+        const a4Height = 210;
+        const availableWidth = a4Width - margin * 2;   // 277mm
+        const availableHeight = a4Height - margin * 2; // 190mm
+        
+        // 캔버스 비율 (캔버스 너비 대비 높이)
+        const canvasRatio = canvas.height / canvas.width;
+        
+        // 가용 영역에 맞추되, 비율 유지
+        let finalWidth = availableWidth;
+        let finalHeight = finalWidth * canvasRatio;
+        
+        // 높이가 가용 높이보다 크면 높이 기준으로 다시 계산
+        if (finalHeight > availableHeight) {
+          finalHeight = availableHeight;
+          finalWidth = finalHeight / canvasRatio;
+        }
+        
+        // 중앙 배치를 위한 오프셋
+        const xOffset = (a4Width - finalWidth) / 2;
+        const yOffset = (a4Height - finalHeight) / 2;
+        
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF('l', 'mm', 'a4');  // 가로 방향
+        
+        // 한 페이지에 한 번만 추가 (분할 없이)
+        pdf.addImage(canvas, 'PNG', xOffset, yOffset, finalWidth, finalHeight);
+        
+        const filename = `${currentTrack.schools.name}_${currentTrack.title}.pdf`.replace(/[\\/:*?"<>|]/g, '_');
+        pdf.save(filename);
+        showToast('PDF가 저장되었습니다.');
+      } catch (err) {
+        console.error(err);
+        showToast('PDF 저장 실패: ' + err.message);
+      }
+    };
+    
+    // 공유 모달
+    window.openShareModal = function() {
+      document.getElementById('shareModal').classList.add('show');
+    };
+    window.closeShareModal = function() {
+      document.getElementById('shareModal').classList.remove('show');
+    };
+    
+    // 공유용 공개 URL 생성 (?id=xxx&public=1)
+    function getPublicShareUrl() {
+      const baseUrl = window.location.origin + window.location.pathname;
+      const params = new URLSearchParams(window.location.search);
+      const trackId = params.get('id');
+      return `${baseUrl}?id=${trackId}&public=1`;
+    }
+    
+    window.shareKakao = function(e) {
+      e.preventDefault();
+      const url = getPublicShareUrl();
+      const title = `${currentTrack.schools.name} - ${currentTrack.title}`;
+      const text = `${title}\n${url}`;
+      const isMobile = /Android|iPhone|iPad/i.test(navigator.userAgent);
+      if (isMobile) {
+        window.location.href = `kakaotalk://msg/text?text=${encodeURIComponent(text)}`;
+        setTimeout(() => {
+          navigator.clipboard.writeText(text).then(() => {
+            showToast('카카오톡이 열리지 않으면, 복사된 텍스트를 붙여넣어 공유하세요');
+          });
+        }, 1500);
+      } else {
+        navigator.clipboard.writeText(text).then(() => {
+          showToast('링크가 복사되었습니다. 카카오톡에 붙여넣어 공유하세요');
+        });
+      }
+      closeShareModal();
+    };
+    
+    window.shareLink = async function(e) {
+      e.preventDefault();
+      const url = getPublicShareUrl();
+      const title = `${currentTrack.schools.name} - ${currentTrack.title}`;
+      
+      if (navigator.share) {
+        try {
+          await navigator.share({ title, url });
+          closeShareModal();
+        } catch (err) {
+          if (err.name !== 'AbortError') console.error(err);
+        }
+      } else {
+        copyLink(e);
+      }
+    };
+    
+    window.copyLink = function(e) {
+      e.preventDefault();
+      const url = getPublicShareUrl();
+      navigator.clipboard.writeText(url).then(() => {
+        showToast('공개 URL이 복사되었습니다');
+        closeShareModal();
+      }).catch(() => {
+        showToast('복사에 실패했습니다');
+      });
+    };
+    
+    window.handleLogout = async function() {
+      const ok = confirm('로그아웃 하시겠습니까?');
+      if (!ok) return;
+      await supabase.auth.signOut();
+      window.location.href = 'login.html';
+    };
+    
+    init();
+  </script>
+</body>
+</html>
