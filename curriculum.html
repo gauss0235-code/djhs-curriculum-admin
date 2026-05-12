@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/png" href="images/logo.png">
+  <link rel="shortcut icon" type="image/png" href="images/logo.png">
+  <link rel="apple-touch-icon" href="images/logo.png">
   <title>교육과정 편성표 작성 — 대전광역시 고등학교 교육과정 업무담당자 워크스페이스</title>
   <meta name="description" content="대전광역시 고등학교별 교육과정 편성표를 관리합니다.">
   <meta name="robots" content="noindex, nofollow">
@@ -140,9 +142,9 @@
       color: var(--primary);
     }
     main {
-      max-width: 1200px;
+      max-width: 1100px;
       margin: 0 auto;
-      padding: 48px 32px 80px;
+      padding: 32px 28px 80px;
     }
     .page-header {
       display: flex;
@@ -748,8 +750,8 @@
             <div class="sheet-actions">
               <a class="open-btn" href="${item.spreadsheet_url}" target="_blank">열기 ↗</a>
               ${isAdmin ? `
-                <button class="icon-btn" onclick="editSheet('${item.id}')">수정</button>
-                <button class="icon-btn danger" onclick="deleteSheet('${item.id}')">삭제</button>
+                <button class="icon-btn" onclick="editSheet('${item.id}')">✎ 수정</button>
+                <button class="icon-btn danger" onclick="deleteSheet('${item.id}')">🗑 삭제</button>
               ` : ''}
             </div>
           </div>
