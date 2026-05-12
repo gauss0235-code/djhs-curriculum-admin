@@ -289,20 +289,20 @@
     }
     .track-item {
       background: white;
-      border: 2px solid transparent;
-      padding: 24px 28px;
+      border: 2px solid #F3F4F6;
+      padding: 22px 26px;
       border-radius: 18px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 18px;
       transition: all 0.2s ease;
-      box-shadow: var(--shadow-soft);
+      box-shadow: var(--shadow-card);
     }
     .track-item:hover {
-      border-color: var(--primary);
+      border-color: var(--sim-sky-blue);
       transform: translateY(-2px);
-      box-shadow: var(--shadow-card);
+      box-shadow: 0 8px 20px rgba(74, 138, 184, 0.12);
     }
     .track-info { flex: 1; min-width: 0; }
     .track-title-row {
@@ -315,8 +315,7 @@
     .track-title-row h3 {
       font-family: 'JalnanGothic', 'Pretendard', sans-serif;
       font-size: 18px;
-      font-weight: normal;
-      color: #2C3E50;
+      color: var(--sim-text);
     }
     
     /* 계열 태그 (track-edit과 동일한 컬러풀 스타일) */
@@ -338,14 +337,14 @@
     .category-other { background: var(--cat-other-bg); color: var(--cat-other-text); }
     
     .track-desc {
-      font-size: 14px;
+      font-size: 13.5px;
       color: var(--sim-text-mid);
       line-height: 1.6;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
     .track-meta {
       font-size: 13px;
-      color: #6B7280;
+      color: var(--sim-text-mid);
       display: flex;
       gap: 8px;
       flex-wrap: wrap;
@@ -462,7 +461,7 @@
       main { padding: 28px 16px 60px; }
       .page-header h2 { font-size: 24px; }
       .page-header .desc { font-size: 14px; }
-      .track-item { flex-direction: column; align-items: stretch; padding: 20px 22px; }
+      .track-item { flex-direction: column; align-items: stretch; padding: 20px 20px; }
       .track-actions { justify-content: flex-end; }
     }
   </style>
