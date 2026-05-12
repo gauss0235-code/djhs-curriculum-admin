@@ -483,7 +483,7 @@
   <main>
     <div class="page-header">
       <div>
-        <h2 id="pageTitle">과목 선택 트랙 관리</h2>
+        <h2 id="pageTitle">&nbsp;</h2>
         <div class="desc" id="pageDesc">계열별 추천 과목 트랙을 확인하세요.</div>
       </div>
       <div class="page-header-actions">
@@ -568,6 +568,7 @@
       isSupport = profile.role === 'support';
       
       const userInfoEl = document.getElementById('userInfo');
+      const TITLE_SUFFIX = ' — 대전광역시 고등학교 교육과정 업무담당자 워크스페이스';
       if (isAdmin) {
         userInfoEl.innerHTML = `
           <span class="badge badge-admin">교육과정지원단 관리자</span>
@@ -575,6 +576,7 @@
           <button class="logout-btn" onclick="handleLogout()">로그아웃</button>
         `;
         document.getElementById('pageTitle').textContent = '과목 선택 트랙 관리';
+        document.title = '과목 선택 트랙 관리' + TITLE_SUFFIX;
         document.getElementById('addBtn').style.display = 'inline-block';
         document.getElementById('schoolFilter').style.display = 'flex';
         document.getElementById('pageDesc').textContent = '학교를 선택해서 등록된 트랙을 관리하세요.';
@@ -587,6 +589,7 @@
         `;
         // 지원단은 조회만: 새 트랙 만들기 버튼 숨김, 학교 선택은 표시
         document.getElementById('pageTitle').textContent = '과목 선택 트랙 조회';
+        document.title = '과목 선택 트랙 조회' + TITLE_SUFFIX;
         document.getElementById('schoolFilter').style.display = 'flex';
         document.getElementById('pageDesc').textContent = '학교를 선택해서 등록된 트랙을 조회하세요.';
         await loadSchools();
@@ -597,6 +600,7 @@
           <button class="logout-btn" onclick="handleLogout()">로그아웃</button>
         `;
         document.getElementById('pageTitle').textContent = '과목 선택 트랙 작성';
+        document.title = '과목 선택 트랙 작성' + TITLE_SUFFIX;
         document.getElementById('addBtn').style.display = 'inline-block';
         document.getElementById('pageDesc').textContent = `${profile.schools.name}의 과목 선택 트랙입니다.`;
         loadTracks();
