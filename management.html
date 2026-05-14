@@ -621,17 +621,17 @@
       setTimeout(() => { toast.className = `toast ${type}`; }, 3000);
     }
 
-    async function callEdgeFunction(action, method, body) {
+    async function callEdgeFunction(action, body) {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) throw new Error('로그인이 필요합니다');
-      const response = await fetch(`${FUNCTION_URL}/${action}`, {
-        method,
+      const response = await fetch(FUNCTION_URL, {
+        method: 'POST',
         headers: {
           'Authorization': `Bearer ${session.access_token}`,
           'Content-Type': 'application/json',
           'apikey': SUPABASE_KEY,
         },
-        body: JSON.stringify(body),
+        body: JSON.stringify({ action, ...body }),
       });
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || '요청 처리 실패');
@@ -722,7 +722,7 @@
           if (password.length < 6) { alert('비밀번호는 최소 6자 이상이어야 합니다.'); return; }
           const email = `${emailPrefix}@djsch.kr`;
           showLoading();
-          await callEdgeFunction('create', 'POST', {
+          await callEdgeFunction('create', {
             email, password, display_name, role,
             school_id: role === 'school' ? school_id : null,
           });
@@ -760,7 +760,7 @@
       submitBtn.disabled = true;
       try {
         showLoading();
-        await callEdgeFunction('password', 'PATCH', {
+        await callEdgeFunction('password', {
           user_id: passwordTargetUserId,
           new_password: newPassword,
         });
@@ -779,7 +779,7 @@
       if (!confirm(`정말 "${name}" 담당자를 삭제하시겠습니까?\n\n⚠️ 계정과 모든 관련 데이터가 삭제됩니다.\n이 작업은 되돌릴 수 없습니다.`)) return;
       try {
         showLoading();
-        await callEdgeFunction('delete', 'DELETE', { user_id: id });
+        await callEdgeFunction('delete', { user_id: id });
         hideLoading();
         showToast(`✅ "${name}" 계정이 삭제되었습니다`, 'success');
         await loadUsers();
