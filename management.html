@@ -758,18 +758,8 @@
             return;
           }
           showLoading();
-          // 1) 프로필 업데이트
-          const { error } = await supabase.from('profiles').update({
-            role,
-            school_id: role === 'school' ? school_id : null,
-            display_name
-          }).eq('id', editingUserId);
-          if (error) {
-            hideLoading();
-            showToast('수정 실패: ' + error.message, 'error');
-            return;
-          }
-          // 2) 비밀번호 변경 (입력했을 때만)
+          // 1) 비밀번호 변경 먼저 (입력했을 때만)
+          // 실패하면 프로필도 안 바꾸고 모달 그대로 유지
           if (newPassword) {
             try {
               await callEdgeFunction('password', {
@@ -778,12 +768,22 @@
               });
             } catch (err) {
               hideLoading();
-              showToast('프로필은 수정되었으나 비밀번호 변경 실패: ' + err.message, 'error');
-              await loadUsers();
-              render();
-              closeUserModal();
-              return;
+              submitBtn.disabled = false;
+              showToast('❌ ' + err.message, 'error');
+              return; // 모달 안 닫고 종료
             }
+          }
+          // 2) 프로필 업데이트 (비밀번호 변경이 성공했거나, 입력 안 했을 때)
+          const { error } = await supabase.from('profiles').update({
+            role,
+            school_id: role === 'school' ? school_id : null,
+            display_name
+          }).eq('id', editingUserId);
+          if (error) {
+            hideLoading();
+            submitBtn.disabled = false;
+            showToast('수정 실패: ' + error.message, 'error');
+            return;
           }
           hideLoading();
           showToast(newPassword ? '✅ 담당자 정보 및 비밀번호가 수정되었습니다' : '✅ 담당자 정보가 수정되었습니다', 'success');
