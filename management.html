@@ -437,6 +437,11 @@
         <input type="text" id="formDisplayName" placeholder="예: 대전고 교육과정 업무담당자" autocomplete="off">
         <div class="form-hint">로그인 후 화면 상단에 표시되는 이름입니다</div>
       </div>
+      <div class="form-group" id="editPasswordFormGroup" style="display:none;">
+        <label>새 비밀번호 (선택)</label>
+        <input type="text" id="editNewPassword" placeholder="변경하려면 입력 (최소 6자)" autocomplete="off">
+        <div class="form-hint">비워두면 비밀번호는 변경되지 않습니다</div>
+      </div>
       <div class="modal-actions">
         <button class="btn-cancel" onclick="closeUserModal()">취소</button>
         <button class="btn-submit" id="userSubmitBtn" onclick="submitUser()">등록</button>
@@ -578,7 +583,6 @@
             </div>
             <div class="actions">
               <button class="icon-btn" onclick="editUser('${u.id}')">✎ 수정</button>
-              <button class="icon-btn warn" onclick="showPasswordModal('${u.id}', '${escapeHtml(u.display_name)}')">🔑 비밀번호</button>
               ${!isSelf ? `<button class="icon-btn danger" onclick="deleteUser('${u.id}', '${escapeHtml(u.display_name)}')">🗑 삭제</button>` : ''}
             </div>
           </div>
@@ -668,6 +672,8 @@
       document.getElementById('formDisplayName').value = '';
       document.getElementById('emailFormGroup').style.display = '';
       document.getElementById('passwordFormGroup').style.display = '';
+      document.getElementById('editPasswordFormGroup').style.display = 'none';
+      document.getElementById('editNewPassword').value = '';
       document.getElementById('userSubmitBtn').textContent = '등록';
       onRoleChange();
       document.getElementById('userModal').classList.add('active');
@@ -687,12 +693,14 @@
       if (!user) return;
       editingUserId = id;
       document.getElementById('userModalTitle').textContent = '담당자 정보 수정';
-      document.getElementById('userModalDesc').textContent = '담당자의 역할, 학교, 이름을 수정합니다. (이메일/비밀번호는 별도 변경)';
+      document.getElementById('userModalDesc').textContent = '담당자의 역할, 학교, 이름, 비밀번호를 수정합니다.';
       document.getElementById('formRole').value = user.role;
       document.getElementById('formSchool').value = user.school_id || '';
       document.getElementById('formDisplayName').value = user.display_name || '';
       document.getElementById('emailFormGroup').style.display = 'none';
       document.getElementById('passwordFormGroup').style.display = 'none';
+      document.getElementById('editPasswordFormGroup').style.display = '';
+      document.getElementById('editNewPassword').value = '';
       document.getElementById('userSubmitBtn').textContent = '수정';
       onRoleChange();
       document.getElementById('userModal').classList.add('active');
@@ -717,15 +725,43 @@
             alert('이미 같은 이름의 담당자가 존재합니다.');
             return;
           }
+          // 새 비밀번호 입력 여부 체크
+          const newPassword = document.getElementById('editNewPassword').value.trim();
+          if (newPassword && newPassword.length < 6) {
+            submitBtn.disabled = false;
+            alert('새 비밀번호는 최소 6자 이상이어야 합니다.');
+            return;
+          }
           showLoading();
+          // 1) 프로필 업데이트
           const { error } = await supabase.from('profiles').update({
             role,
             school_id: role === 'school' ? school_id : null,
             display_name
           }).eq('id', editingUserId);
+          if (error) {
+            hideLoading();
+            showToast('수정 실패: ' + error.message, 'error');
+            return;
+          }
+          // 2) 비밀번호 변경 (입력했을 때만)
+          if (newPassword) {
+            try {
+              await callEdgeFunction('password', {
+                user_id: editingUserId,
+                new_password: newPassword,
+              });
+            } catch (err) {
+              hideLoading();
+              showToast('프로필은 수정되었으나 비밀번호 변경 실패: ' + err.message, 'error');
+              await loadUsers();
+              render();
+              closeUserModal();
+              return;
+            }
+          }
           hideLoading();
-          if (error) { showToast('수정 실패: ' + error.message, 'error'); return; }
-          showToast('✅ 담당자 정보가 수정되었습니다', 'success');
+          showToast(newPassword ? '✅ 담당자 정보 및 비밀번호가 수정되었습니다' : '✅ 담당자 정보가 수정되었습니다', 'success');
         } else {
           const emailPrefix = document.getElementById('formEmail').value.trim();
           const password = document.getElementById('formPassword').value.trim();
