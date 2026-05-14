@@ -97,13 +97,32 @@
       text-decoration: none;
       color: inherit;
     }
-    .brand-mark { width: 42px; height: 42px; }
-    .brand-mark img { width: 100%; height: 100%; object-fit: contain; }
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+    .brand-mark img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.2;
+    }
     .brand-name {
       font-family: 'JalnanGothic', 'Pretendard', sans-serif;
       font-size: 17px;
+      font-weight: normal;
       color: var(--primary-dark);
       letter-spacing: -0.01em;
+      line-height: 1.3;
     }
     .user-info {
       display: flex;
