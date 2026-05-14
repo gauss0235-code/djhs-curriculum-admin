@@ -705,6 +705,15 @@
       submitBtn.disabled = true;
       try {
         if (editingUserId) {
+          // 이름 중복 체크 (본인 제외)
+          const duplicate = users.find(u => 
+            u.display_name === display_name && u.id !== editingUserId
+          );
+          if (duplicate) {
+            submitBtn.disabled = false;
+            alert('이미 같은 이름의 담당자가 존재합니다.');
+            return;
+          }
           showLoading();
           const { error } = await supabase.from('profiles').update({
             role,

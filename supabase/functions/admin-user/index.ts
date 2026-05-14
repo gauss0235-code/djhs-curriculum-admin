@@ -18,6 +18,7 @@ function json(body: unknown, status = 200) {
 }
 
 Deno.serve(async (req) => {
+  // CORS preflight 응답
   if (req.method === "OPTIONS") {
     return new Response("ok", { headers: corsHeaders });
   }
@@ -32,6 +33,7 @@ Deno.serve(async (req) => {
     const anonKey = Deno.env.get("SUPABASE_ANON_KEY")!;
     const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 
+    // 요청자 검증
     const userClient = createClient(supabaseUrl, anonKey, {
       global: { headers: { Authorization: authHeader } },
     });
@@ -40,6 +42,7 @@ Deno.serve(async (req) => {
       return json({ error: "Invalid token" }, 401);
     }
 
+    // admin 권한 확인
     const adminClient = createClient(supabaseUrl, serviceRoleKey);
     const { data: profile, error: profileError } = await adminClient
       .from("profiles")
@@ -54,9 +57,11 @@ Deno.serve(async (req) => {
       return json({ error: "관리자 권한이 필요합니다" }, 403);
     }
 
+    // body 파싱
     const body = await req.json().catch(() => ({}));
     const action = body.action;
 
+    // ====== 사용자 생성 ======
     if (action === "create") {
       const { email, password, display_name, role, school_id } = body;
       if (!email || !password || !display_name || !role) {
@@ -69,16 +74,30 @@ Deno.serve(async (req) => {
         return json({ error: "학교 담당자는 school_id가 필요합니다" }, 400);
       }
 
+      // 담당자 이름 중복 체크
+      const { data: existingName } = await adminClient
+        .from("profiles")
+        .select("id")
+        .eq("display_name", display_name.trim())
+        .maybeSingle();
+      if (existingName) {
+        return json({ error: "이미 같은 이름의 담당자가 존재합니다" }, 400);
+      }
+
       const { data: newUser, error: createError } = await adminClient.auth.admin.createUser({
-        email, password, email_confirm: true,
+        email,
+        password,
+        email_confirm: true,
       });
-      if (createError) return json({ error: createError.message }, 400);
+      if (createError) {
+        return json({ error: createError.message }, 400);
+      }
 
       const { error: insertError } = await adminClient
         .from("profiles")
         .insert({
           id: newUser.user.id,
-          display_name,
+          display_name: display_name.trim(),
           role,
           school_id: role === "school" ? school_id : null,
         });
@@ -90,6 +109,7 @@ Deno.serve(async (req) => {
       return json({ success: true, user_id: newUser.user.id });
     }
 
+    // ====== 비밀번호 변경 ======
     if (action === "password") {
       const { user_id, new_password } = body;
       if (!user_id || !new_password) {
@@ -103,20 +123,27 @@ Deno.serve(async (req) => {
         user_id,
         { password: new_password }
       );
-      if (updateError) return json({ error: updateError.message }, 400);
+      if (updateError) {
+        return json({ error: updateError.message }, 400);
+      }
       return json({ success: true });
     }
 
+    // ====== 사용자 삭제 ======
     if (action === "delete") {
       const { user_id } = body;
-      if (!user_id) return json({ error: "user_id가 필요합니다" }, 400);
+      if (!user_id) {
+        return json({ error: "user_id가 필요합니다" }, 400);
+      }
       if (user_id === user.id) {
         return json({ error: "본인 계정은 삭제할 수 없습니다" }, 400);
       }
 
       await adminClient.from("profiles").delete().eq("id", user_id);
       const { error: deleteError } = await adminClient.auth.admin.deleteUser(user_id);
-      if (deleteError) return json({ error: deleteError.message }, 400);
+      if (deleteError) {
+        return json({ error: deleteError.message }, 400);
+      }
       return json({ success: true });
     }
 
