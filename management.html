@@ -537,13 +537,13 @@
     }
 
     async function loadUsers() {
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('*, schools(id, name, code)')
-        .order('role')
-        .order('display_name');
-      if (error) { console.error(error); return; }
-      users = data || [];
+      try {
+        const result = await callEdgeFunction('list-users', {});
+        users = result.users || [];
+      } catch (err) {
+        console.error('loadUsers failed:', err);
+        users = [];
+      }
     }
 
     function render() {
@@ -571,7 +571,10 @@
                 <span class="role-tag ${roleClass}">${roleLabel}</span>
                 ${isSelf ? '<span class="role-tag role-admin">본인</span>' : ''}
               </div>
-              <div class="list-meta"><span>🏫 ${escapeHtml(schoolName)}</span></div>
+              <div class="list-meta">
+                <span>🏫 ${escapeHtml(schoolName)}</span>
+                <span>📧 ${escapeHtml(u.email || '-')}</span>
+              </div>
             </div>
             <div class="actions">
               <button class="icon-btn" onclick="editUser('${u.id}')">✎ 수정</button>

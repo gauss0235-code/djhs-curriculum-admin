@@ -61,6 +61,34 @@ Deno.serve(async (req) => {
     const body = await req.json().catch(() => ({}));
     const action = body.action;
 
+    // ====== 사용자 목록 (profile + email) ======
+    if (action === "list-users") {
+      const { data: profiles, error: profilesError } = await adminClient
+        .from("profiles")
+        .select("*, schools(id, name, code)")
+        .order("role")
+        .order("display_name");
+      if (profilesError) {
+        return json({ error: profilesError.message }, 500);
+      }
+
+      const { data: authData, error: authError } = await adminClient.auth.admin.listUsers({
+        page: 1,
+        perPage: 1000,
+      });
+      if (authError) {
+        return json({ error: authError.message }, 500);
+      }
+
+      const emailMap = new Map(authData.users.map((u: any) => [u.id, u.email]));
+      const result = profiles.map((p: any) => ({
+        ...p,
+        email: emailMap.get(p.id) || null,
+      }));
+
+      return json({ success: true, users: result });
+    }
+
     // ====== 사용자 생성 ======
     if (action === "create") {
       const { email, password, display_name, role, school_id } = body;
@@ -118,6 +146,25 @@ Deno.serve(async (req) => {
       if (new_password.length < 6) {
         return json({ error: "비밀번호는 최소 6자 이상이어야 합니다" }, 400);
       }
+
+      // 대상 사용자의 이메일 조회
+      const { data: targetUser, error: getUserError } = await adminClient.auth.admin.getUserById(user_id);
+      if (getUserError || !targetUser?.user?.email) {
+        return json({ error: "대상 사용자를 찾을 수 없습니다" }, 404);
+      }
+
+      // 새 비밀번호로 로그인 시도 → 성공하면 이전과 동일하다는 의미
+      const testClient = createClient(supabaseUrl, anonKey);
+      const { data: signInData } = await testClient.auth.signInWithPassword({
+        email: targetUser.user.email,
+        password: new_password,
+      });
+      if (signInData?.session) {
+        // 로그인 성공했으므로 즉시 로그아웃 (테스트 세션 정리)
+        await testClient.auth.signOut();
+        return json({ error: "현재 비밀번호와 동일합니다. 다른 비밀번호를 입력하세요." }, 400);
+      }
+      // 로그인 실패 = 다른 비밀번호 → 변경 진행
 
       const { error: updateError } = await adminClient.auth.admin.updateUserById(
         user_id,
