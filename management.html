@@ -43,16 +43,38 @@
       min-height: 100vh;
     }
     header {
-      background: white;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--border);
-      padding: 14px 24px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 16px 32px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
     }
-    .logo-area { display: flex; align-items: center; gap: 12px; }
-    .logo-area img { width: 40px; height: 40px; object-fit: contain; }
-    .logo-area .site-name {
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+    .brand-mark {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .brand-mark img { width: 40px; height: 40px; object-fit: contain; }
+    .brand-name {
       font-family: 'JalnanGothic', 'Pretendard', sans-serif;
       font-size: 16px;
       color: var(--primary-dark);
@@ -368,6 +390,7 @@
     .toast.error { background: var(--danger); }
     .toast.success { background: #16A34A; }
     @media (max-width: 768px) {
+      .header-inner { padding: 14px 18px; }
       main { padding: 28px 16px 60px; }
       .page-header h2 { font-size: 24px; }
       .list-item { flex-direction: column; align-items: stretch; padding: 20px 22px; }
@@ -377,11 +400,15 @@
 </head>
 <body>
   <header>
-    <div class="logo-area">
-      <img src="images/logo.png" alt="대전광역시교육청 심볼">
-      <span class="site-name">대전광역시 고등학교 교육과정 업무담당자 워크스페이스</span>
+    <div class="header-inner">
+      <a class="brand" href="dashboard.html">
+        <div class="brand-mark"><img src="images/logo.png" alt="대전광역시교육청"></div>
+        <div class="brand-text">
+          <span class="brand-name">대전광역시 고등학교 교육과정 업무담당자 워크스페이스</span>
+        </div>
+      </a>
+      <div class="user-info" id="userInfo"></div>
     </div>
-    <div class="user-info" id="userInfo"></div>
   </header>
   <main>
     <div class="page-header">
