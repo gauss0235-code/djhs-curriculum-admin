@@ -153,18 +153,29 @@ Deno.serve(async (req) => {
         return json({ error: "대상 사용자를 찾을 수 없습니다" }, 404);
       }
 
-      // 새 비밀번호로 로그인 시도 → 성공하면 이전과 동일하다는 의미
-      const testClient = createClient(supabaseUrl, anonKey);
-      const { data: signInData } = await testClient.auth.signInWithPassword({
-        email: targetUser.user.email,
-        password: new_password,
-      });
-      if (signInData?.session) {
-        // 로그인 성공했으므로 즉시 로그아웃 (테스트 세션 정리)
-        await testClient.auth.signOut();
-        return json({ error: "현재 비밀번호와 동일합니다. 다른 비밀번호를 입력하세요." }, 400);
+      // 새 비밀번호로 로그인 시도 (fetch API 직접 사용 - 클라이언트 세션 영향 없음)
+      // 성공하면 이전 비밀번호와 동일하다는 의미
+      try {
+        const loginResp = await fetch(`${supabaseUrl}/auth/v1/token?grant_type=password`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "apikey": anonKey,
+          },
+          body: JSON.stringify({
+            email: targetUser.user.email,
+            password: new_password,
+          }),
+        });
+        if (loginResp.ok) {
+          // 로그인 성공 = 이전과 동일한 비밀번호
+          return json({ error: "현재 비밀번호와 동일합니다. 다른 비밀번호를 입력하세요." }, 400);
+        }
+        // 로그인 실패 = 다른 비밀번호 → 변경 진행
+      } catch (err) {
+        // 네트워크 오류 등은 무시하고 변경 진행 (안전한 fallback)
+        console.error("Password compare failed:", err);
       }
-      // 로그인 실패 = 다른 비밀번호 → 변경 진행
 
       const { error: updateError } = await adminClient.auth.admin.updateUserById(
         user_id,
