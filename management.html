@@ -665,7 +665,12 @@
       editingUserId = null;
       document.getElementById('userModalTitle').textContent = '새 담당자 등록';
       document.getElementById('userModalDesc').textContent = '담당자 정보를 입력하세요. 등록하면 계정이 자동으로 생성됩니다.';
-      document.getElementById('formRole').value = 'school';
+      // 관리자 옵션 제거 + 드롭다운 활성화
+      const roleSelect = document.getElementById('formRole');
+      const adminOpt = roleSelect.querySelector('option[value="admin"]');
+      if (adminOpt) adminOpt.remove();
+      roleSelect.disabled = false;
+      roleSelect.value = 'school';
       document.getElementById('formSchool').value = '';
       document.getElementById('formEmail').value = '';
       document.getElementById('formPassword').value = '';
@@ -694,7 +699,27 @@
       editingUserId = id;
       document.getElementById('userModalTitle').textContent = '담당자 정보 수정';
       document.getElementById('userModalDesc').textContent = '담당자의 역할, 학교, 이름, 비밀번호를 수정합니다.';
-      document.getElementById('formRole').value = user.role;
+      
+      const roleSelect = document.getElementById('formRole');
+      // 관리자인 경우 드롭다운에 임시로 옵션 추가 + 비활성화
+      if (user.role === 'admin') {
+        // '관리자' 옵션이 없으면 추가
+        if (!roleSelect.querySelector('option[value="admin"]')) {
+          const opt = document.createElement('option');
+          opt.value = 'admin';
+          opt.textContent = '관리자';
+          roleSelect.insertBefore(opt, roleSelect.firstChild);
+        }
+        roleSelect.value = 'admin';
+        roleSelect.disabled = true;  // 변경 불가
+      } else {
+        // 일반 사용자는 드롭다운 활성화 + 관리자 옵션 제거
+        const adminOpt = roleSelect.querySelector('option[value="admin"]');
+        if (adminOpt) adminOpt.remove();
+        roleSelect.value = user.role;
+        roleSelect.disabled = false;
+      }
+      
       document.getElementById('formSchool').value = user.school_id || '';
       document.getElementById('formDisplayName').value = user.display_name || '';
       document.getElementById('emailFormGroup').style.display = 'none';
