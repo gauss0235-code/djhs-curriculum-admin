@@ -126,20 +126,21 @@
     }
     .user-name { font-weight: 500; }
     .logout-btn {
-      background: white;
-      border: 1.5px solid var(--border);
+      background: #374151;
+      border: none;
       padding: 8px 16px;
       border-radius: 20px;
       cursor: pointer;
       font-size: 13px;
-      color: var(--text-muted);
+      color: white;
       font-family: inherit;
       transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
     }
     .logout-btn:hover {
-      background: var(--primary-soft);
-      border-color: var(--primary);
-      color: var(--primary);
+      background: #1f2937;
     }
     /* 토스트 메시지 (성공/에러 알림) */
     .toast {
@@ -169,20 +170,22 @@
 
     /* 정보수정 버튼: 로그아웃과 같은 크기, 색상만 살짝 강조 */
     .profile-btn {
-      background: var(--primary-soft);
-      border: 1.5px solid var(--primary);
+      background: #374151;
+      border: none;
       padding: 8px 16px;
       border-radius: 20px;
       cursor: pointer;
       font-size: 13px;
-      color: var(--primary-dark);
+      color: white;
       font-weight: 500;
       font-family: inherit;
       transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
     }
     .profile-btn:hover {
-      background: var(--primary);
-      color: white;
+      background: #1f2937;
     }
     /* 비밀번호 변경 모달 */
     .pw-modal-bg {
@@ -792,8 +795,8 @@
         userInfoEl.innerHTML = `
           <span class="badge badge-admin">관리자</span>
           <span class="user-name">${profile.display_name}</span>
-          <button class="profile-btn" onclick="openPasswordModal()">정보수정</button>
-          <button class="logout-btn" onclick="handleLogout()">로그아웃</button>
+          <button class="profile-btn" onclick="openPasswordModal()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px;"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>정보수정</button>
+          <button class="logout-btn" onclick="handleLogout()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px;"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>로그아웃</button>
         `;
         document.getElementById('pageTitle').textContent = '교육과정 편성표 관리';
         document.title = '교육과정 편성표 관리' + TITLE_SUFFIX;
@@ -805,8 +808,8 @@
         userInfoEl.innerHTML = `
           <span class="badge badge-admin">교육과정지원단</span>
           <span class="user-name">${profile.display_name}</span>
-          <button class="profile-btn" onclick="openPasswordModal()">정보수정</button>
-          <button class="logout-btn" onclick="handleLogout()">로그아웃</button>
+          <button class="profile-btn" onclick="openPasswordModal()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px;"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>정보수정</button>
+          <button class="logout-btn" onclick="handleLogout()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px;"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>로그아웃</button>
         `;
         // 지원단은 조회만 가능: 새 교육과정 편성표 등록 버튼 숨김, 학교 선택은 표시
         document.getElementById('pageTitle').textContent = '교육과정 편성표 조회';
@@ -818,8 +821,8 @@
         userInfoEl.innerHTML = `
           <span class="badge badge-school">${profile.schools.name}</span>
           <span class="user-name">${profile.display_name}</span>
-          <button class="profile-btn" onclick="openPasswordModal()">정보수정</button>
-          <button class="logout-btn" onclick="handleLogout()">로그아웃</button>
+          <button class="profile-btn" onclick="openPasswordModal()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px;"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>정보수정</button>
+          <button class="logout-btn" onclick="handleLogout()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px;"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>로그아웃</button>
         `;
         document.getElementById('pageTitle').textContent = '교육과정 편성표 작성';
         document.title = '교육과정 편성표 작성' + TITLE_SUFFIX;
