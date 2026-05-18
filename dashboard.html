@@ -268,11 +268,12 @@
     @media (max-width: 768px) {
       .header-inner { padding: 14px 18px; }
       main { padding: 32px 18px 60px; }
-      .welcome h2 { font-size: 26px; }
-      .welcome p { font-size: 15px; }
+      .welcome h2 { font-size: 24px; }
+      .welcome p { font-size: 14px; }
+      .welcome-name { display: block; }
       .user-info { font-size: 13px; gap: 10px; }
-      .brand-name { font-size: 14px; }
-      .brand-mark { width: 36px; height: 36px; }
+      .brand-line1, .brand-line2 { display: block; }
+      .brand-name { font-size: 15px; line-height: 1.25; }
       .menu-card { padding: 26px 22px; min-height: auto; }
       .menu-icon { width: 52px; height: 52px; }
       .menu-icon svg { width: 26px; height: 26px; }
@@ -286,7 +287,7 @@
       <div class="brand">
         <div class="brand-mark"><img src="images/logo.png" alt="대전광역시교육청"></div>
         <div class="brand-text">
-          <span class="brand-name">대전광역시 고등학교 교육과정 업무담당자 워크스페이스</span>
+          <span class="brand-name"><span class="brand-line1">대전광역시 고등학교</span> <span class="brand-line2">교육과정 업무담당자 워크스페이스</span></span>
         </div>
       </div>
       <div class="user-info" id="userInfo"></div>
@@ -347,14 +348,14 @@
       
       if (isAdmin) {
         document.getElementById('userInfo').innerHTML = `
-          <span class="badge badge-admin">교육과정지원단 관리자</span>
+          <span class="badge badge-admin">관리자</span>
           <span class="user-name">${profile.display_name}</span>
           <button class="logout-btn" onclick="handleLogout()">로그아웃</button>
         `;
         document.getElementById('content').innerHTML = `
           <div class="welcome">
             <span class="welcome-tag">관리자 대시보드</span>
-            <h2>안녕하세요, ${profile.display_name}님</h2>
+            <h2>안녕하세요, <span class="welcome-name">${profile.display_name}님</span></h2>
             <p>관리자 권한으로 모든 학교의 데이터를 관리할 수 있습니다.</p>
           </div>
           <div class="menu-grid">
@@ -374,6 +375,14 @@
               </div>
               <span class="arrow">관리하기 →</span>
             </a>
+            <a class="menu-card" href="inspection.html">
+              <div class="menu-icon">${ICONS.check}</div>
+              <div>
+                <h3>교육과정 편성표 점검</h3>
+                <p>학교별 편성표 점검 결과 등록·관리</p>
+              </div>
+              <span class="arrow">관리하기 →</span>
+            </a>
             <a class="menu-card" href="management.html">
               <div class="menu-icon">${ICONS.users}</div>
               <div>
@@ -381,14 +390,6 @@
                 <p>학교 등록 및 담당자 계정 관리</p>
               </div>
               <span class="arrow">관리하기 →</span>
-            </a>
-            <a class="menu-card" href="${NOTEBOOKLM_URL}" target="_blank">
-              <div class="menu-icon">${ICONS.bot}</div>
-              <div>
-                <h3>교육과정 업무 도우미 챗봇</h3>
-                <p>NotebookLM 문서 기반 질의응답</p>
-              </div>
-              <span class="arrow">새 탭에서 열기 ↗</span>
             </a>
           </div>
         `;
@@ -401,7 +402,7 @@
         document.getElementById('content').innerHTML = `
           <div class="welcome">
             <span class="welcome-tag">교육과정지원단 대시보드</span>
-            <h2>안녕하세요, ${profile.display_name}님</h2>
+            <h2>안녕하세요, <span class="welcome-name">${profile.display_name}님</span></h2>
             <p>모든 학교의 교육과정 편성표와 과목 선택 트랙을 조회할 수 있습니다.</p>
           </div>
           <div class="menu-grid">
@@ -421,14 +422,14 @@
               </div>
               <span class="arrow">조회하기 →</span>
             </a>
-            <div class="menu-card disabled">
+            <a class="menu-card" href="inspection.html">
               <div class="menu-icon">${ICONS.check}</div>
               <div>
-                <h3>교육과정 편성 점검 결과</h3>
-                <p>곧 추가될 예정입니다</p>
+                <h3>교육과정 편성표 점검</h3>
+                <p>학교별 편성표 점검 결과 보기</p>
               </div>
-              <span class="arrow">준비 중</span>
-            </div>
+              <span class="arrow">조회하기 →</span>
+            </a>
             <a class="menu-card" href="${NOTEBOOKLM_URL}" target="_blank">
               <div class="menu-icon">${ICONS.bot}</div>
               <div>
@@ -449,7 +450,7 @@
         document.getElementById('content').innerHTML = `
           <div class="welcome">
             <span class="welcome-tag">${schoolName}</span>
-            <h2>안녕하세요, ${profile.display_name}님</h2>
+            <h2>안녕하세요, <span class="welcome-name">${profile.display_name}님</span></h2>
             <p>${schoolName}의 교육과정 작업 공간입니다.</p>
           </div>
           <div class="menu-grid">
@@ -469,14 +470,14 @@
               </div>
               <span class="arrow">바로가기 →</span>
             </a>
-            <div class="menu-card disabled">
+            <a class="menu-card" href="inspection.html">
               <div class="menu-icon">${ICONS.check}</div>
               <div>
-                <h3>교육과정 편성 점검 결과</h3>
-                <p>곧 추가될 예정입니다</p>
+                <h3>교육과정 편성표 점검</h3>
+                <p>우리 학교 편성표 점검 결과 보기</p>
               </div>
-              <span class="arrow">준비 중</span>
-            </div>
+              <span class="arrow">바로가기 →</span>
+            </a>
             <a class="menu-card" href="${NOTEBOOKLM_URL}" target="_blank">
               <div class="menu-icon">${ICONS.bot}</div>
               <div>

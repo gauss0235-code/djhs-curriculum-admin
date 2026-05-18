@@ -6,8 +6,8 @@
   <link rel="icon" type="image/png" href="images/logo.png">
   <link rel="shortcut icon" type="image/png" href="images/logo.png">
   <link rel="apple-touch-icon" href="images/logo.png">
-  <title>과목 선택 트랙 — 대전광역시 고등학교 교육과정 업무담당자 워크스페이스</title>
-  <meta name="description" content="대전광역시 고등학교별 과목 선택 트랙을 관리합니다.">
+  <title>교육과정 편성표 점검 — 대전광역시 고등학교 교육과정 업무담당자 워크스페이스</title>
+  <meta name="description" content="대전광역시 고등학교별 교육과정 편성표를 관리합니다.">
   <meta name="robots" content="noindex, nofollow">
   <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   <style>
@@ -18,56 +18,36 @@
       font-display: swap;
     }
     :root {
-      /* 배경 (건드리지 않음) */
       --bg-sky: #e8f4fc;
       --bg-sky-deep: #d4ecf8;
+      --surface: #ffffff;
       --border: #d8e8f3;
+      --border-strong: #b8d4e8;
+      --text: #1e3a5f;
+      --text-muted: #5d7894;
+      --text-light: #8ba8c2;
       --primary: #4a90d9;
       --primary-hover: #3a7ec0;
       --primary-soft: #e3f0fa;
       --primary-dark: #2d5a8a;
       --admin: #ec6f8e;
       --admin-soft: #fde7ed;
-      --text-light: #8ba8c2;
-      --text-muted: #5d7894;
-      
-      /* 시뮬레이터 톤 (track-edit과 동일) */
-      --sim-text: #2C3E50;
-      --sim-text-mid: #6B7280;
-      --sim-text-brown: #6B4423;
-      --sim-sky-blue: #4A8AB8;
-      --sim-beige: #FFF8E7;
-      --sim-beige-deep: #FFE9B3;
-      --sim-yellow-banner: #FEF3C7;
-      --sim-yellow-border: #F59E0B;
-      
-      /* 계열별 태그 (track-edit 톤) */
-      --cat-social-bg: #DBEAFE;
-      --cat-social-text: #1D4ED8;
-      --cat-business-bg: #FEF3C7;
-      --cat-business-text: #B45309;
-      --cat-engineering-bg: #DCFCE7;
-      --cat-engineering-text: #15803D;
-      --cat-medical-bg: #FEE2E2;
-      --cat-medical-text: #B91C1C;
-      --cat-other-bg: #F3F4F6;
-      --cat-other-text: #4B5563;
-      
-      --check-brown: #4A2E14;
-      
-      --danger: #DC2626;
-      --danger-soft: #FEE2E2;
-      --warning: #F59E0B;
-      --warning-soft: #FEF3C7;
-      
+      --danger: #e57373;
+      --danger-soft: #fdeaea;
+      --green: #7cb342;
+      --green-soft: #eef7e3;
+      --orange: #f4a261;
+      --orange-soft: #fef0e3;
+      --blue: #5a9fd4;
+      --blue-soft: #e3f0fa;
       --shadow-soft: 0 4px 20px rgba(74, 144, 217, 0.08);
-      --shadow-card: 0 2px 8px rgba(120, 80, 30, 0.06);
+      --shadow-card: 0 8px 32px rgba(74, 144, 217, 0.12);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
       background: linear-gradient(180deg, var(--bg-sky) 0%, var(--bg-sky-deep) 100%);
-      color: var(--sim-text);
+      color: var(--text);
       line-height: 1.5;
       -webkit-font-smoothing: antialiased;
       min-height: 100vh;
@@ -136,8 +116,14 @@
       font-size: 13px;
       font-weight: 600;
     }
-    .badge-school { background: var(--primary-soft); color: var(--primary-dark); }
-    .badge-admin { background: var(--admin-soft); color: var(--admin); }
+    .badge-school {
+      background: var(--primary-soft);
+      color: var(--primary-dark);
+    }
+    .badge-admin {
+      background: var(--admin-soft);
+      color: var(--admin);
+    }
     .user-name { font-weight: 500; }
     .logout-btn {
       background: white;
@@ -187,8 +173,6 @@
       gap: 10px;
       flex-wrap: wrap;
     }
-    
-    /* === 버튼 (track-edit과 일치) === */
     .btn-primary {
       background: var(--primary);
       color: white;
@@ -202,11 +186,23 @@
       transition: all 0.15s ease;
       white-space: nowrap;
       box-shadow: 0 2px 8px rgba(74, 144, 217, 0.25);
-      text-decoration: none;
-      display: inline-block;
     }
-    .btn-primary:hover { background: var(--primary-hover); transform: translateY(-1px); box-shadow: 0 5px 14px rgba(74, 144, 217, 0.4); }
-    
+    .btn-primary:hover { background: var(--primary-hover); }
+    .btn-secondary {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      padding: 10px 18px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 14px;
+      font-family: inherit;
+      color: var(--text);
+      transition: all 0.15s ease;
+    }
+    .btn-secondary:hover {
+      border-color: var(--border-strong);
+      background: var(--bg-sky);
+    }
     .back-btn {
       display: inline-flex;
       align-items: center;
@@ -230,8 +226,6 @@
       transform: translateY(-1px);
       box-shadow: 0 5px 14px rgba(107, 114, 128, 0.4);
     }
-    
-    /* === 학교 선택 바 === */
     .filter-bar {
       background: white;
       border: 1.5px solid #E5E7EB;
@@ -242,12 +236,12 @@
       align-items: center;
       gap: 14px;
       flex-wrap: wrap;
-      box-shadow: var(--shadow-card);
+      box-shadow: 0 2px 8px rgba(120, 80, 30, 0.06);
     }
     .filter-bar label {
       font-family: 'JalnanGothic', 'Pretendard', sans-serif;
       font-size: 15px;
-      color: var(--sim-sky-blue);
+      color: #4A8AB8;
     }
     .filter-bar select {
       padding: 11px 16px;
@@ -256,60 +250,60 @@
       font-size: 14px;
       font-family: inherit;
       background: white;
-      color: var(--sim-text);
+      color: #2C3E50;
       flex: 1;
       max-width: 320px;
       cursor: pointer;
     }
     .filter-bar select:focus {
       outline: none;
-      border-color: var(--sim-sky-blue);
+      border-color: #4A8AB8;
       box-shadow: 0 0 0 3px rgba(74, 138, 184, 0.15);
     }
-    
-    /* === 빈 상태 === */
     .empty-state {
       text-align: center;
       padding: 80px 20px;
-      color: var(--sim-text-mid);
+      color: #6B7280;
       background: white;
       border-radius: 20px;
-      box-shadow: var(--shadow-card);
+      box-shadow: 0 2px 8px rgba(120, 80, 30, 0.06);
     }
     .empty-state .icon {
       width: 72px;
       height: 72px;
       margin: 0 auto 20px;
-      color: var(--sim-sky-blue);
-      background: var(--sim-beige);
-      border: 2px dashed var(--sim-yellow-border);
+      color: #4A8AB8;
+      background: #FFF8E7;
+      border: 2px dashed #F59E0B;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
     }
-    .empty-state .icon svg { width: 34px; height: 34px; color: var(--sim-yellow-border); }
+    .empty-state .icon svg {
+      width: 34px;
+      height: 34px;
+      color: #F59E0B;
+    }
     .empty-state p {
       font-family: 'JalnanGothic', 'Pretendard', sans-serif;
       font-size: 18px;
       margin-bottom: 8px;
-      color: var(--sim-sky-blue);
+      color: #4A8AB8;
     }
     .empty-state p:last-child {
       font-family: 'Pretendard', sans-serif;
-      color: var(--sim-text-mid);
+      color: #6B7280;
       font-size: 14px;
       font-weight: 400;
     }
-    
-    /* === 트랙 카드 (track-edit의 subject-card 톤) === */
-    .track-list {
+    .sheet-list {
       display: flex;
       flex-direction: column;
       gap: 14px;
     }
-    .track-item {
-      background: white;
+    .sheet-item {
+      background: var(--surface);
       border: 2px solid transparent;
       padding: 24px 28px;
       border-radius: 18px;
@@ -320,109 +314,63 @@
       transition: all 0.2s ease;
       box-shadow: var(--shadow-soft);
     }
-    .track-item:hover {
+    .sheet-item:hover {
       border-color: var(--primary);
       transform: translateY(-2px);
       box-shadow: var(--shadow-card);
     }
-    .track-info { flex: 1; min-width: 0; }
-    .track-title-row {
+    .sheet-info { flex: 1; min-width: 0; }
+    .sheet-title-row {
       display: flex;
       align-items: center;
       gap: 10px;
       margin-bottom: 10px;
       flex-wrap: wrap;
     }
-    .track-title-row h3 {
+    .sheet-title-row h3 {
       font-family: 'JalnanGothic', 'Pretendard', sans-serif;
       font-size: 18px;
       font-weight: normal;
       color: #2C3E50;
     }
-    
-    /* 계열 태그 (track-edit과 동일한 컬러풀 스타일) */
-    .category-tag {
+    .type-tag {
       display: inline-flex;
       align-items: center;
       padding: 4px 12px;
-      border-radius: 10px;
+      border-radius: 12px;
       font-size: 12px;
-      font-weight: 700;
+      font-weight: 600;
     }
-    .category-social_science { background: var(--cat-social-bg); color: var(--cat-social-text); }
-    .category-business { background: var(--cat-business-bg); color: var(--cat-business-text); }
-    .category-humanities { background: #EDE9FE; color: #6D28D9; }
-    .category-engineering { background: var(--cat-engineering-bg); color: var(--cat-engineering-text); }
-    .category-medical { background: var(--cat-medical-bg); color: var(--cat-medical-text); }
-    .category-arts_sports { background: #FCE7F3; color: #BE185D; }
-    .category-custom { background: #E0E7FF; color: #4338CA; }
-    .category-other { background: var(--cat-other-bg); color: var(--cat-other-text); }
-    
-    .track-desc {
+    .type-practice {
+      background: var(--green-soft);
+      color: var(--green);
+    }
+    .type-first_draft {
+      background: var(--orange-soft);
+      color: var(--orange);
+    }
+    .type-final {
+      background: var(--blue-soft);
+      color: var(--blue);
+    }
+    .sheet-desc {
       font-size: 14px;
-      color: var(--sim-text-mid);
+      color: var(--text-muted);
       line-height: 1.6;
       margin-bottom: 6px;
     }
-    .track-meta {
+    .sheet-meta {
       font-size: 13px;
       color: #6B7280;
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      align-items: center;
     }
-    .meta-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      padding: 3px 10px;
-      background: #F9FAFB;
-      border-radius: 8px;
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--sim-text-mid);
-    }
-    .meta-chip.subjects {
-      background: var(--primary-soft);
-      color: var(--primary-dark);
-    }
-    .meta-chip.curriculum {
-      background: var(--sim-beige);
-      color: var(--sim-text-brown);
-    }
-    .track-meta .meta-warn {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      padding: 4px 10px;
-      background: var(--warning-soft);
-      color: var(--warning);
-      border-radius: 8px;
-      font-size: 12px;
-      font-weight: 700;
-    }
-    .track-meta .meta-danger {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      padding: 4px 10px;
-      background: var(--danger-soft);
-      color: var(--danger);
-      border-radius: 8px;
-      font-size: 12px;
-      font-weight: 700;
-    }
-    
-    .track-actions {
+    .sheet-actions {
       display: flex;
       gap: 8px;
       flex-shrink: 0;
       align-items: center;
     }
-    
-    /* 공통 버튼 스타일 (curriculum 수정/삭제 버튼 크기 기준) */
-    .open-btn, .edit-btn, .delete-btn {
+    /* 열기/수정/삭제 버튼 공통 (이전 수정/삭제 버튼 크기 기준) */
+    .open-btn, .icon-btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -442,7 +390,7 @@
       vertical-align: middle;
     }
     
-    /* 보기 버튼 (베이지 계통) */
+    /* 열기 버튼 (베이지 - Track의 보기 버튼과 동일) */
     .open-btn {
       background: #D4A574;
       box-shadow: 0 2px 8px rgba(212, 165, 116, 0.25);
@@ -451,26 +399,96 @@
       background: #B8895A;
     }
     
-    /* 수정 버튼 (curriculum 열기 버튼과 동일 - 하늘색) */
-    .edit-btn {
+    /* 수정 버튼 (하늘색 - Track의 수정과 동일) */
+    .icon-btn {
       background: var(--primary);
       box-shadow: 0 2px 8px rgba(74, 144, 217, 0.25);
     }
-    .edit-btn:hover {
+    .icon-btn:hover {
       background: var(--primary-hover);
     }
     
-    /* 삭제 버튼 (핑크) */
-    .delete-btn {
+    /* 삭제 버튼 (핑크 - Track의 삭제와 동일) */
+    .icon-btn.danger {
       background: #ec6f8e;
       box-shadow: 0 2px 8px rgba(236, 111, 142, 0.25);
     }
-    .delete-btn:hover {
+    .icon-btn.danger:hover {
       background: #d65878;
     }
-    
+    .modal-bg {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(30, 58, 95, 0.5);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 16px;
+    }
+    .modal-bg.hidden { display: none; }
+    .modal {
+      background: var(--surface);
+      padding: 36px;
+      border-radius: 24px;
+      width: 100%;
+      max-width: 520px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(30, 58, 95, 0.3);
+    }
+    .modal h3 {
+      font-family: 'JalnanGothic', 'Pretendard', sans-serif;
+      font-size: 22px;
+      font-weight: normal;
+      color: var(--primary-dark);
+      margin-bottom: 24px;
+      letter-spacing: -0.01em;
+    }
+    .field { margin-bottom: 18px; }
+    .field label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+    .field input,
+    .field select,
+    .field textarea {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-size: 15px;
+      font-family: inherit;
+      color: var(--text);
+      background: #f8fbfd;
+      transition: all 0.15s ease;
+    }
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: white;
+      box-shadow: 0 0 0 3px var(--primary-soft);
+    }
+    .field textarea {
+      min-height: 90px;
+      resize: vertical;
+      line-height: 1.5;
+    }
+    .form-actions {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+      margin-top: 24px;
+    }
+    .hidden { display: none !important; }
     footer {
-      max-width: 1100px;
+      max-width: 1200px;
       margin: 40px auto 0;
       padding: 28px 32px 40px;
       text-align: center;
@@ -486,8 +504,8 @@
       .user-info { font-size: 13px; gap: 10px; }
       .brand-line1, .brand-line2 { display: block; }
       .brand-name { font-size: 15px; line-height: 1.25; }
-      .track-item { flex-direction: column; align-items: stretch; padding: 20px 22px; }
-      .track-actions { justify-content: flex-end; }
+      .sheet-item { flex-direction: column; align-items: stretch; padding: 20px 22px; }
+      .sheet-actions { justify-content: flex-end; }
     }
   </style>
 </head>
@@ -496,7 +514,9 @@
     <div class="header-inner">
       <a class="brand" href="dashboard.html">
         <div class="brand-mark"><img src="images/logo.png" alt="대전광역시교육청"></div>
-        <span class="brand-name"><span class="brand-line1">대전광역시 고등학교</span> <span class="brand-line2">교육과정 업무담당자 워크스페이스</span></span>
+        <div class="brand-text">
+          <span class="brand-name"><span class="brand-line1">대전광역시 고등학교</span> <span class="brand-line2">교육과정 업무담당자 워크스페이스</span></span>
+        </div>
       </a>
       <div class="user-info" id="userInfo"></div>
     </div>
@@ -506,22 +526,22 @@
     <div class="page-header">
       <div>
         <h2 id="pageTitle">&nbsp;</h2>
-        <div class="desc" id="pageDesc">계열별 추천 과목 트랙을 확인하세요.</div>
+        <div class="desc" id="pageDesc">교육과정 편성표 점검 결과를 확인하세요.</div>
       </div>
       <div class="page-header-actions">
-        <a id="addBtn" class="btn-primary" href="track-edit.html" style="display:none">+ 새 트랙 만들기</a>
+        <button id="addBtn" class="btn-primary hidden" onclick="showAddForm()">+ 새 점검 결과 등록</button>
         <a class="back-btn" href="dashboard.html">← 대시보드로</a>
       </div>
     </div>
     
-    <div id="schoolFilter" class="filter-bar" style="display:none">
+    <div id="schoolFilter" class="filter-bar hidden">
       <label>🏫 학교 선택</label>
-      <select id="schoolSelect" onchange="loadTracks()">
+      <select id="schoolSelect" onchange="loadSheets()">
         <option value="">학교를 선택하세요</option>
       </select>
     </div>
     
-    <div id="trackList">
+    <div id="sheetList">
       <div class="empty-state">
         <div class="icon">
           <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
@@ -534,6 +554,28 @@
   <footer>
     Copyright © 대전광역시교육청 고등학교 교육과정지원단. All rights reserved.
   </footer>
+  
+  <div id="modal" class="modal-bg hidden">
+    <div class="modal">
+      <h3 id="modalTitle">새 점검 결과 등록</h3>
+      <div class="field">
+        <label>학교 *</label>
+        <select id="formSchool"></select>
+      </div>
+      <div class="field">
+        <label>제목 *</label>
+        <input type="text" id="formTitle" placeholder="예: 2027학년도 입학생 1차 편성표 점검 결과">
+      </div>
+      <div class="field">
+        <label>점검 결과(스프레드시트, PDF) URL *</label>
+        <input type="url" id="formUrl" placeholder="https://docs.google.com/spreadsheets/d/...">
+      </div>
+      <div class="form-actions">
+        <button class="btn-secondary" onclick="hideModal()">취소</button>
+        <button class="btn-primary" onclick="saveSheet()">저장</button>
+      </div>
+    </div>
+  </div>
 
   <script type="module">
     import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
@@ -547,37 +589,34 @@
     let currentProfile = null;
     let isAdmin = false;
     let isSupport = false;
+    let editingId = null;
     
-    const CATEGORY_LABELS = {
-      business: '경영경제계열',
-      social_science: '사회과학계열',
-      humanities: '인문학계열',
-      engineering: '자연공학계열',
-      medical: '의료생명계열',
-      arts_sports: '예체능계열',
-      other: '기타'
+    const EMPTY_ICONS = {
+      school: `<svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5z"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/></svg>`,
+      empty: `<svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>`
     };
-    const CATEGORY_ORDER = ['business', 'social_science', 'humanities', 'engineering', 'medical', 'arts_sports', 'other'];
     
-    // 카테고리 라벨 가져오기 (custom:XXX 형식 처리)
-    function getCategoryLabel(cat) {
-      if (!cat) return '미지정';
-      if (cat.startsWith('custom:')) return cat.substring(7);
-      return CATEGORY_LABELS[cat] || cat;
-    }
-    function getCategoryClass(cat) {
-      if (!cat) return 'category-other';
-      if (cat.startsWith('custom:')) return 'category-custom';
-      return `category-${cat}`;
+    // 구글 스프레드시트 URL을 읽기 전용(preview) 모드로 변환
+    // 학교 담당자/지원단이 실수로 수정하지 않도록 보호
+    // PDF, 일반 URL은 변환하지 않고 그대로 반환
+    function toReadOnlyUrl(url) {
+      if (!url) return url;
+      const sheetsPattern = /docs\.google\.com\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/;
+      const match = url.match(sheetsPattern);
+      if (!match) return url;
+      const sheetId = match[1];
+      return `https://docs.google.com/spreadsheets/d/${sheetId}/preview`;
     }
     
     async function init() {
       const { data: { user } } = await supabase.auth.getUser();
+      
       if (!user) {
         alert('로그인이 필요합니다.');
         window.location.href = 'login.html';
         return;
       }
+      
       currentUser = user;
       
       const { data: profile } = await supabase
@@ -585,6 +624,7 @@
         .select('display_name, role, school_id, schools(name, code)')
         .eq('id', user.id)
         .single();
+      
       currentProfile = profile;
       isAdmin = profile.role === 'admin';
       isSupport = profile.role === 'support';
@@ -597,11 +637,11 @@
           <span class="user-name">${profile.display_name}</span>
           <button class="logout-btn" onclick="handleLogout()">로그아웃</button>
         `;
-        document.getElementById('pageTitle').textContent = '과목 선택 트랙 관리';
-        document.title = '과목 선택 트랙 관리' + TITLE_SUFFIX;
-        document.getElementById('addBtn').style.display = 'inline-block';
-        document.getElementById('schoolFilter').style.display = 'flex';
-        document.getElementById('pageDesc').textContent = '학교를 선택해서 등록된 트랙을 관리하세요.';
+        document.getElementById('pageTitle').textContent = '교육과정 편성표 점검 관리';
+        document.title = '교육과정 편성표 점검 관리' + TITLE_SUFFIX;
+        document.getElementById('addBtn').classList.remove('hidden');
+        document.getElementById('schoolFilter').classList.remove('hidden');
+        document.getElementById('pageDesc').textContent = '학교를 선택해서 점검 결과를 등록·관리하세요.';
         await loadSchools();
       } else if (isSupport) {
         userInfoEl.innerHTML = `
@@ -609,11 +649,11 @@
           <span class="user-name">${profile.display_name}</span>
           <button class="logout-btn" onclick="handleLogout()">로그아웃</button>
         `;
-        // 지원단은 조회만: 새 트랙 만들기 버튼 숨김, 학교 선택은 표시
-        document.getElementById('pageTitle').textContent = '과목 선택 트랙 조회';
-        document.title = '과목 선택 트랙 조회' + TITLE_SUFFIX;
-        document.getElementById('schoolFilter').style.display = 'flex';
-        document.getElementById('pageDesc').textContent = '학교를 선택해서 등록된 트랙을 조회하세요.';
+        // 지원단은 조회만 가능: 새 점검 결과 등록 버튼 숨김, 학교 선택은 표시
+        document.getElementById('pageTitle').textContent = '교육과정 편성표 점검 조회';
+        document.title = '교육과정 편성표 점검 조회' + TITLE_SUFFIX;
+        document.getElementById('schoolFilter').classList.remove('hidden');
+        document.getElementById('pageDesc').textContent = '학교를 선택해서 등록된 점검 결과를 조회하세요.';
         await loadSchools();
       } else {
         userInfoEl.innerHTML = `
@@ -621,11 +661,11 @@
           <span class="user-name">${profile.display_name}</span>
           <button class="logout-btn" onclick="handleLogout()">로그아웃</button>
         `;
-        document.getElementById('pageTitle').textContent = '과목 선택 트랙 작성';
-        document.title = '과목 선택 트랙 작성' + TITLE_SUFFIX;
-        document.getElementById('addBtn').style.display = 'inline-block';
-        document.getElementById('pageDesc').textContent = `${profile.schools.name}의 과목 선택 트랙입니다.`;
-        loadTracks();
+        // 학교 담당자는 본인 학교 점검 결과만 조회 (읽기 전용으로 열림)
+        document.getElementById('pageTitle').textContent = '교육과정 편성표 점검 조회';
+        document.title = '교육과정 편성표 점검 조회' + TITLE_SUFFIX;
+        document.getElementById('pageDesc').textContent = `${profile.schools.name}의 점검 결과입니다. (구글 스프레드시트는 읽기 전용으로 열립니다)`;
+        loadSheets();
       }
     }
     
@@ -634,14 +674,19 @@
         .from('schools')
         .select('id, name, code')
         .order('name');
+      
       if (error) { console.error(error); return; }
+      
       const select = document.getElementById('schoolSelect');
       select.innerHTML = '<option value="">학교를 선택하세요</option>' + 
         data.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
+      
+      const formSelect = document.getElementById('formSchool');
+      formSelect.innerHTML = data.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
     }
     
-    window.loadTracks = async function() {
-      const listEl = document.getElementById('trackList');
+    window.loadSheets = async function() {
+      const listEl = document.getElementById('sheetList');
       
       let schoolId;
       if (isAdmin || isSupport) {
@@ -649,11 +694,9 @@
         if (!schoolId) {
           listEl.innerHTML = `
             <div class="empty-state">
-              <div class="icon">
-                <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5z"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/></svg>
-              </div>
+              <div class="icon">${EMPTY_ICONS.school}</div>
               <p>위에서 학교를 선택하세요</p>
-              <p>선택한 학교의 트랙이 표시됩니다.</p>
+              <p>선택한 학교의 점검 결과가 표시됩니다</p>
             </div>
           `;
           return;
@@ -663,9 +706,10 @@
       }
       
       const { data, error } = await supabase
-        .from('tracks')
-        .select('*, curriculums(title, sheet_type, updated_at)')
-        .eq('school_id', schoolId);
+        .from('inspections')
+        .select('*')
+        .eq('school_id', schoolId)
+        .order('created_at', { ascending: false });
       
       if (error) {
         listEl.innerHTML = `<div class="empty-state" style="color: var(--danger);">오류: ${error.message}</div>`;
@@ -675,76 +719,32 @@
       if (!data || data.length === 0) {
         listEl.innerHTML = `
           <div class="empty-state">
-            <div class="icon">
-              <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
-            </div>
-            <p>아직 등록된 트랙이 없어요</p>
-            <p>위 버튼으로 새 트랙을 만들어보세요</p>
+            <div class="icon">${EMPTY_ICONS.empty}</div>
+            <p>아직 등록된 점검 결과가 없어요</p>
+            <p>${isAdmin ? '위 버튼으로 새 점검 결과를 등록해보세요' : '관리자가 점검 결과를 등록하면 여기에 표시됩니다'}</p>
           </div>
         `;
         return;
       }
       
-      // 정렬: 계열별 → 등록일순
-      data.sort((a, b) => {
-        const ai = CATEGORY_ORDER.indexOf(a.track_category);
-        const bi = CATEGORY_ORDER.indexOf(b.track_category);
-        if (ai !== bi) return ai - bi;
-        return new Date(a.created_at) - new Date(b.created_at);
-      });
-      
-      listEl.innerHTML = `<div class="track-list">` + data.map(item => {
+      listEl.innerHTML = `<div class="sheet-list">` + data.map(item => {
         const updatedDate = new Date(item.updated_at).toLocaleString('ko-KR', {
           year: 'numeric', month: 'long', day: 'numeric',
           hour: '2-digit', minute: '2-digit', hour12: false
         });
-        const canEdit = isAdmin || (currentProfile.school_id === item.school_id);
-        
-        // 편성표 변경 감지
-        let curriculumInfo = '';
-        let warningInfo = '';
-        if (item.curriculums) {
-          curriculumInfo = `<span class="meta-chip curriculum">📋 ${item.curriculums.title}</span>`;
-          if (new Date(item.curriculums.updated_at) > new Date(item.updated_at)) {
-            warningInfo = `<span class="meta-warn">⚠ 편성표가 변경되었습니다. 점검을 권장합니다.</span>`;
-          }
-        } else if (item.curriculum_id) {
-          warningInfo = `<span class="meta-danger">⚠ 연결된 편성표가 삭제되었습니다.</span>`;
-        }
-        
-        // 추천 과목 수 계산 (구/신 형식 모두 호환)
-        const subjects = item.recommended_subjects || {};
-        let totalCore = 0, totalRecommend = 0;
-        for (const semData of Object.values(subjects)) {
-          if (Array.isArray(semData)) {
-            totalRecommend += semData.length;
-          } else if (semData && typeof semData === 'object') {
-            totalCore += (semData.core || []).length;
-            totalRecommend += (semData.recommend || []).length;
-          }
-        }
-        const totalSubjects = totalCore + totalRecommend;
-        
         return `
-          <div class="track-item">
-            <div class="track-info">
-              <div class="track-title-row">
+          <div class="sheet-item">
+            <div class="sheet-info">
+              <div class="sheet-title-row">
                 <h3>${item.title}</h3>
-                <span class="category-tag ${getCategoryClass(item.track_category)}">${getCategoryLabel(item.track_category)}</span>
               </div>
-              ${item.description ? `<div class="track-desc">${item.description}</div>` : ''}
-              <div class="track-meta">
-                ${curriculumInfo}
-                <span class="meta-chip subjects">⭐ 핵심 권장 ${totalCore} · ✓ 권장 ${totalRecommend}</span>
-                <span>최종 수정 ${updatedDate}</span>
-                ${warningInfo}
-              </div>
+              <div class="sheet-meta">최종 수정 ${updatedDate}</div>
             </div>
-            <div class="track-actions">
-              <a class="open-btn" href="track-view.html?id=${item.id}">보기 →</a>
-              ${canEdit ? `
-                <a class="edit-btn" href="track-edit.html?id=${item.id}">✎ 수정</a>
-                <button class="delete-btn" onclick="deleteTrack('${item.id}')">🗑 삭제</button>
+            <div class="sheet-actions">
+              <a class="open-btn" href="${(isAdmin || isSupport) ? item.spreadsheet_url : toReadOnlyUrl(item.spreadsheet_url)}" target="_blank">열기 ↗</a>
+              ${isAdmin ? `
+                <button class="icon-btn" onclick="editSheet('${item.id}')">✎ 수정</button>
+                <button class="icon-btn danger" onclick="deleteSheet('${item.id}')">🗑 삭제</button>
               ` : ''}
             </div>
           </div>
@@ -752,12 +752,71 @@
       }).join('') + `</div>`;
     };
     
-    window.deleteTrack = async function(id) {
-      const ok = confirm('정말 삭제하시겠습니까?');
+    window.showAddForm = function() {
+      editingId = null;
+      document.getElementById('modalTitle').textContent = '새 점검 결과 등록';
+      document.getElementById('formTitle').value = '';
+      document.getElementById('formUrl').value = '';
+      
+      const selectedSchool = document.getElementById('schoolSelect').value;
+      if (selectedSchool) {
+        document.getElementById('formSchool').value = selectedSchool;
+      }
+      document.getElementById('modal').classList.remove('hidden');
+    };
+    
+    window.editSheet = async function(id) {
+      const { data } = await supabase
+        .from('inspections').select('*').eq('id', id).single();
+      if (!data) return;
+      
+      editingId = id;
+      document.getElementById('modalTitle').textContent = '점검 결과 수정';
+      document.getElementById('formSchool').value = data.school_id;
+      document.getElementById('formTitle').value = data.title;
+      document.getElementById('formUrl').value = data.spreadsheet_url;
+      document.getElementById('modal').classList.remove('hidden');
+    };
+    
+    window.hideModal = function() {
+      document.getElementById('modal').classList.add('hidden');
+      editingId = null;
+    };
+    
+    window.saveSheet = async function() {
+      const school_id = document.getElementById('formSchool').value;
+      const title = document.getElementById('formTitle').value.trim();
+      const spreadsheet_url = document.getElementById('formUrl').value.trim();
+      
+      if (!school_id || !title || !spreadsheet_url) {
+        alert('학교, 제목, URL은 필수입니다.');
+        return;
+      }
+      
+      if (editingId) {
+        const { error } = await supabase
+          .from('inspections')
+          .update({ school_id, title, spreadsheet_url })
+          .eq('id', editingId);
+        if (error) { alert('수정 실패: ' + error.message); return; }
+      } else {
+        const { error } = await supabase
+          .from('inspections')
+          .insert({ school_id, title, spreadsheet_url });
+        if (error) { alert('등록 실패: ' + error.message); return; }
+      }
+      
+      hideModal();
+      loadSheets();
+    };
+    
+    window.deleteSheet = async function(id) {
+      const ok = confirm('정말 이 점검 결과를 삭제하시겠습니까?');
       if (!ok) return;
-      const { error } = await supabase.from('tracks').delete().eq('id', id);
+      
+      const { error } = await supabase.from('inspections').delete().eq('id', id);
       if (error) { alert('삭제 실패: ' + error.message); return; }
-      loadTracks();
+      loadSheets();
     };
     
     window.handleLogout = async function() {
