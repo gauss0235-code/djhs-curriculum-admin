@@ -9,10 +9,31 @@
   <title>트랙 보기 — 대전광역시 고등학교 교육과정 업무담당자 워크스페이스</title>
   <meta name="description" content="대전광역시 고등학교 과목 선택 트랙 상세보기. 학교별 추천 과목 선택 정보를 확인할 수 있습니다.">
   <meta name="robots" content="index, follow">
+  
+  <!-- Open Graph 메타태그 (카톡/페북/트위터 미리보기) -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="과목 선택 트랙 — 대전광역시 고등학교">
+  <meta property="og:description" content="대전광역시 고등학교 과목 선택 트랙을 확인하세요.">
+  <meta property="og:image" content="https://admin.djhs-curriculum.kro.kr/images/og-image-v2.png">
+  <meta property="og:url" content="https://admin.djhs-curriculum.kro.kr/track-view.html">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="과목 선택 트랙 — 대전광역시 고등학교">
+  <meta name="twitter:description" content="대전광역시 고등학교 과목 선택 트랙을 확인하세요.">
+  <meta name="twitter:image" content="https://admin.djhs-curriculum.kro.kr/images/og-image-v2.png">
+  
   <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   <!-- PDF 저장용 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <!-- 카카오톡 공유 SDK -->
+  <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js"
+    integrity="sha384-TiCUE00h649CAMonG018J2ujOgDKW/kVWlChEuu4jK2vxfAAD0eZxzCKakxg55G4"
+    crossorigin="anonymous"></script>
+  <script>
+    if (window.Kakao && !window.Kakao.isInitialized()) {
+      window.Kakao.init('7a7039618dbe4fbcca23bf10ec249a0b');
+    }
+  </script>
   <style>
     @font-face {
       font-family: 'JalnanGothic';
@@ -558,7 +579,7 @@
       flex-direction: column;
       align-items: center;
       gap: 8px;
-      padding: 16px 10px;
+      padding: 16px 8px;
       background: #f8fbfd;
       border: 1.5px solid var(--border);
       border-radius: 14px;
@@ -572,6 +593,7 @@
     .share-opt:hover {
       border-color: var(--primary);
       background: var(--primary-soft);
+      transform: translateY(-2px);
     }
     .share-opt .icon {
       width: 44px;
@@ -581,10 +603,16 @@
       align-items: center;
       justify-content: center;
       font-size: 22px;
+      color: white;
     }
-    .share-opt.kakao .icon { background: #FEE500; }
-    .share-opt.link .icon { background: var(--primary-soft); color: var(--primary); }
-    .share-opt.copy .icon { background: #f1f5f9; }
+    .share-opt.kakao .icon { background: #FEE500; color: #181600; }
+    .share-opt.facebook .icon { background: #1877F2; }
+    .share-opt.twitter .icon { background: #000000; }
+    .share-opt.line .icon { background: #06C755; }
+    .share-opt.sms .icon { background: #34D399; }
+    .share-opt.share-more .icon { background: var(--primary); }
+    .share-opt.copy .icon { background: #f1f5f9; color: var(--text); }
+    .share-opt .icon svg { width: 22px; height: 22px; }
     .modal-close {
       background: #f1f5f9;
       border: none;
@@ -660,20 +688,44 @@
   </main>
 
   <div class="modal-overlay" id="shareModal" onclick="if(event.target===this)closeShareModal()">
-    <div class="modal-card">
+    <div class="modal-card" style="max-width: 480px;">
       <h3>트랙 공유하기</h3>
       <p>이 트랙을 다른 사람과 공유해보세요</p>
       <div class="share-options">
         <a class="share-opt kakao" href="#" onclick="shareKakao(event)">
-          <span class="icon">💬</span>
+          <span class="icon">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3C6.5 3 2 6.5 2 10.8c0 2.8 1.9 5.2 4.7 6.6-.2.7-.7 2.6-.8 3-.1.5.2.5.4.4.2-.1 2.6-1.8 3.6-2.5.7.1 1.4.2 2.1.2 5.5 0 10-3.5 10-7.7C22 6.5 17.5 3 12 3z"/></svg>
+          </span>
           <span>카카오톡</span>
         </a>
-        <a class="share-opt link" href="#" onclick="shareLink(event)">
-          <span class="icon">🔗</span>
-          <span>링크 공유</span>
+        <a class="share-opt facebook" href="#" onclick="shareFacebook(event)">
+          <span class="icon">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12c0-5.5-4.5-10-10-10S2 6.5 2 12c0 5 3.7 9.1 8.4 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.3v7C18.3 21.1 22 17 22 12z"/></svg>
+          </span>
+          <span>페이스북</span>
+        </a>
+        <a class="share-opt twitter" href="#" onclick="shareTwitter(event)">
+          <span class="icon">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </span>
+          <span>X (트위터)</span>
+        </a>
+        <a class="share-opt line" href="#" onclick="shareLine(event)">
+          <span class="icon">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.631 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/></svg>
+          </span>
+          <span>라인</span>
+        </a>
+        <a class="share-opt sms" href="#" onclick="shareSMS(event)">
+          <span class="icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+          </span>
+          <span>문자</span>
         </a>
         <a class="share-opt copy" href="#" onclick="copyLink(event)">
-          <span class="icon">📋</span>
+          <span class="icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </span>
           <span>URL 복사</span>
         </a>
       </div>
@@ -1183,48 +1235,87 @@
       e.preventDefault();
       const url = getPublicShareUrl();
       const title = `${currentTrack.schools.name} - ${currentTrack.title}`;
-      const text = `${title}\n${url}`;
-      const isMobile = /Android|iPhone|iPad/i.test(navigator.userAgent);
-      if (isMobile) {
-        window.location.href = `kakaotalk://msg/text?text=${encodeURIComponent(text)}`;
-        setTimeout(() => {
-          navigator.clipboard.writeText(text).then(() => {
-            showToast('카카오톡이 열리지 않으면, 복사된 텍스트를 붙여넣어 공유하세요');
-          });
-        }, 1500);
-      } else {
-        navigator.clipboard.writeText(text).then(() => {
-          showToast('링크가 복사되었습니다. 카카오톡에 붙여넣어 공유하세요');
+      const description = `${currentTrack.schools.name}의 과목 선택 트랙입니다. 클릭해서 자세히 확인해보세요.`;
+      const imageUrl = `${window.location.origin}/images/og-image-v2.png`;
+      
+      if (!window.Kakao || !window.Kakao.isInitialized()) {
+        showToast('❌ 카카오 SDK 로딩 실패. 잠시 후 다시 시도해주세요', 'error');
+        return;
+      }
+      
+      try {
+        window.Kakao.Share.sendDefault({
+          objectType: 'feed',
+          content: {
+            title: title,
+            description: description,
+            imageUrl: imageUrl,
+            link: { mobileWebUrl: url, webUrl: url },
+          },
+          buttons: [
+            {
+              title: '트랙 보기',
+              link: { mobileWebUrl: url, webUrl: url },
+            },
+          ],
+        });
+        closeShareModal();
+      } catch (err) {
+        console.error('Kakao share error:', err);
+        // SDK 실패 시 폴백: 텍스트 복사
+        navigator.clipboard.writeText(`${title}\n${url}`).then(() => {
+          showToast('❌ 카카오톡 공유 실패. 링크가 복사되었어요', 'error');
         });
       }
+    };
+    
+    window.shareFacebook = function(e) {
+      e.preventDefault();
+      const url = getPublicShareUrl();
+      const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+      window.open(shareUrl, 'facebook-share', 'width=600,height=500');
       closeShareModal();
     };
     
-    window.shareLink = async function(e) {
+    window.shareTwitter = function(e) {
       e.preventDefault();
       const url = getPublicShareUrl();
       const title = `${currentTrack.schools.name} - ${currentTrack.title}`;
-      
-      if (navigator.share) {
-        try {
-          await navigator.share({ title, url });
-          closeShareModal();
-        } catch (err) {
-          if (err.name !== 'AbortError') console.error(err);
-        }
-      } else {
-        copyLink(e);
-      }
+      const text = encodeURIComponent(title);
+      const shareUrl = `https://twitter.com/intent/tweet?text=${text}&url=${encodeURIComponent(url)}`;
+      window.open(shareUrl, 'twitter-share', 'width=600,height=500');
+      closeShareModal();
+    };
+    
+    window.shareLine = function(e) {
+      e.preventDefault();
+      const url = getPublicShareUrl();
+      const title = `${currentTrack.schools.name} - ${currentTrack.title}`;
+      const shareUrl = `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`;
+      window.open(shareUrl, 'line-share', 'width=600,height=500');
+      closeShareModal();
+    };
+    
+    window.shareSMS = function(e) {
+      e.preventDefault();
+      const url = getPublicShareUrl();
+      const title = `${currentTrack.schools.name} - ${currentTrack.title}`;
+      const text = `${title}\n${url}`;
+      // iOS는 &body, Android는 ?body 사용 (둘 다 ?body 지원하는 게 안전)
+      const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+      const sep = isIOS ? '&' : '?';
+      window.location.href = `sms:${sep}body=${encodeURIComponent(text)}`;
+      closeShareModal();
     };
     
     window.copyLink = function(e) {
       e.preventDefault();
       const url = getPublicShareUrl();
       navigator.clipboard.writeText(url).then(() => {
-        showToast('공개 URL이 복사되었습니다');
+        showToast('✅ 공개 URL이 복사되었습니다', 'success');
         closeShareModal();
       }).catch(() => {
-        showToast('복사에 실패했습니다');
+        showToast('❌ 복사에 실패했습니다', 'error');
       });
     };
     
