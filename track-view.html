@@ -1236,7 +1236,8 @@
       const url = getPublicShareUrl();
       const title = `${currentTrack.schools.name} - ${currentTrack.title}`;
       const description = `${currentTrack.schools.name}의 과목 선택 트랙입니다. 클릭해서 자세히 확인해보세요.`;
-      const imageUrl = `${window.location.origin}/images/og-image-v2.png`;
+      // 카카오톡은 800x400 (2:1 비율) 이미지 권장
+      const imageUrl = `${window.location.origin}/images/og-image-kakao.png`;
       
       if (!window.Kakao || !window.Kakao.isInitialized()) {
         showToast('❌ 카카오 SDK 로딩 실패. 잠시 후 다시 시도해주세요', 'error');
@@ -1250,6 +1251,8 @@
             title: title,
             description: description,
             imageUrl: imageUrl,
+            imageWidth: 800,
+            imageHeight: 400,
             link: { mobileWebUrl: url, webUrl: url },
           },
           buttons: [
