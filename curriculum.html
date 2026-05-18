@@ -32,7 +32,7 @@
       --primary-dark: #2d5a8a;
       --admin: #ec6f8e;
       --admin-soft: #fde7ed;
-      --danger: #e57373;
+      --danger: #DC2626;
       --danger-soft: #fdeaea;
       --green: #7cb342;
       --green-soft: #eef7e3;
@@ -107,7 +107,7 @@
     .user-info {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 8px;
       font-size: 14px;
     }
     .badge {
@@ -151,7 +151,10 @@
       color: white;
       padding: 14px 24px;
       border-radius: 12px;
-      font-weight: 600;
+      font-family: 'JalnanGothic', 'Pretendard', sans-serif;
+      font-weight: normal;
+      font-size: 15px;
+      letter-spacing: 0.3px;
       box-shadow: 0 8px 24px rgba(0,0,0,0.2);
       z-index: 2000;
       opacity: 0;
@@ -166,20 +169,20 @@
 
     /* 정보수정 버튼: 로그아웃과 같은 크기, 색상만 살짝 강조 */
     .profile-btn {
-      background: white;
-      border: 1.5px solid var(--border);
+      background: var(--primary-soft);
+      border: 1.5px solid var(--primary);
       padding: 8px 16px;
       border-radius: 20px;
       cursor: pointer;
       font-size: 13px;
-      color: var(--text-muted);
+      color: var(--primary-dark);
+      font-weight: 500;
       font-family: inherit;
       transition: all 0.15s ease;
     }
     .profile-btn:hover {
-      background: var(--primary-soft);
-      border-color: var(--primary);
-      color: var(--primary);
+      background: var(--primary);
+      color: white;
     }
     /* 비밀번호 변경 모달 */
     .pw-modal-bg {
@@ -191,37 +194,43 @@
     .pw-modal-bg.hidden { display: none; }
     .pw-modal {
       background: white;
-      border-radius: 14px;
-      padding: 28px;
+      border-radius: 20px;
+      padding: 32px;
       width: 100%;
-      max-width: 420px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+      max-width: 540px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
     }
     .pw-modal h3 {
-      font-size: 18px;
+      font-family: 'JalnanGothic', 'Pretendard', sans-serif;
+      font-size: 24px;
       color: var(--primary-dark);
       margin-bottom: 8px;
+      font-weight: normal;
     }
     .pw-modal .pw-desc {
-      font-size: 13px;
+      font-size: 14px;
       color: var(--text-muted);
-      margin-bottom: 18px;
+      margin-bottom: 20px;
     }
-    .pw-field { margin-bottom: 14px; }
+    .pw-field { margin-bottom: 16px; }
     .pw-field label {
       display: block;
       font-size: 13px;
+      font-weight: 700;
       color: var(--text);
       margin-bottom: 6px;
-      font-weight: 500;
     }
     .pw-field input {
       width: 100%;
-      padding: 10px 14px;
+      padding: 11px 14px;
       border: 1.5px solid var(--border);
-      border-radius: 8px;
+      border-radius: 10px;
       font-size: 14px;
       font-family: inherit;
+      color: var(--text);
+      transition: border-color 0.15s ease;
     }
     .pw-field input:focus {
       outline: none;
@@ -231,30 +240,33 @@
       display: flex;
       gap: 10px;
       justify-content: flex-end;
-      margin-top: 20px;
+      margin-top: 24px;
     }
     .pw-btn-cancel {
       background: white;
       border: 1.5px solid var(--border);
-      padding: 10px 18px;
-      border-radius: 8px;
+      padding: 11px 22px;
+      border-radius: 10px;
       cursor: pointer;
       font-size: 14px;
-      color: var(--text-muted);
+      font-weight: 700;
+      color: var(--text);
       font-family: inherit;
     }
+    .pw-btn-cancel:hover { background: var(--bg-sky, #f4f8fc); }
     .pw-btn-submit {
       background: var(--primary);
-      border: 1.5px solid var(--primary);
-      padding: 10px 18px;
-      border-radius: 8px;
+      border: none;
+      padding: 11px 22px;
+      border-radius: 10px;
       cursor: pointer;
       font-size: 14px;
       color: white;
-      font-weight: 600;
+      font-weight: 700;
       font-family: inherit;
+      box-shadow: 0 2px 8px rgba(74, 144, 217, 0.25);
     }
-    .pw-btn-submit:hover { background: var(--primary-dark); }
+    .pw-btn-submit:hover { background: var(--primary-hover, var(--primary-dark)); }
     .pw-btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
 
     main {
@@ -617,7 +629,7 @@
       main { padding: 32px 18px 60px; }
       .page-header h2 { font-size: 24px; }
       .page-header .desc { font-size: 14px; }
-      .user-info { font-size: 12px; gap: 6px; }
+      .user-info { font-size: 12px; gap: 4px; }
       .profile-btn, .logout-btn { padding: 6px 12px; font-size: 12px; }
       .brand-line1, .brand-line2 { display: block; }
       .brand-name { font-size: 15px; line-height: 1.25; }
