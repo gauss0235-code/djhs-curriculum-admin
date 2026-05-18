@@ -135,6 +135,29 @@
       border-color: var(--primary);
       color: var(--primary);
     }
+    /* 토스트 메시지 (성공/에러 알림) */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--primary-dark);
+      color: white;
+      padding: 14px 24px;
+      border-radius: 12px;
+      font-weight: 600;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+      z-index: 2000;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+      max-width: calc(100vw - 40px);
+      text-align: center;
+    }
+    .toast.show { opacity: 1; }
+    .toast.error { background: var(--danger); }
+    .toast.success { background: #16A34A; }
+
     /* 정보수정 버튼: 로그아웃과 같은 크기, 색상만 살짝 강조 */
     .profile-btn {
       background: white;
@@ -592,7 +615,16 @@
       if (!ok) return;
       await supabase.auth.signOut();
       window.location.href = 'login.html';
-    };
+    };    
+    // ====== 토스트 메시지 ======
+    function showToast(message, type = 'success') {
+      const toast = document.getElementById('toast');
+      if (!toast) return;
+      toast.textContent = message;
+      toast.className = `toast show ${type}`;
+      setTimeout(() => { toast.className = `toast ${type}`; }, 3000);
+    }
+
     
     // ====== 비밀번호 변경 (본인) ======
     window.openPasswordModal = function() {
@@ -613,19 +645,19 @@
       const confirmPw = document.getElementById('pwConfirm').value;
       
       if (!currentPw || !newPw || !confirmPw) {
-        alert('모든 항목을 입력하세요.');
+        showToast('❌ 모든 항목을 입력하세요', 'error');
         return;
       }
       if (newPw.length < 6) {
-        alert('새 비밀번호는 6자 이상이어야 합니다.');
+        showToast('❌ 새 비밀번호는 6자 이상이어야 합니다', 'error');
         return;
       }
       if (newPw !== confirmPw) {
-        alert('새 비밀번호와 확인이 일치하지 않습니다.');
+        showToast('❌ 새 비밀번호와 확인이 일치하지 않습니다', 'error');
         return;
       }
       if (currentPw === newPw) {
-        alert('현재 비밀번호와 새 비밀번호가 같습니다.');
+        showToast('❌ 현재 비밀번호와 새 비밀번호가 같습니다', 'error');
         return;
       }
       
@@ -637,7 +669,7 @@
         // 1. 현재 비밀번호 검증: 같은 이메일로 재로그인 시도
         const { data: { user } } = await supabase.auth.getUser();
         if (!user || !user.email) {
-          alert('사용자 정보를 가져올 수 없습니다.');
+          showToast('❌ 사용자 정보를 가져올 수 없습니다', 'error');
           return;
         }
         
@@ -652,21 +684,21 @@
         });
         
         if (!verifyResp.ok) {
-          alert('현재 비밀번호가 올바르지 않습니다.');
+          showToast('❌ 현재 비밀번호가 올바르지 않습니다', 'error');
           return;
         }
         
         // 2. 비밀번호 업데이트
         const { error } = await supabase.auth.updateUser({ password: newPw });
         if (error) {
-          alert('비밀번호 변경 실패: ' + error.message);
+          showToast('❌ 비밀번호 변경 실패: ' + error.message, 'error');
           return;
         }
         
-        alert('비밀번호가 변경되었습니다.');
+        showToast('✅ 비밀번호가 변경되었습니다', 'success');
         closePasswordModal();
       } catch (e) {
-        alert('오류: ' + e.message);
+        showToast('❌ 오류: ' + e.message, 'error');
       } finally {
         btn.disabled = false;
         btn.textContent = '변경';
@@ -699,5 +731,8 @@
       </div>
     </div>
   </div>
+  <!-- 토스트 메시지 -->
+  <div class="toast" id="toast"></div>
+
 </body>
 </html>
