@@ -131,6 +131,99 @@
       transition: all 0.15s ease;
     }
     .logout-btn:hover { background: var(--bg-sky); }
+    /* 정보수정 버튼: 로그아웃과 같은 크기, 색상만 살짝 강조 */
+    .profile-btn {
+      background: white;
+      border: 1.5px solid var(--border);
+      padding: 8px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 13px;
+      color: var(--text-muted);
+      font-family: inherit;
+      transition: all 0.15s ease;
+    }
+    .profile-btn:hover {
+      background: var(--primary-soft);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+    /* 비밀번호 변경 모달 */
+    .pw-modal-bg {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.5);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 1000;
+    }
+    .pw-modal-bg.hidden { display: none; }
+    .pw-modal {
+      background: white;
+      border-radius: 14px;
+      padding: 28px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+    }
+    .pw-modal h3 {
+      font-size: 18px;
+      color: var(--primary-dark);
+      margin-bottom: 8px;
+    }
+    .pw-modal .pw-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+    }
+    .pw-field { margin-bottom: 14px; }
+    .pw-field label {
+      display: block;
+      font-size: 13px;
+      color: var(--text);
+      margin-bottom: 6px;
+      font-weight: 500;
+    }
+    .pw-field input {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+    }
+    .pw-field input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    .pw-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      margin-top: 20px;
+    }
+    .pw-btn-cancel {
+      background: white;
+      border: 1.5px solid var(--border);
+      padding: 10px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      color: var(--text-muted);
+      font-family: inherit;
+    }
+    .pw-btn-submit {
+      background: var(--primary);
+      border: 1.5px solid var(--primary);
+      padding: 10px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      color: white;
+      font-weight: 600;
+      font-family: inherit;
+    }
+    .pw-btn-submit:hover { background: var(--primary-dark); }
+    .pw-btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+
     main { max-width: 1200px; margin: 0 auto; padding: 48px 32px 80px; }
     .page-header {
       display: flex;
@@ -431,7 +524,8 @@
       main { padding: 32px 18px 60px; }
       .page-header h2 { font-size: 24px; }
       .page-header .desc { font-size: 14px; }
-      .user-info { font-size: 13px; gap: 10px; }
+      .user-info { font-size: 12px; gap: 6px; }
+      .profile-btn, .logout-btn { padding: 6px 12px; font-size: 12px; }
       .brand-line1, .brand-line2 { display: block; }
       .brand-name { font-size: 15px; line-height: 1.25; }
       .list-item { flex-direction: column; align-items: stretch; padding: 20px 22px; }
@@ -593,7 +687,8 @@
       document.getElementById('userInfo').innerHTML = `
         <span class="badge badge-admin">관리자</span>
         <span class="user-name">${profile.display_name}</span>
-        <button class="logout-btn" onclick="handleLogout()">로그아웃</button>
+        <button class="profile-btn" onclick="openPasswordModal()">정보수정</button>
+          <button class="logout-btn" onclick="handleLogout()">로그아웃</button>
       `;
       await loadSchools();
       await loadUsers();
@@ -1009,9 +1104,110 @@
     window.handleLogout = async function() {
       await supabase.auth.signOut();
       window.location.href = 'login.html';
+    };    
+    // ====== 비밀번호 변경 (본인) ======
+    window.openPasswordModal = function() {
+      document.getElementById('pwCurrent').value = '';
+      document.getElementById('pwNew').value = '';
+      document.getElementById('pwConfirm').value = '';
+      document.getElementById('pwModal').classList.remove('hidden');
+      setTimeout(() => document.getElementById('pwCurrent').focus(), 50);
     };
+    
+    window.closePasswordModal = function() {
+      document.getElementById('pwModal').classList.add('hidden');
+    };
+    
+    window.submitPasswordChange = async function() {
+      const currentPw = document.getElementById('pwCurrent').value;
+      const newPw = document.getElementById('pwNew').value;
+      const confirmPw = document.getElementById('pwConfirm').value;
+      
+      if (!currentPw || !newPw || !confirmPw) {
+        alert('모든 항목을 입력하세요.');
+        return;
+      }
+      if (newPw.length < 6) {
+        alert('새 비밀번호는 6자 이상이어야 합니다.');
+        return;
+      }
+      if (newPw !== confirmPw) {
+        alert('새 비밀번호와 확인이 일치하지 않습니다.');
+        return;
+      }
+      if (currentPw === newPw) {
+        alert('현재 비밀번호와 새 비밀번호가 같습니다.');
+        return;
+      }
+      
+      const btn = document.getElementById('pwSubmitBtn');
+      btn.disabled = true;
+      btn.textContent = '변경 중...';
+      
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user || !user.email) {
+          alert('사용자 정보를 가져올 수 없습니다.');
+          return;
+        }
+        
+        const verifyResp = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=password`, {
+          method: 'POST',
+          headers: {
+            'apikey': SUPABASE_KEY,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email: user.email, password: currentPw })
+        });
+        
+        if (!verifyResp.ok) {
+          alert('현재 비밀번호가 올바르지 않습니다.');
+          return;
+        }
+        
+        const { error } = await supabase.auth.updateUser({ password: newPw });
+        if (error) {
+          alert('비밀번호 변경 실패: ' + error.message);
+          return;
+        }
+        
+        alert('비밀번호가 변경되었습니다.');
+        closePasswordModal();
+      } catch (e) {
+        alert('오류: ' + e.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = '변경';
+      }
+    };
+
 
     init();
   </script>
+
+  <!-- 비밀번호 변경 모달 -->
+  <div id="pwModal" class="pw-modal-bg hidden">
+    <div class="pw-modal">
+      <h3>비밀번호 변경</h3>
+      <div class="pw-desc">현재 비밀번호 확인 후 새 비밀번호로 변경합니다.</div>
+      <div class="pw-field">
+        <label>현재 비밀번호</label>
+        <input type="password" id="pwCurrent" autocomplete="current-password">
+      </div>
+      <div class="pw-field">
+        <label>새 비밀번호 (6자 이상)</label>
+        <input type="password" id="pwNew" autocomplete="new-password">
+      </div>
+      <div class="pw-field">
+        <label>새 비밀번호 확인</label>
+        <input type="password" id="pwConfirm" autocomplete="new-password">
+      </div>
+      <div class="pw-actions">
+        <button class="pw-btn-cancel" onclick="closePasswordModal()">취소</button>
+        <button class="pw-btn-submit" id="pwSubmitBtn" onclick="submitPasswordChange()">변경</button>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>
