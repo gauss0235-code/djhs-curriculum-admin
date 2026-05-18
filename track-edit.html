@@ -825,7 +825,11 @@
       <div class="form-row single">
         <div class="field">
           <label>과목 선택 트랙 제목 *</label>
-          <input type="text" id="formTitle" name="track-title-no-autofill" autocomplete="off" placeholder="예: 2027학년도 입학생 사회과학계열 과목 선택 트랙">
+          <!-- honeypot: 브라우저가 이 input을 채우게 유도 (눈에 안 보이게 숨김) -->
+          <input type="text" name="fake-username" autocomplete="username" style="position:absolute; left:-9999px; top:-9999px; opacity:0;" tabindex="-1" aria-hidden="true">
+          <input type="text" name="fake-email" autocomplete="email" style="position:absolute; left:-9999px; top:-9999px; opacity:0;" tabindex="-1" aria-hidden="true">
+          <!-- 실제 input: readonly로 시작했다가 focus 시 readonly 해제 -->
+          <input type="text" id="formTitle" name="track-title-no-autofill" autocomplete="new-password" readonly onfocus="this.removeAttribute('readonly');" placeholder="예: 2027학년도 입학생 사회과학계열 과목 선택 트랙">
         </div>
       </div>
       <div class="form-row single">
