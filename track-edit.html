@@ -271,8 +271,9 @@
       flex-wrap: wrap;
     }
     .page-header h2 {
-      font-family: 'JalnanGothic', 'Pretendard', sans-serif;
-      font-size: 30px;
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 28px;
+      font-weight: 600;
       color: var(--sim-sky-blue);
       letter-spacing: -0.02em;
       line-height: 1.3;
@@ -301,8 +302,9 @@
       box-shadow: var(--shadow-card);
     }
     .form-card h3 {
-      font-family: 'JalnanGothic', 'Pretendard', sans-serif;
-      font-size: 20px;
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 18px;
+      font-weight: 600;
       color: var(--sim-sky-blue);
       margin-bottom: 4px;
       display: flex;
@@ -816,19 +818,19 @@
             <option value="custom">직접입력</option>
           </select>
           <input type="text" id="formCategoryCustom" placeholder="계열명을 직접 입력하세요" 
-            style="display:none; margin-top:8px;">
+            autocomplete="off" style="display:none; margin-top:8px;">
         </div>
       </div>
       <div class="form-row single">
         <div class="field">
           <label>과목 선택 트랙 제목 *</label>
-          <input type="text" id="formTitle" placeholder="예: 2027학년도 입학생 사회과학계열 과목 선택 트랙">
+          <input type="text" id="formTitle" name="track-title-no-autofill" autocomplete="off" placeholder="예: 2027학년도 입학생 사회과학계열 과목 선택 트랙">
         </div>
       </div>
       <div class="form-row single">
         <div class="field">
           <label>설명</label>
-          <textarea id="formDesc" placeholder="이 트랙에 대한 설명이나 진로 안내를 입력하세요"></textarea>
+          <textarea id="formDesc" autocomplete="off" placeholder="이 트랙에 대한 설명이나 진로 안내를 입력하세요"></textarea>
         </div>
       </div>
     </div>
@@ -968,6 +970,16 @@
       if (editId) {
         editingId = editId;
         await loadExistingTrack(editId);
+      } else {
+        // 새 트랙: 브라우저 자동완성 차단을 위해 명시적으로 빈 값 설정
+        setTimeout(() => {
+          const titleEl = document.getElementById('formTitle');
+          const descEl = document.getElementById('formDesc');
+          const catCustomEl = document.getElementById('formCategoryCustom');
+          if (titleEl) titleEl.value = '';
+          if (descEl) descEl.value = '';
+          if (catCustomEl) catCustomEl.value = '';
+        }, 100);
       }
     }
     
