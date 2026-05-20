@@ -308,16 +308,25 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      background: white;
-      border: 1.5px solid var(--border);
-      padding: 10px 16px;
+      background: #6B7280;
+      color: white;
+      border: none;
+      padding: 12px 22px;
       border-radius: 12px;
+      cursor: pointer;
       font-size: 14px;
-      color: var(--sim-text);
-      text-decoration: none;
+      font-weight: 700;
+      font-family: inherit;
       transition: all 0.15s ease;
+      white-space: nowrap;
+      box-shadow: 0 3px 10px rgba(107, 114, 128, 0.3);
+      text-decoration: none;
     }
-    .back-btn:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-soft); }
+    .back-btn:hover {
+      background: #4B5563;
+      transform: translateY(-1px);
+      box-shadow: 0 5px 14px rgba(107, 114, 128, 0.4);
+    }
     
     /* === 폼 카드 (흰색 깔끔) === */
     .form-card {
