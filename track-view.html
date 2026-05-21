@@ -326,6 +326,31 @@
       color: var(--primary);
       background: var(--primary-soft);
     }
+    /* 트랙 목록(뒤로 가기) 버튼 - track.html의 '대시보드로'와 동일 디자인 */
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #6B7280;
+      color: white;
+      border: none;
+      padding: 12px 22px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 700;
+      font-family: inherit;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+      box-shadow: 0 3px 10px rgba(107, 114, 128, 0.3);
+      text-decoration: none;
+      line-height: 1.2;
+    }
+    .back-btn:hover {
+      background: #4B5563;
+      transform: translateY(-1px);
+      box-shadow: 0 5px 14px rgba(107, 114, 128, 0.4);
+    }
     .top-btn.primary {
       background: var(--primary);
       color: white;
@@ -1060,7 +1085,7 @@
           <button class="top-btn pdf" onclick="downloadPDF()">⬇ PDF 저장</button>
           <button class="top-btn share" onclick="openShareModal()">↗ 공유</button>
           ${editBtn}
-          <a class="top-btn" href="track.html">← 트랙 목록</a>
+          <a class="back-btn" href="track.html">← 트랙 목록</a>
         `;
       }
       
@@ -1142,7 +1167,7 @@
     function showError(msg) {
       const params = new URLSearchParams(window.location.search);
       const isPublicMode = params.get('public') === '1';
-      const backBtn = isPublicMode ? '' : '<a class="top-btn" href="track.html">← 트랙 목록</a>';
+      const backBtn = isPublicMode ? '' : '<a class="back-btn" href="track.html">← 트랙 목록</a>';
       document.getElementById('content').innerHTML = `
         <div class="page-header">
           <div><h2>오류</h2></div>
