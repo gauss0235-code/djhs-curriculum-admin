@@ -480,6 +480,10 @@
       background: var(--orange-soft);
       color: var(--orange);
     }
+    .type-second_draft {
+      background: var(--green-soft);
+      color: var(--green);
+    }
     .type-final {
       background: var(--blue-soft);
       color: var(--blue);
@@ -701,8 +705,8 @@
       <div class="field">
         <label>종류 *</label>
         <select id="formType" onchange="updateTitlePlaceholder()">
-          <option value="practice">연습용</option>
           <option value="first_draft">1차본</option>
+          <option value="second_draft">2차본</option>
           <option value="final">최종본</option>
         </select>
       </div>
@@ -738,6 +742,7 @@
     const TYPE_LABELS = {
       practice: '연습용',
       first_draft: '1차본',
+      second_draft: '2차본',
       final: '최종본'
     };
     
@@ -921,7 +926,7 @@
       editingId = null;
       document.getElementById('modalTitle').textContent = '새 교육과정 편성표 등록';
       document.getElementById('formTitle').value = '';
-      document.getElementById('formType').value = 'practice';
+      document.getElementById('formType').value = 'first_draft';
       document.getElementById('formUrl').value = '';
       document.getElementById('formDesc').value = '';
       window.updateTitlePlaceholder();
