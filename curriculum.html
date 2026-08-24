@@ -705,6 +705,7 @@
       <div class="field">
         <label>종류 *</label>
         <select id="formType" onchange="updateTitlePlaceholder()">
+          <option value="practice">연습용</option>
           <option value="first_draft">1차본</option>
           <option value="second_draft">2차본</option>
           <option value="final">최종본</option>
@@ -926,7 +927,7 @@
       editingId = null;
       document.getElementById('modalTitle').textContent = '새 교육과정 편성표 등록';
       document.getElementById('formTitle').value = '';
-      document.getElementById('formType').value = 'first_draft';
+      document.getElementById('formType').value = 'practice';
       document.getElementById('formUrl').value = '';
       document.getElementById('formDesc').value = '';
       window.updateTitlePlaceholder();
