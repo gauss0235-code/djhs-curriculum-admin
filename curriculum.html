@@ -877,8 +877,7 @@
         .from('curriculums')
         .select('*')
         .eq('school_id', schoolId)
-        .order('display_order', { ascending: true })
-        .order('created_at', { ascending: true });
+        .order('created_at', { ascending: false });
       
       if (error) {
         listEl.innerHTML = `<div class="empty-state" style="color: var(--danger);">오류: ${error.message}</div>`;
