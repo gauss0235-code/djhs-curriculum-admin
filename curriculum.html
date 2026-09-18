@@ -896,7 +896,7 @@
       }
       
       listEl.innerHTML = `<div class="sheet-list">` + data.map(item => {
-        const updatedDate = new Date(item.updated_at).toLocaleString('ko-KR', {
+        const updatedDate = new Date(item.created_at).toLocaleString('ko-KR', {
           year: 'numeric', month: 'long', day: 'numeric',
           hour: '2-digit', minute: '2-digit', hour12: false
         });
@@ -908,7 +908,7 @@
                 <span class="type-tag type-${item.sheet_type}">${TYPE_LABELS[item.sheet_type]}</span>
               </div>
               ${item.description ? `<div class="sheet-desc">${item.description}</div>` : ''}
-              <div class="sheet-meta">최종 수정 ${updatedDate}</div>
+              <div class="sheet-meta">관리자 등록 일시 ${updatedDate}</div>
             </div>
             <div class="sheet-actions">
               <a class="open-btn" href="${isSupport ? toReadOnlyUrl(item.spreadsheet_url) : item.spreadsheet_url}" target="_blank">열기 ↗</a>
