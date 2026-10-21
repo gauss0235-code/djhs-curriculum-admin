@@ -332,6 +332,19 @@
       transform: translateY(-4px);
       box-shadow: var(--shadow-card);
     }
+    /* 홀수 번째 마지막 카드: 한 줄 전체 폭, 가로 배치 */
+    .menu-card.wide {
+      grid-column: 1 / -1;
+      flex-direction: row;
+      align-items: center;
+      min-height: auto;
+      gap: 18px;
+    }
+    .menu-card.wide .arrow {
+      margin-top: 0;
+      margin-left: auto;
+      white-space: nowrap;
+    }
     .menu-card.disabled {
       opacity: 0.6;
       cursor: not-allowed;
@@ -414,6 +427,8 @@
       .menu-icon { width: 52px; height: 52px; }
       .menu-icon svg { width: 26px; height: 26px; }
       .menu-card h3 { font-size: 18px; }
+      .menu-card.wide { flex-direction: column; align-items: stretch; gap: 14px; }
+      .menu-card.wide .arrow { margin-left: 0; }
     }
   </style>
 </head>
@@ -447,15 +462,13 @@
     const SUPABASE_KEY = 'sb_publishable_ALakaYU4jTYEIQas_nWrsQ_An3IK9_h';
     
     const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
-    
-    const NOTEBOOKLM_URL = 'https://notebooklm.google.com/notebook/b599e81a-4d0b-4091-b641-d4cf1f61beff';
-    
+
     const ICONS = {
       curriculum: `<svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>`,
       track: `<svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="18" r="2" fill="currentColor"/><path d="M 5 18 Q 5 12 10 11 Q 15 10 15 6" stroke-dasharray="2 2"/><path d="M 15 6 L 15 3 L 20 4.5 L 15 6 Z" fill="currentColor"/></svg>`,
       users: `<svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>`,
       check: `<svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>`,
-      bot: `<svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>`
+      survey: `<svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>`
     };
     
     async function init() {
@@ -520,7 +533,15 @@
               </div>
               <span class="arrow">관리하기 →</span>
             </a>
-            <a class="menu-card" href="management.html">
+            <a class="menu-card" href="survey/">
+              <div class="menu-icon">${ICONS.survey}</div>
+              <div>
+                <h3>공동교육과정 만족도 조사</h3>
+                <p>만족도 조사 결과 확인 및 설문·강좌 관리</p>
+              </div>
+              <span class="arrow">관리하기 →</span>
+            </a>
+            <a class="menu-card wide" href="management.html">
               <div class="menu-icon">${ICONS.users}</div>
               <div>
                 <h3>학교·담당자 관리</h3>
@@ -568,13 +589,13 @@
               </div>
               <span class="arrow">조회하기 →</span>
             </a>
-            <a class="menu-card" href="${NOTEBOOKLM_URL}" target="_blank">
-              <div class="menu-icon">${ICONS.bot}</div>
+            <a class="menu-card" href="survey/">
+              <div class="menu-icon">${ICONS.survey}</div>
               <div>
-                <h3>교육과정 업무 도우미 챗봇</h3>
-                <p>NotebookLM 문서 기반 질의응답</p>
+                <h3>공동교육과정 만족도 조사 결과</h3>
+                <p>거점학교별 만족도 조사 결과 보기</p>
               </div>
-              <span class="arrow">새 탭에서 열기 ↗</span>
+              <span class="arrow">조회하기 →</span>
             </a>
           </div>
         `;
@@ -617,13 +638,13 @@
               </div>
               <span class="arrow">바로가기 →</span>
             </a>
-            <a class="menu-card" href="${NOTEBOOKLM_URL}" target="_blank">
-              <div class="menu-icon">${ICONS.bot}</div>
+            <a class="menu-card" href="survey/">
+              <div class="menu-icon">${ICONS.survey}</div>
               <div>
-                <h3>교육과정 업무 도우미 챗봇</h3>
-                <p>NotebookLM 문서 기반 질의응답</p>
+                <h3>공동교육과정 만족도 조사 결과</h3>
+                <p>우리 학교 거점 강좌 만족도 조사 결과 보기</p>
               </div>
-              <span class="arrow">새 탭에서 열기 ↗</span>
+              <span class="arrow">바로가기 →</span>
             </a>
           </div>
         `;
