@@ -167,7 +167,7 @@
    *  설문 설정 · 문항 편집
    * ===================================================================== */
   var TYPE_LABEL = { likert: "5점 척도", text: "서술형", single: "선택형(하나)", multi: "선택형(여러 개)" };
-  var ROLE_LABEL = { positive: "좋았던 점", improve: "개선할 점", other: "기타" };
+  var ROLE_LABEL = { positive: "좋았던 점", improve: "개선할 점", other: "구분 없음(좋았던 점·개선할 점 함께)" };
   var draft = null, draftFor = null;
   function newId() { return "q" + Date.now().toString(36).slice(-5) + Math.floor(Math.random() * 1296).toString(36); }
   function toLocalInput(iso) {

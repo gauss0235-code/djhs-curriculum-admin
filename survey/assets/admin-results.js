@@ -3,7 +3,13 @@
   "use strict";
   var JA = window.JA, S = JA.S, esc = JA.esc, state = JA.state, num = JA.num, views = JA.views;
   var LK = { 5: "매우 그렇다", 4: "그렇다", 3: "보통이다", 2: "그렇지 않다", 1: "전혀 그렇지 않다" };
-  var ROLE = { positive: "좋았던 점", improve: "개선할 점", other: "기타 의견" };
+  var ROLE = { positive: "좋았던 점", improve: "개선할 점", other: "서술형 의견" };
+  // 이 설문에 실제로 있는 서술형 구분만 (좋았던 점·개선할 점을 한 문항으로 받으면 'other' 하나뿐)
+  function textRoles(Q) {
+    var out = [];
+    (Q.text || []).forEach(function (q) { var r = q.textRole || "other"; if (out.indexOf(r) < 0) out.push(r); });
+    return ["positive", "improve", "other"].filter(function (r) { return out.indexOf(r) >= 0; });
+  }
   var f2 = function (v) { return S.f(v, 2); };
 
   /* ---------------- 공통 조각 ---------------- */
@@ -120,7 +126,10 @@
         { ic: KI.star, cls: "g", bar: a.mean == null ? null : (a.mean - 1) / 4, barColor: "var(--good)" }) +
       kpi("응답한 강좌", num(answered) + "<small>/ " + num(cs.length) + "</small>", cs.length - answered ? "아직 응답 없는 강좌 <b>" + (cs.length - answered) + "개</b>" : "모든 강좌 응답 있음",
         { ic: KI.book, cls: "v", bar: cs.length ? answered / cs.length : null, barColor: "var(--t-offline)" }) +
-      kpi("서술형 의견", num(texts.length) + "<small>건</small>", "좋았던 점 <b>" + num(tPos) + "</b> · 개선할 점 <b>" + num(tImp) + "</b>",
+      kpi("서술형 의견", num(texts.length) + "<small>건</small>",
+        textRoles(Q).some(function (r) { return r !== "other"; })
+          ? "좋았던 점 <b>" + num(tPos) + "</b> · 개선할 점 <b>" + num(tImp) + "</b>"
+          : "좋았던 점·개선할 점 함께 받음",
         { ic: KI.msg, cls: "o" }) +
       "</div>";
 
@@ -400,9 +409,10 @@
         }).join("") + "</tbody></table></section>";
 
       html += '<section class="sub"><div class="sub-head"><h3>서술형 의견 <span class="muted small">' + texts.length + "건</span></h3></div>";
+      var roles = textRoles(Q);
       ["positive", "improve", "other"].forEach(function (role) {
         var list = texts.filter(function (t) { return t.role === role; });
-        if (!list.length && role === "other") return;
+        if (!list.length && roles.indexOf(role) < 0) return;
         html += '<div class="op-group"><div class="op-title ' + role + '">' + ROLE[role] + " (" + list.length + ")</div>" +
           (list.length ? '<ul class="op-list">' + list.map(function (t) { return "<li>" + esc(t.text) + "</li>"; }).join("") + "</ul>" : '<p class="muted small">없음</p>') + "</div>";
       });
@@ -520,6 +530,7 @@
     var cs = JA.filteredCourses();
     var all = S.textsOf(model, cs);
     var q = opState.q.trim();
+    if (textRoles(model.Q).indexOf(opState.role) < 0) opState.role = "";
     var list = all.filter(function (t) {
       if (opState.role && t.role !== opState.role) return false;
       if (q && (t.text + t.course.name + t.course.school).indexOf(q) < 0) return false;
@@ -549,13 +560,14 @@
       '<p class="muted">아직 AI 분석 결과가 없어요.' + (state.isAdmin ? " 위에서 범위를 고르고 <b>AI 분석 실행</b>을 누르세요." : " 관리자가 AI 분석을 실행하면 여기에 표시돼요.") + "</p>") + "</div>";
     html += "</div></section>";
 
-    // 원문
+    // 원문 (서술형이 한 종류뿐이면 구분 고르기·꼬리표를 숨김)
+    var opRoles = textRoles(state.model.Q), multiRole = opRoles.length > 1;
     html += '<section class="panel"><div class="panel-head"><h2>서술형 원문 <span class="muted small">' + list.length + "건</span></h2>" +
-      '<div class="toolbar"><select class="input sm" id="op-role"><option value="">전체</option>' +
-      Object.keys(ROLE).map(function (k) { return '<option value="' + k + '"' + (k === opState.role ? " selected" : "") + ">" + ROLE[k] + "</option>"; }).join("") + "</select>" +
+      '<div class="toolbar">' + (multiRole ? '<select class="input sm" id="op-role"><option value="">전체</option>' +
+      opRoles.map(function (k) { return '<option value="' + k + '"' + (k === opState.role ? " selected" : "") + ">" + ROLE[k] + "</option>"; }).join("") + "</select>" : "") +
       '<input class="input sm search-sm" id="op-q" type="search" name="jcs-opinion-q" autocomplete="off" readonly onfocus="this.removeAttribute(\'readonly\')" onpointerdown="this.removeAttribute(\'readonly\')" placeholder="키워드 검색" value="' + esc(opState.q) + '"></div></div><div class="panel-body">' +
       (list.length ? '<ul class="op-feed">' + list.slice(0, opState.limit).map(function (t) {
-        return '<li><span class="op-role ' + esc(t.role) + '">' + esc(ROLE[t.role] || "기타 의견") + '</span><div><p>' + highlight(t.text, q) + '</p><div class="muted small">' + esc(t.course.school) + " · " +
+        return '<li>' + (multiRole ? '<span class="op-role ' + esc(t.role) + '">' + esc(ROLE[t.role] || "기타 의견") + "</span>" : "") + '<div><p>' + highlight(t.text, q) + '</p><div class="muted small">' + esc(t.course.school) + " · " +
           '<a href="#" data-goto-course="' + esc(t.course.id) + '">' + esc(t.course.name) + "</a> · " + JA.fmtDT(t.at) + "</div></div></li>";
       }).join("") + "</ul>" + (list.length > opState.limit ? '<button class="btn sm" id="op-more">더 보기 (' + (list.length - opState.limit) + "건 남음)</button>" : "") :
         '<p class="muted">조건에 맞는 의견이 없어요.</p>') + "</div></section>";
@@ -609,7 +621,8 @@
         });
       });
     });
-    root.querySelector("#op-role").addEventListener("change", function () { opState.role = this.value; opState.limit = 200; views.opinions(root); });
+    var roleSel = root.querySelector("#op-role");
+    if (roleSel) roleSel.addEventListener("change", function () { opState.role = this.value; opState.limit = 200; views.opinions(root); });
     var oq = root.querySelector("#op-q");
     oq.addEventListener("input", JA.debounce(function () {
       if (state.tab !== "opinions") return;
