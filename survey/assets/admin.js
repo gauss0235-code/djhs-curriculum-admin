@@ -404,8 +404,11 @@ window.JA = (function () {
     if (state.isAdmin) badge = '<span class="badge badge-admin">관리자</span>';
     else if (state.role === "support") badge = '<span class="badge badge-admin">교육과정지원단</span>';
     else badge = '<span class="badge badge-school">' + esc(profileSchoolName() || "소속 학교 미지정") + "</span>";
+    // 학교 계정은 배지에 학교명이 있으므로 이름 앞의 학교명은 빼고 표시 (충남고 | 교육과정 업무담당자)
+    var name = String(p.display_name || ""), sn = profileSchoolName();
+    if (!state.isAdmin && state.role !== "support" && sn && name.indexOf(sn + " ") === 0) name = name.slice(sn.length + 1);
     $("userInfo").innerHTML = badge +
-      '<span class="user-name">' + esc(p.display_name) + "</span>" +
+      '<span class="user-name">' + esc(name) + "</span>" +
       '<button class="profile-btn" type="button" onclick="openPasswordModal()">' + ICON_GEAR + "정보수정</button>" +
       '<button class="logout-btn" type="button" onclick="handleLogout()">' + ICON_LOGOUT + "로그아웃</button>";
   }
