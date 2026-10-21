@@ -14,8 +14,8 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Asta+Sans:wght@300..800&display=swap">
   <link rel="preload" href="../fonts/Paperlogy-7Bold.woff2" as="font" type="font/woff2" crossorigin>
   <!-- 결과 화면 본체 스타일 (워크스페이스 디자인에 맞춘 버전) -->
-  <link rel="stylesheet" href="assets/base.css?v=20261021">
-  <link rel="stylesheet" href="assets/admin.css?v=20261021">
+  <link rel="stylesheet" href="assets/base.css?v=20261021b">
+  <link rel="stylesheet" href="assets/admin.css?v=20261021b">
   <!-- 워크스페이스 공통 틀: 헤더·페이지 제목·뒤로가기·비밀번호 모달 (다른 페이지와 같은 규칙) -->
   <style>
     @font-face {
@@ -457,17 +457,19 @@
     <div class="pw-modal">
       <h3>비밀번호 변경</h3>
       <div class="pw-desc">현재 비밀번호 확인 후 새 비밀번호로 변경합니다.</div>
+      <!-- 비밀번호 칸은 모달을 열 때만 만든다(admin.js). 페이지에 비밀번호 칸이 있으면
+           브라우저가 검색창 같은 글자 칸에 로그인 이메일을 자동으로 채우기 때문 -->
       <div class="pw-field">
-        <label>현재 비밀번호</label>
-        <input type="password" id="pwCurrent" autocomplete="current-password">
+        <label for="pwCurrent">현재 비밀번호</label>
+        <span class="pw-slot" data-pw="pwCurrent" data-ac="current-password"></span>
       </div>
       <div class="pw-field">
-        <label>새 비밀번호 (6자 이상)</label>
-        <input type="password" id="pwNew" autocomplete="new-password">
+        <label for="pwNew">새 비밀번호 (6자 이상)</label>
+        <span class="pw-slot" data-pw="pwNew" data-ac="new-password"></span>
       </div>
       <div class="pw-field">
-        <label>새 비밀번호 확인</label>
-        <input type="password" id="pwConfirm" autocomplete="new-password">
+        <label for="pwConfirm">새 비밀번호 확인</label>
+        <span class="pw-slot" data-pw="pwConfirm" data-ac="new-password"></span>
       </div>
       <div class="pw-actions">
         <button class="pw-btn-cancel" onclick="closePasswordModal()">취소</button>
@@ -483,12 +485,12 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js" integrity="sha384-TcHRA3zBbn+Lexh5n+Oil4guNPOS3rjNDpGRAN46u/s/mB2IZ50ceC6TYDU2yvgK" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js" integrity="sha384-8FWZA6BGMXhsfO+BLtrJK0We6gg5o1JyO8xQm6peWDEUs17ACA5ziE/NIAkl9z2k" crossorigin="anonymous"></script>
   <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js" integrity="sha384-EnyY0/GSHQGSxSgMwaIPzSESbqoOLSexfnSMN2AP+39Ckmn92stwABZynq1JyzdT" crossorigin="anonymous"></script>
-  <script src="assets/config.js?v=20261021"></script>
-  <script src="assets/default-questions.js?v=20261021"></script>
-  <script src="assets/api.js?v=20261021"></script>
-  <script src="assets/stats.js?v=20261021"></script>
-  <script src="assets/admin.js?v=20261021"></script>
-  <script src="assets/admin-results.js?v=20261021"></script>
-  <script src="assets/admin-manage.js?v=20261021"></script>
+  <script src="assets/config.js?v=20261021b"></script>
+  <script src="assets/default-questions.js?v=20261021b"></script>
+  <script src="assets/api.js?v=20261021b"></script>
+  <script src="assets/stats.js?v=20261021b"></script>
+  <script src="assets/admin.js?v=20261021b"></script>
+  <script src="assets/admin-results.js?v=20261021b"></script>
+  <script src="assets/admin-manage.js?v=20261021b"></script>
 </body>
 </html>

@@ -475,7 +475,7 @@
     // school_id 열이 있고 값이 비어 있으면(=워크스페이스 학교와 연결 안 됨) 학교 담당자가 그 강좌 결과를 볼 수 없음
     var unlinked = cs.filter(isUnlinked).length;
     var html = '<section class="panel"><div class="panel-head"><h2>강좌 목록 <span class="muted small">' + cs.length + "개 · 거점학교 " + JA.schoolsOf(cs).length + "개교</span></h2>" +
-      '<div class="toolbar"><input class="input sm search-sm" id="ca-q" type="search" placeholder="검색" value="' + esc(caState.q) + '">' +
+      '<div class="toolbar"><input class="input sm search-sm" id="ca-q" type="search" name="jcs-course-admin-q" autocomplete="off" readonly onfocus="this.removeAttribute(\'readonly\')" onpointerdown="this.removeAttribute(\'readonly\')" placeholder="검색" value="' + esc(caState.q) + '">' +
       '<label class="btn sm primary file-btn">엑셀로 일괄 등록<input type="file" id="ca-file" accept=".xlsx,.xls,.csv" hidden></label>' +
       '<button class="btn sm" id="ca-add">+ 강좌 추가</button><button class="btn sm" id="ca-export">목록 엑셀로 받기</button>' +
       (cs.length ? '<button class="btn sm danger" id="ca-clear">전체 삭제</button>' : "") + "</div></div>" +
@@ -496,7 +496,7 @@
     qEl.addEventListener("input", JA.debounce(function () {
       if (state.tab !== "course-admin") return;
       caState.q = qEl.value; views["course-admin"](root);
-      var el = root.querySelector("#ca-q"); el.focus(); el.setSelectionRange(el.value.length, el.value.length);
+      var el = root.querySelector("#ca-q"); el.removeAttribute("readonly"); el.focus(); el.setSelectionRange(el.value.length, el.value.length);
     }, 250));
     root.querySelector("#ca-file").addEventListener("change", function () {
       var file = this.files[0];

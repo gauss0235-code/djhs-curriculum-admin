@@ -306,7 +306,7 @@
     };
 
     var html = filterBar(
-      '<input class="input sm search-sm" id="c-q" type="search" placeholder="강좌·교사 검색" value="' + esc(courseState.q) + '">' +
+      '<input class="input sm search-sm" id="c-q" type="search" name="jcs-course-q" autocomplete="off" readonly onfocus="this.removeAttribute(\'readonly\')" onpointerdown="this.removeAttribute(\'readonly\')" placeholder="강좌·교사 검색" value="' + esc(courseState.q) + '">' +
       '<select class="input sm" id="c-view">' + VIEW_OPTS.map(function (o) { return '<option value="' + o[0] + '"' + (o[0] === courseState.view ? " selected" : "") + ">" + o[1] + "</option>"; }).join("") + "</select>" +
       '<button class="btn sm" id="c-xlsx">엑셀 다운로드</button>');
     html += '<section class="panel"><div class="panel-head"><h2>강좌별 결과 <span class="muted small">' + rows.length + '개</span></h2><span class="muted small">행을 누르면 상세 결과·서술형·보고서용 표를 볼 수 있어요</span></div>' +
@@ -331,7 +331,7 @@
     qEl.addEventListener("input", JA.debounce(function () {
       if (state.tab !== "courses") return;
       courseState.q = qEl.value; views.courses(root);
-      var el = root.querySelector("#c-q"); el.focus(); el.setSelectionRange(el.value.length, el.value.length);
+      var el = root.querySelector("#c-q"); el.removeAttribute("readonly"); el.focus(); el.setSelectionRange(el.value.length, el.value.length);
     }, 250));
     root.querySelector("#c-view").addEventListener("change", function () { courseState.view = this.value; views.courses(root); });
     root.querySelector("#c-xlsx").addEventListener("click", exportExcel);
@@ -553,7 +553,7 @@
     html += '<section class="panel"><div class="panel-head"><h2>서술형 원문 <span class="muted small">' + list.length + "건</span></h2>" +
       '<div class="toolbar"><select class="input sm" id="op-role"><option value="">전체</option>' +
       Object.keys(ROLE).map(function (k) { return '<option value="' + k + '"' + (k === opState.role ? " selected" : "") + ">" + ROLE[k] + "</option>"; }).join("") + "</select>" +
-      '<input class="input sm search-sm" id="op-q" type="search" placeholder="키워드 검색" value="' + esc(opState.q) + '"></div></div><div class="panel-body">' +
+      '<input class="input sm search-sm" id="op-q" type="search" name="jcs-opinion-q" autocomplete="off" readonly onfocus="this.removeAttribute(\'readonly\')" onpointerdown="this.removeAttribute(\'readonly\')" placeholder="키워드 검색" value="' + esc(opState.q) + '"></div></div><div class="panel-body">' +
       (list.length ? '<ul class="op-feed">' + list.slice(0, opState.limit).map(function (t) {
         return '<li><span class="op-role ' + esc(t.role) + '">' + esc(ROLE[t.role] || "기타 의견") + '</span><div><p>' + highlight(t.text, q) + '</p><div class="muted small">' + esc(t.course.school) + " · " +
           '<a href="#" data-goto-course="' + esc(t.course.id) + '">' + esc(t.course.name) + "</a> · " + JA.fmtDT(t.at) + "</div></div></li>";
@@ -614,7 +614,7 @@
     oq.addEventListener("input", JA.debounce(function () {
       if (state.tab !== "opinions") return;
       opState.q = oq.value; views.opinions(root);
-      var el = root.querySelector("#op-q"); el.focus(); el.setSelectionRange(el.value.length, el.value.length);
+      var el = root.querySelector("#op-q"); el.removeAttribute("readonly"); el.focus(); el.setSelectionRange(el.value.length, el.value.length);
     }, 300));
     var more = root.querySelector("#op-more");
     if (more) more.addEventListener("click", function () { opState.limit += 300; views.opinions(root); });

@@ -473,7 +473,23 @@ window.JA = (function () {
       .catch(function (e) { console.error(e); })
       .then(function () { location.href = LOGIN_URL; });
   };
+  // 비밀번호 칸은 모달이 열려 있을 때만 페이지에 둔다.
+  // (비밀번호 칸이 있으면 브라우저가 검색창에 로그인 이메일을 자동으로 채움)
+  function mountPasswordInputs() {
+    document.querySelectorAll("#pwModal .pw-slot").forEach(function (slot) {
+      if (slot.firstChild) return;
+      var inp = document.createElement("input");
+      inp.type = "password";
+      inp.id = slot.getAttribute("data-pw");
+      inp.setAttribute("autocomplete", slot.getAttribute("data-ac"));
+      slot.appendChild(inp);
+    });
+  }
+  function unmountPasswordInputs() {
+    document.querySelectorAll("#pwModal .pw-slot").forEach(function (slot) { slot.innerHTML = ""; });
+  }
   window.openPasswordModal = function () {
+    mountPasswordInputs();
     $("pwCurrent").value = "";
     $("pwNew").value = "";
     $("pwConfirm").value = "";
@@ -482,6 +498,7 @@ window.JA = (function () {
   };
   window.closePasswordModal = function () {
     $("pwModal").classList.add("hidden");
+    unmountPasswordInputs();
   };
   window.submitPasswordChange = function () {
     var currentPw = $("pwCurrent").value;
