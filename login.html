@@ -69,11 +69,19 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Asta+Sans:wght@300..800&display=swap">
   <link rel="preload" href="fonts/Paperlogy-7Bold.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/Paperlogy-8ExtraBold.woff2" as="font" type="font/woff2" crossorigin>
   <style>
     @font-face {
       font-family: 'Paperlogy';
       src: url('fonts/Paperlogy-7Bold.woff2') format('woff2');
       font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Paperlogy';
+      src: url('fonts/Paperlogy-8ExtraBold.woff2') format('woff2');
+      font-weight: 800;
       font-style: normal;
       font-display: swap;
     }
@@ -137,11 +145,11 @@
     }
     .brand h1 {
       font-family: 'Paperlogy', 'Asta Sans', sans-serif;
-      font-size: 24px;
-      font-weight: 700;
+      font-size: 30px;
+      font-weight: 800;
       color: var(--primary-dark);
-      letter-spacing: -0.01em;
-      line-height: 1.4;
+      letter-spacing: -0.02em;
+      line-height: 1.35;
     }
     
     /* 핵심: 선생님 2명 + 로그인창을 한 몸으로 묶음 */
@@ -307,7 +315,7 @@
         max-width: 320px; 
         padding: 28px;
       }
-      .brand h1 { font-size: 20px; }
+      .brand h1 { font-size: 26px; }
     }
     
     @media (max-width: 540px) {
@@ -328,7 +336,7 @@
         margin-bottom: 14px;
       }
       .brand h1 {
-        font-size: 20px;
+        font-size: 23px;
       }
       .login-row {
         flex-direction: column;
