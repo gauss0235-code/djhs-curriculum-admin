@@ -93,6 +93,25 @@
     return html + "</div>";
   }
 
+  // 카카오톡 미리보기는 설문별 공유 페이지의 og:title을 읽음. 그 페이지가 만들어졌고 지금 제목이 들어갔는지 확인해 안내
+  // (새 설문·제목 변경은 학생 사이트의 GitHub Actions가 1시간 안에 반영. 그 전에 보낸 링크는 미리보기가 1시간쯤 그대로 남음)
+  function checkSharePage(box, s, url) {
+    if (!box || typeof fetch !== "function") return;
+    var want = String(s.title || "").replace(/\s+/g, " ").trim();
+    fetch(url, { cache: "no-store" }).then(function (r) {
+      if (r.status === 404) return false;
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      return r.text().then(function (t) {
+        var m = new DOMParser().parseFromString(t, "text/html").querySelector('meta[property="og:title"]');
+        return !!m && m.getAttribute("content") === want;
+      });
+    }).then(function (ready) {
+      box.className = "notice share-state " + (ready ? "info" : "warn");
+      box.textContent = ready ? "카카오톡 미리보기 준비됨: 이 주소를 보내면 ‘" + want + "’ 제목이 떠요." :
+        "카카오톡 미리보기용 페이지를 만드는 중이에요(새 설문·제목 변경은 1시간 안에 자동 반영). 지금 보내도 설문은 열리지만, 미리보기에 제목이 안 뜨고 그 모습이 1시간쯤 남을 수 있어요.";
+    }).catch(function () { box.remove(); });
+  }
+
   views.distribute = function (root) {
     if (!state.isAdmin) { denyView(root); return; }
     var s = state.survey, url = surveyUrl(s), st = JA.surveyStatus(s);
@@ -103,6 +122,7 @@
       try { qrHtml = qrSvg(url); } catch (e) { qrHtml = '<p class="muted small">' + esc(e.message) + "</p>"; }
       addr = '<div class="qr-stage"><div class="qr-big" id="qr-box">' + qrHtml + "</div></div>" +
         '<div class="url-row"><input class="input" readonly value="' + esc(url) + '" id="url-input"><button class="btn" id="copy-url">복사</button><a class="btn" href="' + esc(url) + '" target="_blank" rel="noopener">열기</a></div>' +
+        (J.isDemo ? "" : '<p class="notice share-state" id="share-state">카카오톡 미리보기 준비 상태를 확인하는 중…</p>') +
         '<div class="btn-row"><button class="btn" id="qr-png">QR 이미지(PNG) 저장</button><button class="btn" id="qr-poster">안내 포스터 인쇄(A4)</button>' +
         '<button class="btn" id="qr-cards">배부용 카드 인쇄(A4 8장)</button><button class="btn" id="qr-full">화면에 크게 띄우기</button></div>';
     } else {
@@ -124,10 +144,11 @@
       '<div class="howto"><h3>배포 방법</h3><ol>' +
       "<li>포스터나 카드를 인쇄해 거점학교 공동교육과정 교실에 붙이거나 나눠 줍니다.</li>" +
       "<li>마지막 수업 시간에 ‘화면에 크게 띄우기’로 TV에 QR을 띄우고 5분 정도 응답 시간을 줍니다.</li>" +
-      "<li>주소를 복사해 카카오톡·e알리미로 보내도 됩니다. QR은 하나라서 모든 강좌가 같은 주소를 씁니다.</li>" +
+      "<li>주소를 복사해 카카오톡·e알리미로 보내도 됩니다. 카카오톡 미리보기에는 설문 제목이 떠요. QR은 하나라서 모든 강좌가 같은 주소를 씁니다.</li>" +
       "<li>‘대시보드’에서 강좌별 응답률을 보고, 응답이 적은 강좌는 담당 선생님께 안내를 요청하세요.</li></ol></div>" +
       "</div></section></div>";
     root.innerHTML = html;
+    if (url) checkSharePage(root.querySelector("#share-state"), s, url);
     if (url) {
       root.querySelector("#copy-url").addEventListener("click", function () { JA.copyText(url); });
       root.querySelector("#qr-png").addEventListener("click", function () {
