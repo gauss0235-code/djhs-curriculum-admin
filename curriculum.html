@@ -708,7 +708,7 @@
       </div>
       <div class="field">
         <label>제목 *</label>
-        <input type="text" id="formTitle" placeholder="예: 2027학년도 입학생 교육과정 편성표 - 연습용">
+        <input type="text" id="formTitle" autocomplete="off" readonly onfocus="this.removeAttribute('readonly')" onpointerdown="this.removeAttribute('readonly')" placeholder="예: 2027학년도 입학생 교육과정 편성표 - 연습용">
       </div>
       <div class="field">
         <label>종류 *</label>
@@ -721,7 +721,7 @@
       </div>
       <div class="field">
         <label>교육과정 편성표(스프레드시트, PDF) URL *</label>
-        <input type="url" id="formUrl" placeholder="https://docs.google.com/spreadsheets/d/...">
+        <input type="url" id="formUrl" autocomplete="off" readonly onfocus="this.removeAttribute('readonly')" onpointerdown="this.removeAttribute('readonly')" placeholder="https://docs.google.com/spreadsheets/d/...">
       </div>
       <div class="field">
         <label>설명</label>
@@ -1020,7 +1020,25 @@
     }
     
     // ====== 비밀번호 변경 (본인) ======
+    // 비밀번호 칸은 모달이 열려 있을 때만 페이지에 둔다.
+    // (비밀번호 칸이 있으면 브라우저가 다른 글자 칸에 로그인 이메일을 자동으로 채움)
+    function mountPasswordInputs() {
+      document.querySelectorAll('#pwModal .pw-slot').forEach(slot => {
+        if (slot.firstChild) return;
+        const inp = document.createElement('input');
+        inp.type = 'password';
+        inp.id = slot.getAttribute('data-pw');
+        inp.setAttribute('autocomplete', slot.getAttribute('data-ac'));
+        slot.appendChild(inp);
+      });
+    }
+
+    function unmountPasswordInputs() {
+      document.querySelectorAll('#pwModal .pw-slot').forEach(slot => { slot.innerHTML = ''; });
+    }
+
     window.openPasswordModal = function() {
+      mountPasswordInputs();
       document.getElementById('pwCurrent').value = '';
       document.getElementById('pwNew').value = '';
       document.getElementById('pwConfirm').value = '';
@@ -1030,6 +1048,7 @@
     
     window.closePasswordModal = function() {
       document.getElementById('pwModal').classList.add('hidden');
+      unmountPasswordInputs();
     };
     
     window.submitPasswordChange = async function() {
@@ -1100,21 +1119,22 @@
   </script>
 
   <!-- 비밀번호 변경 모달 -->
+  <!-- 비밀번호 칸은 모달을 열 때만 만든다(브라우저 자동 채움 방지) -->
   <div id="pwModal" class="pw-modal-bg hidden">
     <div class="pw-modal">
       <h3>비밀번호 변경</h3>
       <div class="pw-desc">현재 비밀번호 확인 후 새 비밀번호로 변경합니다.</div>
       <div class="pw-field">
-        <label>현재 비밀번호</label>
-        <input type="password" id="pwCurrent" autocomplete="current-password">
+        <label for="pwCurrent">현재 비밀번호</label>
+        <span class="pw-slot" data-pw="pwCurrent" data-ac="current-password"></span>
       </div>
       <div class="pw-field">
-        <label>새 비밀번호 (6자 이상)</label>
-        <input type="password" id="pwNew" autocomplete="new-password">
+        <label for="pwNew">새 비밀번호 (6자 이상)</label>
+        <span class="pw-slot" data-pw="pwNew" data-ac="new-password"></span>
       </div>
       <div class="pw-field">
-        <label>새 비밀번호 확인</label>
-        <input type="password" id="pwConfirm" autocomplete="new-password">
+        <label for="pwConfirm">새 비밀번호 확인</label>
+        <span class="pw-slot" data-pw="pwConfirm" data-ac="new-password"></span>
       </div>
       <div class="pw-actions">
         <button class="pw-btn-cancel" onclick="closePasswordModal()">취소</button>

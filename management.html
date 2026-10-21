@@ -607,24 +607,24 @@
       <div class="form-group" id="emailFormGroup">
         <label>이메일 *</label>
         <div class="email-input-wrap">
-          <input type="text" id="formEmail" placeholder="예: djhs" autocomplete="off">
+          <input type="text" id="formEmail" placeholder="예: djhs" autocomplete="off" readonly onfocus="this.removeAttribute('readonly')" onpointerdown="this.removeAttribute('readonly')">
           <span class="domain">@djsch.kr</span>
         </div>
         <div class="form-hint">@djsch.kr 앞부분만 입력하세요</div>
       </div>
       <div class="form-group" id="passwordFormGroup">
         <label>비밀번호 *</label>
-        <input type="text" id="formPassword" placeholder="예: djhs1234" autocomplete="off">
+        <input type="text" id="formPassword" placeholder="예: djhs1234" autocomplete="new-password" readonly onfocus="this.removeAttribute('readonly')" onpointerdown="this.removeAttribute('readonly')">
         <div class="form-hint">최소 6자 이상</div>
       </div>
       <div class="form-group">
         <label>담당자 이름 *</label>
-        <input type="text" id="formDisplayName" placeholder="예: 대전고 교육과정 업무담당자" autocomplete="off">
+        <input type="text" id="formDisplayName" placeholder="예: 대전고 교육과정 업무담당자" autocomplete="off" readonly onfocus="this.removeAttribute('readonly')" onpointerdown="this.removeAttribute('readonly')">
         <div class="form-hint">로그인 후 화면 상단에 표시되는 이름입니다</div>
       </div>
       <div class="form-group" id="editPasswordFormGroup" style="display:none;">
         <label>새 비밀번호 (선택)</label>
-        <input type="text" id="editNewPassword" placeholder="변경하려면 입력 (최소 6자)" autocomplete="off">
+        <input type="text" id="editNewPassword" placeholder="변경하려면 입력 (최소 6자)" autocomplete="new-password" readonly onfocus="this.removeAttribute('readonly')" onpointerdown="this.removeAttribute('readonly')">
         <div class="form-hint">비워두면 비밀번호는 변경되지 않습니다</div>
       </div>
       <div class="modal-actions">
@@ -641,7 +641,7 @@
       <div class="modal-desc" id="passwordModalDesc">새 비밀번호를 입력하세요.</div>
       <div class="form-group">
         <label>새 비밀번호 *</label>
-        <input type="text" id="newPassword" placeholder="새 비밀번호 (최소 6자)" autocomplete="off">
+        <input type="text" id="newPassword" placeholder="새 비밀번호 (최소 6자)" autocomplete="new-password" readonly onfocus="this.removeAttribute('readonly')" onpointerdown="this.removeAttribute('readonly')">
         <div class="form-hint">담당자에게 새 비밀번호를 안내해주세요</div>
       </div>
       <div class="modal-actions">
@@ -658,11 +658,11 @@
       <div class="modal-desc">학교 정보를 입력하세요.</div>
       <div class="form-group">
         <label>학교명 *</label>
-        <input type="text" id="schoolFormName" placeholder="예: 한밭고" autocomplete="off">
+        <input type="text" id="schoolFormName" placeholder="예: 한밭고" autocomplete="off" readonly onfocus="this.removeAttribute('readonly')" onpointerdown="this.removeAttribute('readonly')">
       </div>
       <div class="form-group">
         <label>학교 약자 (code) *</label>
-        <input type="text" id="schoolFormCode" placeholder="예: hbhs" autocomplete="off">
+        <input type="text" id="schoolFormCode" placeholder="예: hbhs" autocomplete="off" readonly onfocus="this.removeAttribute('readonly')" onpointerdown="this.removeAttribute('readonly')">
         <div class="form-hint">기존 학교와 중복되지 않는 영문 약자</div>
       </div>
       <div class="modal-actions">
@@ -1129,7 +1129,24 @@
       window.location.href = 'login.html';
     };    
     // ====== 비밀번호 변경 (본인) ======
+    // 비밀번호 칸은 모달이 열려 있을 때만 페이지에 둔다.
+    // (비밀번호 칸이 있으면 브라우저가 다른 글자 칸에 로그인 이메일을 자동으로 채움)
+    const mountPasswordInputs = () => {
+      document.querySelectorAll('#pwModal .pw-slot').forEach(slot => {
+        if (slot.firstChild) return;
+        const inp = document.createElement('input');
+        inp.type = 'password';
+        inp.id = slot.getAttribute('data-pw');
+        inp.setAttribute('autocomplete', slot.getAttribute('data-ac'));
+        slot.appendChild(inp);
+      });
+    };
+    const unmountPasswordInputs = () => {
+      document.querySelectorAll('#pwModal .pw-slot').forEach(slot => { slot.innerHTML = ''; });
+    };
+
     window.openPasswordModal = function() {
+      mountPasswordInputs();
       document.getElementById('pwCurrent').value = '';
       document.getElementById('pwNew').value = '';
       document.getElementById('pwConfirm').value = '';
@@ -1139,6 +1156,7 @@
     
     window.closePasswordModal = function() {
       document.getElementById('pwModal').classList.add('hidden');
+      unmountPasswordInputs();
     };
     
     window.submitPasswordChange = async function() {
@@ -1209,21 +1227,22 @@
   </script>
 
   <!-- 비밀번호 변경 모달 -->
+  <!-- 비밀번호 칸은 모달을 열 때만 만든다(브라우저 자동 채움 방지) -->
   <div id="pwModal" class="pw-modal-bg hidden">
     <div class="pw-modal">
       <h3>비밀번호 변경</h3>
       <div class="pw-desc">현재 비밀번호 확인 후 새 비밀번호로 변경합니다.</div>
       <div class="pw-field">
-        <label>현재 비밀번호</label>
-        <input type="password" id="pwCurrent" autocomplete="current-password">
+        <label for="pwCurrent">현재 비밀번호</label>
+        <span class="pw-slot" data-pw="pwCurrent" data-ac="current-password"></span>
       </div>
       <div class="pw-field">
-        <label>새 비밀번호 (6자 이상)</label>
-        <input type="password" id="pwNew" autocomplete="new-password">
+        <label for="pwNew">새 비밀번호 (6자 이상)</label>
+        <span class="pw-slot" data-pw="pwNew" data-ac="new-password"></span>
       </div>
       <div class="pw-field">
-        <label>새 비밀번호 확인</label>
-        <input type="password" id="pwConfirm" autocomplete="new-password">
+        <label for="pwConfirm">새 비밀번호 확인</label>
+        <span class="pw-slot" data-pw="pwConfirm" data-ac="new-password"></span>
       </div>
       <div class="pw-actions">
         <button class="pw-btn-cancel" onclick="closePasswordModal()">취소</button>
