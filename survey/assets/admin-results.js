@@ -677,16 +677,8 @@
           "<h2>Ⅱ. 강좌별 수업 만족도 결과</h2>";
       }
       rows.forEach(function (r, i) {
-        var c = r.course, texts = S.textsOf(model, [c]);
-        var pos = texts.filter(function (t) { return t.role === "positive"; }).map(function (t) { return t.text; });
-        var imp = texts.filter(function (t) { return t.role === "improve"; }).map(function (t) { return t.text; });
-        var other = texts.filter(function (t) { return t.role === "other"; }).map(function (t) { return t.text; });
-        var ai = opts.opinion === "ai" ? latestAi("course", c.id) : null;
-        var srcNote = "";
-        if (ai && ai.content && ai.content.report_opinions && ai.content.report_opinions.length) {
-          pos = ai.content.report_opinions; imp = ai.content.report_requests || []; other = [];
-          srcNote = '<span class="rpt-src">AI 요약</span>';
-        }
+        var c = r.course, op = reportOpinions(Q, c, opts.opinion);
+        var srcNote = op.ai ? '<span class="rpt-src">AI 요약</span>' : "";
         html += '<div class="rpt-course"><h3>' + (opts.onlyCourse ? "" : (i + 1) + ". ") + esc(c.name) + " <small>" + esc([c.course_type, c.teacher && "수업교사 " + c.teacher].filter(Boolean).join(" · ")) + "</small></h3>";
         if (!r.n) {
           html += '<p class="rpt-empty">응답 없음</p></div>';
@@ -695,11 +687,29 @@
         html += '<p class="rpt-cap">• 수업 만족도(참여인원: ' + r.n + "명)</p>" + reportTableHtml(Q, r.agg, opts.digits).replace('class="tbl rpt-tbl"', 'class="rtbl narrow"') +
           '<p class="rpt-cap">• 문항별 평균</p><table class="rtbl qavg"><thead><tr>' + Q.likert.map(function (q) { return "<th>" + Q.no[q.id] + "</th>"; }).join("") +
           "</tr></thead><tbody><tr>" + Q.likert.map(function (q) { return "<td>" + S.f(r.agg.items[q.id].mean, opts.digits) + "</td>"; }).join("") + "</tr></tbody></table>" +
-          '<p class="rpt-cap">• 학생 의견 ' + srcNote + "</p>" + bullets(pos.concat(other)) +
-          '<p class="rpt-cap">• 수업 후 개선 사항 / 요구 사항 ' + srcNote + "</p>" + bullets(imp) + "</div>";
+          '<p class="rpt-cap">• 학생 의견' + (op.merged ? "(좋았던 점·개선할 점)" : "") + " " + srcNote + "</p>" + bullets(op.pos) +
+          '<p class="rpt-cap">• 수업 후 개선 사항 / 요구 사항 ' + srcNote + "</p>" +
+          (op.merged ? '<p class="rpt-empty">' + MERGED_NOTE + "</p>" : bullets(op.imp)) + "</div>";
       });
       return html + "</section>";
     }).join("");
+  }
+  // 보고서의 '학생 의견'·'개선 사항' 두 칸. AI 요약을 골랐고 그 강좌 AI 결과가 있으면 AI 문장, 아니면 원문을 구분대로 나눔.
+  // 서술형을 한 문항으로 받은 설문(개선할 점 문항 없음)은 원문을 나눌 수 없으니 merged로 알려 개선 칸에 안내를 넣음
+  var MERGED_NOTE = "※ 위 학생 의견에 함께 기재";
+  function reportOpinions(Q, c, mode) {
+    var ai = mode === "ai" ? latestAi("course", c.id) : null, ct = ai && ai.content;
+    if (ct && ((ct.report_opinions && ct.report_opinions.length) || (ct.report_requests && ct.report_requests.length))) {
+      return { ai: true, merged: false, pos: ct.report_opinions || [], imp: ct.report_requests || [] };
+    }
+    var texts = S.textsOf(state.model, [c]);
+    function of(fn) { return texts.filter(fn).map(function (t) { return t.text; }); }
+    return {
+      ai: false,
+      merged: textRoles(Q).indexOf("improve") < 0,
+      pos: of(function (t) { return t.role === "positive"; }).concat(of(function (t) { return t.role !== "positive" && t.role !== "improve"; })),
+      imp: of(function (t) { return t.role === "improve"; })
+    };
   }
   function bullets(arr) {
     if (!arr.length) return '<p class="rpt-empty">-</p>';
@@ -726,7 +736,9 @@
       '<select class="input sm" id="r-op"><option value="raw"' + (rptState.opinion === "raw" ? " selected" : "") + '>학생 의견: 원문 전체</option><option value="ai"' + (rptState.opinion === "ai" ? " selected" : "") + ">학생 의견: AI 요약 문장(있는 강좌)</option></select>" +
       '<label class="check"><input type="checkbox" id="r-empty"' + (rptState.includeEmpty ? " checked" : "") + "> 응답 없는 강좌 포함</label>" +
       '<span class="spacer"></span><button class="btn" id="r-xlsx">엑셀(보고서용)</button><button class="btn primary" id="r-print">인쇄 · PDF 저장</button></div>' +
-      '<p class="muted small help">운영 안내서 [부록 15] 운영 결과 보고서의 ‘수업 만족도 결과’ 칸에 그대로 옮길 수 있는 형식입니다. 인쇄 창에서 ‘PDF로 저장’을 고르면 파일로 저장돼요.</p>' +
+      '<p class="muted small help">운영 안내서 [부록 15] 운영 결과 보고서의 ‘수업 만족도 결과’ 칸에 그대로 옮길 수 있는 형식입니다. 인쇄 창에서 ‘PDF로 저장’을 고르면 파일로 저장돼요.' +
+      (textRoles(state.model.Q).indexOf("improve") < 0 ? " 이 설문은 좋았던 점·개선할 점을 한 문항으로 받아서, ‘원문 전체’로 두면 개선 사항이 학생 의견 칸에 함께 들어가요. 두 칸으로 나누려면 " +
+        (state.isAdmin ? "강좌별 AI 분석을 실행한 뒤" : "관리자가 강좌별 AI 분석을 실행한 강좌에서") + " ‘학생 의견: AI 요약 문장’을 고르세요." : "") + "</p>" +
       '<div class="rpt-preview" id="r-doc">' + (sel.length ? reportDoc(sel, rptState) : '<p class="muted">거점학교를 선택하세요.</p>') + "</div>";
     root.innerHTML = html;
     root.querySelector("#r-school").addEventListener("change", function () { rptState.school = this.value; views.report(root); });
@@ -825,9 +837,10 @@
     schools.forEach(function (school) {
       var cs = S.sortCoursesForReport(JA.scopedCourses().filter(function (c) { return c.school === school; }));
       S.courseRows(model, cs).forEach(function (r, i) {
-        var c = r.course, texts = S.textsOf(model, [c]);
-        var pos = texts.filter(function (t) { return t.role !== "improve"; }).map(function (t) { return "- " + t.text; }).join("\n");
-        var imp = texts.filter(function (t) { return t.role === "improve"; }).map(function (t) { return "- " + t.text; }).join("\n");
+        // 화면 미리보기·인쇄와 같은 규칙(AI 요약 선택 반영, 한 문항 설문은 개선 칸에 안내)
+        var c = r.course, op = reportOpinions(Q, c, rptState.opinion);
+        function lines(arr) { return arr.map(function (t) { return "- " + t; }).join("\n"); }
+        var pos = lines(op.pos), imp = op.merged ? (op.pos.length ? MERGED_NOTE : "") : lines(op.imp);
         aoa.push([school, i + 1, c.course_type, c.name, c.category, c.credits, c.grade, c.teacher, c.enrolled == null ? "" : c.enrolled, r.n, r1p(r.rate),
           Q.scoreLabel, r.agg.scale[5] || "-", r.agg.scale[4] || "-", r.agg.scale[3] || "-", r.agg.scale[2] || "-", r.agg.scale[1] || "-",
           r.n ? Number(S.f(r.agg.mean, d)) : "", pos, imp]);

@@ -9,7 +9,7 @@ window.JA = (function () {
   var TITLE_SUFFIX = " — 대전광역시 고등학교 교육과정 업무담당자 워크스페이스";
   var ROLE_LABEL = { admin: "관리자", support: "교육과정지원단", school: "학교 담당자" };
   // 관리자만 쓸 수 있는 쓰기 기능(설문·강좌·응답·AI 분석). 버튼을 숨기는 것과 별개로 호출 자체를 막습니다.
-  var ADMIN_ONLY_API = ["saveSurvey", "deleteSurvey", "saveCourse", "insertCourses", "deleteCourse", "deleteCourses",
+  var ADMIN_ONLY_API = ["saveSurvey", "setSurveyOpen", "deleteSurvey", "saveCourse", "insertCourses", "deleteCourse", "deleteCourses",
     "deleteAllCourses", "deleteResponse", "upsertMember", "deleteMember", "deleteAiReport", "generateAiReport"];
 
   var ICO = function (d) {
@@ -537,7 +537,17 @@ window.JA = (function () {
 
   function init() {
     $("survey-select").addEventListener("change", function () { selectSurvey(this.value); });
-    $("refresh-btn").addEventListener("click", function () { if (!state.loading) loadSurveyData({ quiet: true, onlyResponses: false }); });
+    $("refresh-btn").addEventListener("click", function () {
+      if (state.loading || !state.survey) return;
+      // 설문 정보(문항·응답 받기 상태)도 다시 읽어, 다른 곳에서 바꾼 문항을 반영
+      var sid = state.survey.id;
+      api.listSurveys().then(function (list) {
+        var f = (list || []).find(function (x) { return x.id === sid; });
+        if (f && state.survey && state.survey.id === sid) replaceSurvey(f);
+      }).catch(function () { /* 설문 정보를 못 읽어도 응답은 새로 읽음 */ }).then(function () {
+        if (!state.loading) loadSurveyData({ quiet: true, onlyResponses: false });
+      });
+    });
     $("tabs").addEventListener("click", function (ev) {
       var b = ev.target.closest(".tab");
       if (b) go(b.getAttribute("data-tab"));

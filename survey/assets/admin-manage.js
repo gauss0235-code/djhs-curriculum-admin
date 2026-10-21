@@ -21,11 +21,16 @@
    *  QR · 배포
    * ===================================================================== */
   // 학생용 설문 주소. config.js의 SURVEY_BASE_URL이 비어 있으면 null (QR·미리보기 대신 안내를 보여 줌)
+  // 설문별 공유 페이지(…/survey/코드/)라서 카카오톡 링크 미리보기에 설문 제목이 뜸. 공유 페이지는 학생 사이트 저장소의
+  // GitHub Actions가 설문 목록을 보고 만들고, 만들어지기 전에 접속하면 학생 사이트의 404 페이지가 …/survey/?s=코드로 넘겨 줌
   function surveyUrl(s) {
     var base = String(J.cfg.SURVEY_BASE_URL || "").trim();
     if (!base || !s || !s.slug) return null;
-    var sep = base.indexOf("?") >= 0 ? "&" : "?";
-    return base + sep + "s=" + encodeURIComponent(s.slug) + (J.isDemo ? "&demo" : "");
+    if (J.isDemo || base.indexOf("?") >= 0) {
+      var sep = base.indexOf("?") >= 0 ? "&" : "?";
+      return base + sep + "s=" + encodeURIComponent(s.slug) + (J.isDemo ? "&demo" : "");
+    }
+    return base.replace(/\/?$/, "/") + encodeURIComponent(s.slug) + "/";
   }
   JA.surveyUrl = surveyUrl;
   function qrObj(text) {
@@ -154,7 +159,7 @@
       var next = !s.is_open;
       JA.confirmBox(next ? "응답 시작" : "응답 마감", next ? "지금부터 학생 응답을 받을까요?" : "응답을 마감할까요? 학생이 더 이상 응답할 수 없어요.", next ? "시작" : "마감", !next).then(function (ok) {
         if (!ok || !adminOnly()) return;
-        api.saveSurvey(Object.assign({}, s, { is_open: next })).then(function (saved) {
+        api.setSurveyOpen(s.id, next).then(function (saved) {
           JA.replaceSurvey(saved);
           JA.toast(next ? "응답 받기를 시작했어요." : "응답을 마감했어요.");
           if (state.tab === "distribute") views.distribute(root);
@@ -181,7 +186,9 @@
     if (!state.isAdmin) { denyView(root); return; }
     var s = state.survey;
     var previewUrl = surveyUrl(s);
-    if (draftFor !== s.id) { draft = JSON.parse(JSON.stringify(s.questions || [])); draftFor = s.id; }
+    // 설문이 바뀌었거나 저장된 문항이 달라졌으면(새로고침으로 새 문항을 받음) 편집본을 새로 만듦
+    var draftKey = s.id + "|" + JSON.stringify(s.questions || []);
+    if (draftFor !== draftKey) { draft = JSON.parse(JSON.stringify(s.questions || [])); draftFor = draftKey; }
     var st = s.settings || {};
     var html = '<section class="panel"><div class="panel-head"><h2>기본 정보</h2></div><div class="panel-body form-grid">' +
       '<label class="field span2"><span>설문 제목</span><input class="input" id="s-title" value="' + esc(s.title) + '"></label>' +
@@ -215,7 +222,7 @@
     renderQuestions(root);
 
     root.querySelector("#q-reset").addEventListener("click", function () {
-      JA.confirmBox("문항 되돌리기", "편집 중인 문항을 만족도 조사 기준표(10문항 + 서술형 2개)로 바꿀까요? 저장 전까지는 반영되지 않아요.", "되돌리기").then(function (ok) {
+      JA.confirmBox("문항 되돌리기", "편집 중인 문항을 만족도 조사 기준표(10문항 + 서술형 1개)로 바꿀까요? 저장 전까지는 반영되지 않아요.", "되돌리기").then(function (ok) {
         if (ok) { draft = JSON.parse(JSON.stringify(window.JCS_DEFAULT_QUESTIONS)); views.settings(root); }
       });
     });
@@ -269,7 +276,7 @@
       btn.disabled = true;
       api.saveSurvey(next).then(function (saved) {
         JA.replaceSurvey(saved);
-        draft = JSON.parse(JSON.stringify(saved.questions)); draftFor = saved.id;
+        draft = JSON.parse(JSON.stringify(saved.questions)); draftFor = saved.id + "|" + JSON.stringify(saved.questions || []);
         JA.toast("설정을 저장했어요.");
         if (state.tab === "settings") views.settings(root);
       }).catch(function (e) {
@@ -355,7 +362,7 @@
         '<label class="field"><span>학기</span><select class="input" id="n-sem"><option value="1"' + (sem === 1 ? " selected" : "") + '>1학기</option><option value="2"' + (sem === 2 ? " selected" : "") + ">2학기</option></select></label></div>" +
         '<label class="field span2"><span>설문 제목</span><input class="input" id="n-title"></label>' +
         '<label class="field span2"><span>주소용 코드</span><input class="input" id="n-slug"></label>' +
-        '<label class="field span2"><span>문항</span><select class="input" id="n-q"><option value="">만족도 조사 기준표 (10문항 + 서술형 2개)</option>' +
+        '<label class="field span2"><span>문항</span><select class="input" id="n-q"><option value="">만족도 조사 기준표 (10문항 + 서술형 1개)</option>' +
         others.map(function (s) { return '<option value="' + esc(s.id) + '">' + esc(s.title) + " 문항 복사</option>"; }).join("") + "</select></label>" +
         '<label class="field span2"><span>강좌 목록</span><select class="input" id="n-c"><option value="">비워 두기 (엑셀로 새로 등록)</option>' +
         others.map(function (s) { return '<option value="' + esc(s.id) + '">' + esc(s.title) + " 강좌 복사</option>"; }).join("") + "</select></label></div>",
