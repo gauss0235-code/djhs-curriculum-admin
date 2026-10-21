@@ -7,9 +7,9 @@ window.JCS_CONFIG = {
   SUPABASE_URL: "https://nzsgvjdotnvqpzhehfsg.supabase.co",
   SUPABASE_ANON_KEY: "sb_publishable_ALakaYU4jTYEIQas_nWrsQ_An3IK9_h",
 
-  // QR코드에 들어갈 학생용 설문 주소. 학생 설문 페이지를 배포한 뒤 채웁니다.
+  // QR코드에 들어갈 학생용 설문 주소 (학부모·학생 공개 사이트 dje-hscredit 저장소의 survey/)
   // 비어 있으면 QR·배포 화면은 QR 대신 안내를 보여 줍니다.
-  SURVEY_BASE_URL: "",
+  SURVEY_BASE_URL: "https://djhs-curriculum.kro.kr/survey/",
 
   // AI 서술형 분석 Edge Function 이름
   AI_FUNCTION_NAME: "jcs-ai-summary",
