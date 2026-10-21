@@ -48,6 +48,8 @@
       --shadow-card: 0 8px 32px rgba(74, 144, 217, 0.12);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    /* 스크롤바가 있든 없든 헤더 위치가 페이지마다 같도록 자리 고정 */
+    html { scrollbar-gutter: stable; }
     body {
       font-family: 'Asta Sans', -apple-system, BlinkMacSystemFont, 'Malgun Gothic', sans-serif;
       background: linear-gradient(180deg, var(--bg-sky) 0%, var(--bg-sky-deep) 100%);
