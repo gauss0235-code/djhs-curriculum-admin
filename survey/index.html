@@ -13,6 +13,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Asta+Sans:wght@300..800&display=swap">
   <link rel="preload" href="../fonts/Paperlogy-7Bold.woff2" as="font" type="font/woff2" crossorigin>
+  <!-- 결과 화면 본체 스타일 (워크스페이스 디자인에 맞춘 버전) -->
+  <link rel="stylesheet" href="assets/base.css?v=20261021">
+  <link rel="stylesheet" href="assets/admin.css?v=20261021">
+  <!-- 워크스페이스 공통 틀: 헤더·페이지 제목·뒤로가기·비밀번호 모달 (다른 페이지와 같은 규칙) -->
   <style>
     @font-face {
       font-family: 'Paperlogy';
@@ -53,7 +57,8 @@
       -webkit-font-smoothing: antialiased;
       min-height: 100vh;
     }
-    header {
+    .hidden { display: none !important; }
+    body > header {
       background: rgba(255, 255, 255, 0.85);
       backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--border);
@@ -61,7 +66,7 @@
       top: 0;
       z-index: 10;
     }
-    .header-inner {
+    header .header-inner {
       max-width: 1200px;
       margin: 0 auto;
       padding: 16px 32px;
@@ -71,14 +76,14 @@
       gap: 16px;
       flex-wrap: wrap;
     }
-    .brand {
+    header .brand {
       display: flex;
       align-items: center;
       gap: 12px;
       text-decoration: none;
       color: inherit;
     }
-    .brand-mark {
+    header .brand-mark {
       width: 42px;
       height: 42px;
       display: flex;
@@ -87,17 +92,17 @@
       flex-shrink: 0;
       overflow: hidden;
     }
-    .brand-mark img {
+    header .brand-mark img {
       width: 100%;
       height: 100%;
       object-fit: contain;
     }
-    .brand-text {
+    header .brand-text {
       display: flex;
       flex-direction: column;
       line-height: 1.2;
     }
-    .brand-name {
+    header .brand-name {
       font-family: 'Paperlogy', 'Asta Sans', sans-serif;
       font-size: 17px;
       font-weight: 700;
@@ -111,21 +116,23 @@
       gap: 8px;
       font-size: 14px;
     }
-    .badge {
+    .user-info .badge {
       padding: 6px 14px;
       border-radius: 20px;
       font-size: 13px;
       font-weight: 600;
+      border: none;
+      line-height: 1.5;
     }
-    .badge-school {
+    .user-info .badge-school {
       background: var(--primary-soft);
       color: var(--primary-dark);
     }
-    .badge-admin {
+    .user-info .badge-admin {
       background: var(--admin-soft);
       color: var(--admin);
     }
-    .user-name { font-weight: 500; }
+    .user-info .user-name { font-weight: 500; }
     .logout-btn {
       background: #374151;
       border: none;
@@ -143,32 +150,6 @@
     .logout-btn:hover {
       background: #1f2937;
     }
-    /* 토스트 메시지 (성공/에러 알림) */
-    .toast {
-      position: fixed;
-      bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--primary-dark);
-      color: white;
-      padding: 14px 24px;
-      border-radius: 12px;
-      font-family: 'Paperlogy', 'Asta Sans', sans-serif;
-      font-weight: 700;
-      font-size: 15px;
-      letter-spacing: 0.3px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-      z-index: 2000;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      pointer-events: none;
-      max-width: calc(100vw - 40px);
-      text-align: center;
-    }
-    .toast.show { opacity: 1; }
-    .toast.error { background: var(--danger); }
-    .toast.success { background: #16A34A; }
-
     /* 정보수정 버튼: 로그아웃과 같은 크기, 색상만 살짝 강조 */
     .profile-btn {
       background: #374151;
@@ -272,7 +253,7 @@
     }
     .pw-btn-submit:hover { background: var(--primary-hover, var(--primary-dark)); }
     .pw-btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
-    main {
+    .ws-main {
       max-width: 1200px;
       margin: 0 auto;
       padding: 48px 32px 80px;
@@ -281,7 +262,7 @@
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      margin-bottom: 36px;
+      margin-bottom: 28px;
       gap: 16px;
       flex-wrap: wrap;
     }
@@ -327,7 +308,8 @@
       transform: translateY(-1px);
       box-shadow: 0 5px 14px rgba(107, 114, 128, 0.4);
     }
-    .empty-state {
+    /* 로그인 확인·권한 없음·오류 안내 (워크스페이스 empty-state와 같은 모양) */
+    .gate .empty-state {
       text-align: center;
       padding: 80px 20px;
       color: #6B7280;
@@ -335,11 +317,10 @@
       border-radius: 20px;
       box-shadow: 0 2px 8px rgba(120, 80, 30, 0.06);
     }
-    .empty-state .icon {
+    .gate .empty-state .icon {
       width: 72px;
       height: 72px;
       margin: 0 auto 20px;
-      color: #4A8AB8;
       background: #FFF8E7;
       border: 2px dashed #F59E0B;
       border-radius: 50%;
@@ -347,25 +328,25 @@
       align-items: center;
       justify-content: center;
     }
-    .empty-state .icon svg {
+    .gate .empty-state .icon svg {
       width: 34px;
       height: 34px;
       color: #F59E0B;
     }
-    .empty-state p {
+    .gate .empty-state p {
       font-family: 'Paperlogy', 'Asta Sans', sans-serif;
       font-weight: 700;
       font-size: 18px;
       margin-bottom: 8px;
       color: #4A8AB8;
     }
-    .empty-state p:last-child {
+    .gate .empty-state p:last-child {
       font-family: 'Asta Sans', 'Malgun Gothic', sans-serif;
       color: #6B7280;
       font-size: 14px;
       font-weight: 400;
     }
-    footer {
+    .ws-footer {
       max-width: 1200px;
       margin: 40px auto 0;
       padding: 28px 32px 40px;
@@ -375,19 +356,21 @@
       line-height: 1.6;
     }
     @media (max-width: 768px) {
-      .header-inner { padding: 14px 18px; }
-      main { padding: 32px 18px 60px; }
+      header .header-inner { padding: 14px 18px; }
+      .ws-main { padding: 32px 18px 60px; }
       .page-header h2 { font-size: 24px; }
       .page-header .desc { font-size: 14px; }
       .user-info { font-size: 12px; gap: 4px; }
       .profile-btn, .logout-btn { padding: 6px 12px; font-size: 12px; }
-      .brand-line1, .brand-line2 { display: block; }
-      .brand-name { font-size: 15px; line-height: 1.25; }
-      .empty-state { padding: 56px 20px; }
+      header .brand-line1, header .brand-line2 { display: block; }
+      header .brand-name { font-size: 15px; line-height: 1.25; }
+      .gate .empty-state { padding: 56px 20px; }
     }
   </style>
 </head>
 <body>
+  <div id="demo-banner" class="demo-banner hidden">데모 모드 — 가상 학교·강좌·응답으로 화면을 미리 보는 중입니다. 변경 사항은 저장되지 않습니다.</div>
+
   <header>
     <div class="header-inner">
       <a class="brand" href="../dashboard.html">
@@ -400,18 +383,23 @@
     </div>
   </header>
 
-  <main>
+  <main class="ws-main">
     <div class="page-header">
       <div>
         <h2 id="pageTitle">공동교육과정 만족도 조사 결과</h2>
         <div class="desc" id="pageDesc">대전 너두나두 공동교육과정 학생 만족도 조사 결과입니다.</div>
       </div>
       <div class="page-header-actions">
+        <button class="btn outline refresh-btn hidden" id="refresh-btn" type="button" title="응답 새로고침">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></svg>
+          <span id="refresh-label">새로고침</span>
+        </button>
         <a class="back-btn" href="../dashboard.html">← 대시보드로</a>
       </div>
     </div>
 
-    <div id="content">
+    <!-- 로그인 확인 중 / 권한 없음 / 오류 안내 -->
+    <div id="gate-view" class="gate">
       <div class="empty-state">
         <div class="icon">
           <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
@@ -419,190 +407,52 @@
         <p>불러오는 중...</p>
       </div>
     </div>
+
+    <!-- 결과 화면 -->
+    <div id="app-view" class="app hidden">
+      <div class="survey-bar">
+        <div class="survey-pick">
+          <label for="survey-select">설문</label>
+          <select id="survey-select" class="input"></select>
+          <span id="survey-status"></span>
+        </div>
+        <button class="btn sm" id="new-survey-btn" type="button">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>새 설문 만들기
+        </button>
+      </div>
+      <nav class="tabbar" id="tabs" role="tablist" aria-label="메뉴"></nav>
+      <section class="view" id="view"></section>
+    </div>
   </main>
 
-  <footer>
+  <footer class="ws-footer">
     Copyright © 대전광역시교육청 고등학교 교육과정지원단. All rights reserved.
   </footer>
 
-  <script type="module">
-    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+  <!-- 강좌 상세 서랍 -->
+  <div class="drawer-backdrop hidden" id="drawer-backdrop"></div>
+  <aside class="drawer hidden" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-title">
+    <div class="drawer-head">
+      <div id="drawer-title-wrap"></div>
+      <button class="btn sm ghost icon-btn" id="drawer-close" aria-label="닫기">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div class="drawer-body" id="drawer-body"></div>
+  </aside>
 
-    const SUPABASE_URL = 'https://nzsgvjdotnvqpzhehfsg.supabase.co';
-    const SUPABASE_KEY = 'sb_publishable_ALakaYU4jTYEIQas_nWrsQ_An3IK9_h';
+  <!-- 모달 -->
+  <div class="modal-backdrop hidden" id="modal-backdrop">
+    <div class="modal" role="dialog" aria-modal="true">
+      <div class="modal-head"><h2 id="modal-title"></h2>
+        <button class="btn sm ghost icon-btn" id="modal-close" aria-label="닫기"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+      </div>
+      <div class="modal-body" id="modal-body"></div>
+      <div class="modal-foot" id="modal-foot"></div>
+    </div>
+  </div>
 
-    const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
-
-    const ICON_SVG = {
-      profile: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px;"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>`,
-      logout: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px;"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>`,
-      survey: `<svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>`
-    };
-
-    async function init() {
-      const { data: { user } } = await supabase.auth.getUser();
-
-      if (!user) {
-        alert('로그인이 필요합니다.');
-        window.location.href = '../login.html';
-        return;
-      }
-
-      const { data: profile, error: profileError } = await supabase
-        .from('profiles')
-        .select('display_name, role, school_id, schools(name, code)')
-        .eq('id', user.id)
-        .single();
-
-      if (profileError || !profile) {
-        document.getElementById('content').innerHTML = `
-          <div class="empty-state">
-            <p>프로필을 불러오지 못했습니다.</p>
-            <p>${profileError ? profileError.message : '잠시 후 다시 시도해 주세요.'}</p>
-          </div>`;
-        return;
-      }
-
-      const isAdmin = profile.role === 'admin';
-      const isSupport = profile.role === 'support';
-      const schoolName = profile.schools ? profile.schools.name : '소속 학교 미지정';
-
-      const badge = isAdmin
-        ? '<span class="badge badge-admin">관리자</span>'
-        : isSupport
-          ? '<span class="badge badge-admin">교육과정지원단</span>'
-          : `<span class="badge badge-school">${schoolName}</span>`;
-      document.getElementById('userInfo').innerHTML = `
-        ${badge}
-        <span class="user-name">${profile.display_name}</span>
-        <button class="profile-btn" onclick="openPasswordModal()">${ICON_SVG.profile}정보수정</button>
-        <button class="logout-btn" onclick="handleLogout()">${ICON_SVG.logout}로그아웃</button>
-      `;
-
-      // 결과 화면을 붙이기 전까지 역할별 안내만 보여 준다
-      let title, desc, notice;
-      if (isAdmin) {
-        title = '공동교육과정 만족도 조사';
-        desc = '만족도 조사 결과를 확인하고 설문·강좌를 관리합니다.';
-        notice = '모든 거점학교의 결과 확인과 설문·강좌 관리를 이곳에서 하게 됩니다.';
-      } else if (isSupport) {
-        title = '공동교육과정 만족도 조사 결과';
-        desc = '거점학교별 만족도 조사 결과를 조회합니다.';
-        notice = '모든 거점학교의 만족도 조사 결과를 이곳에서 조회할 수 있습니다.';
-      } else {
-        title = '공동교육과정 만족도 조사 결과';
-        desc = `${schoolName} 거점 강좌의 만족도 조사 결과입니다.`;
-        notice = '우리 학교가 거점학교로 개설한 강좌의 결과를 이곳에서 볼 수 있습니다.';
-      }
-      document.getElementById('pageTitle').textContent = title;
-      document.getElementById('pageDesc').textContent = desc;
-      document.title = title + ' — 대전광역시 고등학교 교육과정 업무담당자 워크스페이스';
-      document.getElementById('content').innerHTML = `
-        <div class="empty-state">
-          <div class="icon">${ICON_SVG.survey}</div>
-          <p>결과 화면을 준비하고 있습니다</p>
-          <p>${notice}</p>
-        </div>`;
-    }
-
-    window.handleLogout = async function() {
-      const ok = confirm('로그아웃 하시겠습니까?');
-      if (!ok) return;
-      await supabase.auth.signOut();
-      window.location.href = '../login.html';
-    };
-    // ====== 토스트 메시지 ======
-    function showToast(message, type = 'success') {
-      const toast = document.getElementById('toast');
-      if (!toast) return;
-      toast.textContent = message;
-      toast.className = `toast show ${type}`;
-      setTimeout(() => { toast.className = `toast ${type}`; }, 3000);
-    }
-
-    // ====== 비밀번호 변경 (본인) ======
-    window.openPasswordModal = function() {
-      document.getElementById('pwCurrent').value = '';
-      document.getElementById('pwNew').value = '';
-      document.getElementById('pwConfirm').value = '';
-      document.getElementById('pwModal').classList.remove('hidden');
-      setTimeout(() => document.getElementById('pwCurrent').focus(), 50);
-    };
-
-    window.closePasswordModal = function() {
-      document.getElementById('pwModal').classList.add('hidden');
-    };
-
-    window.submitPasswordChange = async function() {
-      const currentPw = document.getElementById('pwCurrent').value;
-      const newPw = document.getElementById('pwNew').value;
-      const confirmPw = document.getElementById('pwConfirm').value;
-
-      if (!currentPw || !newPw || !confirmPw) {
-        showToast('❌ 모든 항목을 입력하세요', 'error');
-        return;
-      }
-      if (newPw.length < 6) {
-        showToast('❌ 새 비밀번호는 6자 이상이어야 합니다', 'error');
-        return;
-      }
-      if (newPw !== confirmPw) {
-        showToast('❌ 새 비밀번호와 확인이 일치하지 않습니다', 'error');
-        return;
-      }
-      if (currentPw === newPw) {
-        showToast('❌ 현재 비밀번호와 새 비밀번호가 같습니다', 'error');
-        return;
-      }
-
-      const btn = document.getElementById('pwSubmitBtn');
-      btn.disabled = true;
-      btn.textContent = '변경 중...';
-
-      try {
-        // 1. 현재 비밀번호 검증: 같은 이메일로 재로그인 시도
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!user || !user.email) {
-          showToast('❌ 사용자 정보를 가져올 수 없습니다', 'error');
-          return;
-        }
-
-        // 별도 fetch로 현재 세션에 영향 없이 비번 검증
-        const verifyResp = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=password`, {
-          method: 'POST',
-          headers: {
-            'apikey': SUPABASE_KEY,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ email: user.email, password: currentPw })
-        });
-
-        if (!verifyResp.ok) {
-          showToast('❌ 현재 비밀번호가 올바르지 않습니다', 'error');
-          return;
-        }
-
-        // 2. 비밀번호 업데이트
-        const { error } = await supabase.auth.updateUser({ password: newPw });
-        if (error) {
-          showToast('❌ 비밀번호 변경 실패: ' + error.message, 'error');
-          return;
-        }
-
-        showToast('✅ 비밀번호가 변경되었습니다', 'success');
-        closePasswordModal();
-      } catch (e) {
-        showToast('❌ 오류: ' + e.message, 'error');
-      } finally {
-        btn.disabled = false;
-        btn.textContent = '변경';
-      }
-    };
-
-    init();
-  </script>
-
-  <!-- 비밀번호 변경 모달 -->
+  <!-- 비밀번호 변경 모달 (워크스페이스 공통) -->
   <div id="pwModal" class="pw-modal-bg hidden">
     <div class="pw-modal">
       <h3>비밀번호 변경</h3>
@@ -625,8 +475,20 @@
       </div>
     </div>
   </div>
-  <!-- 토스트 메시지 -->
-  <div class="toast" id="toast"></div>
 
+  <!-- 인쇄 전용 영역 -->
+  <div id="print-root"></div>
+  <div class="toast-wrap" id="toasts" aria-live="polite"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js" integrity="sha384-TcHRA3zBbn+Lexh5n+Oil4guNPOS3rjNDpGRAN46u/s/mB2IZ50ceC6TYDU2yvgK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js" integrity="sha384-8FWZA6BGMXhsfO+BLtrJK0We6gg5o1JyO8xQm6peWDEUs17ACA5ziE/NIAkl9z2k" crossorigin="anonymous"></script>
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js" integrity="sha384-EnyY0/GSHQGSxSgMwaIPzSESbqoOLSexfnSMN2AP+39Ckmn92stwABZynq1JyzdT" crossorigin="anonymous"></script>
+  <script src="assets/config.js?v=20261021"></script>
+  <script src="assets/default-questions.js?v=20261021"></script>
+  <script src="assets/api.js?v=20261021"></script>
+  <script src="assets/stats.js?v=20261021"></script>
+  <script src="assets/admin.js?v=20261021"></script>
+  <script src="assets/admin-results.js?v=20261021"></script>
+  <script src="assets/admin-manage.js?v=20261021"></script>
 </body>
 </html>
