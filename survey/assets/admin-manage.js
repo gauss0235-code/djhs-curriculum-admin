@@ -87,9 +87,10 @@
   }
   function cardsHtml(s, url) {
     var t = String(s.title || ""), m = t.match(/^(.*?학기)/);
+    // 맨 위 작은 글씨는 학기(예: 2026학년도 2학기), 그 아래 큰 제목 (2026-10-22 사용자 요청)
     var one = '<div class="qcard"><div class="qcard-qr">' + qrSvg(url) + '</div><div class="qcard-txt"><span class="k">' +
-      esc(J.cfg.PROGRAM_NAME || "공동교육과정") + "</span><b>공동교육과정<br>만족도 조사</b>" +
-      "<span>" + esc(m ? m[1] : t) + "</span><small>QR 스캔 → 강좌 선택 → 응답<br>익명 · 약 2분</small></div></div>";
+      esc(m ? m[1] : t) + "</span><b>공동교육과정<br>만족도 조사</b>" +
+      "<small>QR 스캔 → 강좌 선택 → 응답<br>익명 · 약 2분</small></div></div>";
     var html = '<div class="qcards">';
     for (var i = 0; i < 8; i++) html += one;
     return html + "</div>";
