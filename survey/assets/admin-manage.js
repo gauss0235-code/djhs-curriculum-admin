@@ -33,6 +33,8 @@
     return base.replace(/\/?$/, "/") + encodeURIComponent(s.slug) + "/";
   }
   JA.surveyUrl = surveyUrl;
+  // 학생 사이트 survey/ 안에 이미 있는 폴더 이름 — 주소용 코드로 쓰면 공유 페이지(…/survey/코드/)를 만들 수 없음
+  var RESERVED_SLUGS = ["assets"];
   function qrObj(text) {
     if (typeof window.qrcode !== "function") throw new Error("QR 라이브러리를 불러오지 못했어요.");
     var qr = window.qrcode(0, "M");
@@ -94,7 +96,7 @@
   }
 
   // 카카오톡 미리보기는 설문별 공유 페이지의 og:title을 읽음. 그 페이지가 만들어졌고 지금 제목이 들어갔는지 확인해 안내
-  // (새 설문·제목 변경은 학생 사이트의 GitHub Actions가 1시간 안에 반영. 그 전에 보낸 링크는 미리보기가 1시간쯤 그대로 남음)
+  // (새 설문·제목 변경은 학생 사이트의 GitHub Actions가 15분마다 반영. 그 전에 보낸 링크는 미리보기가 1시간쯤 그대로 남음)
   function checkSharePage(box, s, url) {
     if (!box || typeof fetch !== "function") return;
     var want = String(s.title || "").replace(/\s+/g, " ").trim();
@@ -108,7 +110,7 @@
     }).then(function (ready) {
       box.className = "notice share-state " + (ready ? "info" : "warn");
       box.textContent = ready ? "카카오톡 미리보기 준비됨: 이 주소를 보내면 ‘" + want + "’ 제목이 떠요." :
-        "카카오톡 미리보기용 페이지를 만드는 중이에요(새 설문·제목 변경은 1시간 안에 자동 반영). 지금 보내도 설문은 열리지만, 미리보기에 제목이 안 뜨고 그 모습이 1시간쯤 남을 수 있어요.";
+        "카카오톡 미리보기용 페이지를 만드는 중이에요(새 설문·제목 변경은 보통 30분 안에 자동 반영). 지금 보내도 설문은 열리지만, 미리보기에 제목이 안 뜨고 그 모습이 1시간쯤 남을 수 있어요.";
     }).catch(function () { box.remove(); });
   }
 
@@ -272,6 +274,7 @@
       var btn = this;
       var slug = root.querySelector("#s-slug").value.trim();
       if (!/^[a-z0-9-]{2,40}$/.test(slug)) { JA.toast("주소용 코드는 영문 소문자·숫자·하이픈 2~40자로 입력하세요.", true); return; }
+      if (RESERVED_SLUGS.indexOf(slug) >= 0) { JA.toast("‘" + slug + "’는 학생 사이트 폴더 이름이라 주소용 코드로 쓸 수 없어요.", true); return; }
       var title = root.querySelector("#s-title").value.trim();
       if (!title) { JA.toast("설문 제목을 입력하세요.", true); return; }
       for (var i = 0; i < draft.length; i++) {
@@ -393,6 +396,7 @@
           var title = body.querySelector("#n-title").value.trim(), slug = body.querySelector("#n-slug").value.trim();
           if (!title) { JA.toast("제목을 입력하세요.", true); return false; }
           if (!/^[a-z0-9-]{2,40}$/.test(slug)) { JA.toast("주소용 코드는 영문 소문자·숫자·하이픈 2~40자로 입력하세요.", true); return false; }
+          if (RESERVED_SLUGS.indexOf(slug) >= 0) { JA.toast("‘" + slug + "’는 학생 사이트 폴더 이름이라 주소용 코드로 쓸 수 없어요.", true); return false; }
           if (state.surveys.some(function (s) { return s.slug === slug; })) { JA.toast("같은 주소용 코드를 쓰는 설문이 이미 있어요.", true); return false; }
           var qsrc = body.querySelector("#n-q").value, csrc = body.querySelector("#n-c").value;
           var src = state.surveys.find(function (s) { return s.id === qsrc; });
