@@ -74,7 +74,7 @@
     var per = periodText(s);
     var t = String(s.title || ""), m = t.match(/^(.*?학기)/);
     return '<div class="poster"><div class="poster-top">' + POSTER_ART +
-      '<div class="poster-kicker">' + esc([J.cfg.ORG_NAME, J.cfg.PROGRAM_NAME || "공동교육과정"].filter(Boolean).join(" · ")) + "</div>" +
+      '<div class="poster-kicker">' + esc(J.cfg.ORG_NAME || "대전광역시교육청") + "</div>" +   // 기관명만 (사업명은 제목에)
       "<h1>공동교육과정<br>만족도 조사</h1>" +
       '<p class="poster-sub">' + esc(m ? m[1] : t) + "</p></div>" +
       '<div class="poster-qr">' + qrSvg(url) + "</div>" +
