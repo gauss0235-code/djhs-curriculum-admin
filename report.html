@@ -883,6 +883,110 @@
     .ref-hidden { margin-top: 12px; font-size: 13px; color: #6B7280; }
     .ref-hidden summary { cursor: pointer; font-weight: 600; }
     .ref-hidden .ref-list { margin: 8px 0 0; opacity: .8; }
+
+    /* ===== 올해 보고서 초안 미리보기 (교과 칸 참고 자료 → #doc/칸번호) ===== */
+    .doc-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      margin-bottom: 16px;
+      border: 1.5px solid var(--border-strong);
+      border-radius: 14px;
+      background: var(--primary-soft);
+      color: var(--text);
+      text-decoration: none;
+      transition: all 0.15s ease;
+    }
+    .doc-link:hover { border-color: var(--primary); box-shadow: var(--shadow-soft); transform: translateY(-1px); }
+    .doc-link .ic { font-size: 24px; flex-shrink: 0; }
+    .doc-link .tx { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+    .doc-link .tx b { font-family: 'Paperlogy', 'Asta Sans', sans-serif; font-weight: 700; font-size: 15px; color: var(--primary-dark); }
+    .doc-link .tx .s { font-size: 12.5px; color: var(--text-muted); overflow-wrap: anywhere; }
+    .doc-link .go {
+      flex-shrink: 0;
+      font-size: 13px;
+      font-weight: 700;
+      color: white;
+      background: var(--primary-dark);
+      padding: 8px 12px;
+      border-radius: 10px;
+      white-space: nowrap;
+    }
+    .doc-src { font-size: 13px; color: var(--text-muted); font-weight: 600; }
+    /* 초안 미리보기 화면에서는 이름·마감 카드와 탭을 숨겨 표를 넓게 */
+    body.doc-mode #strip, body.doc-mode #tabs { display: none !important; }
+    .doc-tools { display: flex; align-items: center; gap: 10px 12px; flex-wrap: wrap; margin-top: 14px; }
+    .doc-find {
+      flex: 1;
+      min-width: 220px;
+      max-width: 440px;
+      padding: 11px 14px;
+      border: 1.5px solid var(--border-strong);
+      border-radius: 12px;
+      font-family: inherit;
+      font-size: 14px;
+      color: var(--text);
+      background: white;
+    }
+    .doc-find:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-soft); }
+    .doc-hits { font-size: 13.5px; font-weight: 700; color: var(--primary-dark); }
+    .doc-hits.none { color: var(--text-muted); font-weight: 600; }
+    .doc-hint { font-size: 12.5px; color: var(--text-muted); margin-top: 10px; }
+    .doc-card { padding: 22px 24px; }
+    .doc-h {
+      font-family: 'Paperlogy', 'Asta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      color: var(--primary-dark);
+      margin: 4px 0 12px;
+    }
+    .doc-p { font-size: 14.5px; line-height: 1.7; margin: 8px 0; }
+    .doc-note { font-size: 13px; color: var(--text-muted); margin: 10px 2px 14px; }
+    .doc-fig { margin: 0 0 14px; }
+    .doc-fig figcaption { font-weight: 700; font-size: 14px; color: var(--text); text-align: center; margin-bottom: 8px; }
+    .doc-scroll { overflow: auto; border: 1.5px solid var(--border); border-radius: 12px; background: white; }
+    .doc-scroll.main { max-height: calc(100vh - 120px); }
+    .doc-table {
+      border-collapse: separate;
+      border-spacing: 0;
+      width: 100%;
+      font-size: 12.5px;
+      line-height: 1.45;
+      color: #1f2d3d;
+    }
+    .doc-table.wide { min-width: 1000px; }
+    .doc-table th, .doc-table td {
+      border-right: 1px solid #e3ecf3;
+      border-bottom: 1px solid #e3ecf3;
+      padding: 6px 5px;
+      text-align: center;
+      vertical-align: middle;
+      word-break: keep-all;
+      overflow-wrap: anywhere;
+      background: white;
+    }
+    .doc-table thead { position: sticky; top: 0; z-index: 3; }
+    .doc-table th { background: #eaf2f9; color: var(--primary-dark); font-weight: 700; }
+    .doc-table th .dl { white-space: nowrap; }
+    .doc-table tr.g1 td { background: #f7fafd; }
+    .doc-table tr.gs td { border-top: 2px solid #c9dbea; }
+    .doc-table td.c0, .doc-table th.c0 {
+      position: sticky;
+      left: 0;
+      z-index: 2;
+      font-weight: 700;
+      color: var(--primary-dark);
+      box-shadow: 1px 0 0 #c9dbea;
+    }
+    .doc-table thead th.c0 { z-index: 4; }
+    .doc-table td.fill, .doc-table th.fill { background: #eef2f6; font-weight: 700; color: var(--text); }
+    .doc-table td.hit { background: #FEF3C7 !important; box-shadow: inset 0 0 0 2px #F59E0B; }
+    .doc-table .dl { display: block; }
+    .doc-table .dpill { display: inline-block; padding: 1px 6px; border-radius: 999px; font-size: 11.5px; font-weight: 700; margin: 1px 0; white-space: nowrap; }
+    .doc-table .dpill.fixed { background: #EEF2F6; color: #475569; }
+    .doc-table .dpill.pick { background: var(--orange-soft); color: #C2410C; }
+    .doc-table .dcr { display: block; font-size: 11.5px; color: var(--text-muted); white-space: nowrap; }
     .type-tag {
       display: inline-flex;
       align-items: center;
@@ -1047,6 +1151,8 @@
     .field-box textarea:focus { outline: none; border-color: var(--primary); background: white; box-shadow: 0 0 0 3px var(--primary-soft); }
     .form-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 20px; flex-wrap: wrap; }
     .name-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; margin: 6px 0 4px; }
+    .name-last { font-size: 13.5px; color: var(--text); background: var(--bg-sky); border-radius: 10px; padding: 10px 14px; margin: -4px 0 12px; }
+    .name-last b { color: var(--primary-dark); }
     .name-btn {
       padding: 14px 14px;
       border-radius: 14px;
@@ -1133,6 +1239,10 @@
       .conflict-grid { grid-template-columns: 1fr; }
       .conflict-text { max-height: 26vh; }
       .name-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .doc-card { padding: 16px 12px; }
+      .doc-scroll.main { max-height: 72vh; }
+      .doc-link { padding: 12px 12px; gap: 10px; }
+      .doc-link .go { padding: 7px 10px; font-size: 12.5px; }
     }
   </style>
 </head>
@@ -1177,7 +1287,8 @@
   <div id="nameModal" class="modal-bg hidden" role="dialog" aria-modal="true" aria-labelledby="nameModalTitle">
     <div class="modal wide">
       <h3 id="nameModalTitle">어느 선생님이신가요?</h3>
-      <div class="modal-desc">교육과정지원단은 로그인 계정 하나를 함께 써요. 내 이름을 고르면 그 이름으로 저장 기록이 남고, 내가 맡은 칸만 고칠 수 있어요. 고른 이름은 이 기기에 기억해 둬요. <b>꼭 내 이름을 골라 주세요.</b></div>
+      <div class="modal-desc">교육과정지원단은 로그인 계정 하나를 함께 써요. 내 이름을 고르면 그 이름으로 저장 기록이 남고, 내가 맡은 칸만 고칠 수 있어요. 대시보드에서 들어올 때마다 이름을 다시 골라요. <b>꼭 내 이름을 골라 주세요.</b></div>
+      <div id="nameLast" class="name-last hidden"></div>
       <div id="nameGrid" class="name-grid"></div>
       <div class="form-actions">
         <button class="btn-secondary" id="nameCancel" data-act="close-name">닫기</button>
@@ -1259,6 +1370,22 @@
     const IS_LOCAL = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
     const QS = new URLSearchParams(location.search);
     const DEMO = IS_LOCAL && QS.has('demo');
+    // 대시보드 카드(report.html?pick=1)로 들어오면 지난번 이름이 있어도 항상 이름부터 고르게 함
+    // (아이디를 같이 쓰므로 앞사람 이름으로 그대로 들어가지 않게). 새로고침·새 창은 고른 이름 그대로
+    // 이름을 고르기 전에 새로고침해도 다시 묻도록 이 탭(sessionStorage)에 '고르는 중' 표시를 남김
+    const LS_PICK = 'report_pick_pending';
+    const ssGet = (k) => { try { return sessionStorage.getItem(k); } catch (e) { return null; } };
+    const ssSet = (k, v) => { try { if (v === null) sessionStorage.removeItem(k); else sessionStorage.setItem(k, v); } catch (e) { /* 무시 */ } };
+    const PICK = QS.has('pick') || ssGet(LS_PICK) === '1';
+    const BASE_TITLE = document.title;
+    if (PICK) ssSet(LS_PICK, '1');
+    if (QS.has('pick')) {
+      try {
+        QS.delete('pick');
+        const qs = QS.toString();
+        history.replaceState(null, '', location.pathname + (qs ? '?' + qs : '') + location.hash);
+      } catch (e) { /* 주소 정리 실패는 무시 */ }
+    }
 
     const STATUS = {
       empty: { label: '미작성', cls: 'st-empty' },
@@ -1541,6 +1668,14 @@
             .order('created_at', { ascending: false }));
           return { school: sch, curriculums: list || [] };
         },
+        // 교과 칸 참고 자료: 올해 보고서 초안(v0.7)의 해당 교과 부분 (없으면 null)
+        // 보고서 본문이라 공개 저장소에 두지 않고 DB(report_refdocs, 관리자·지원단만 읽기)에 둠
+        async refdoc(id) {
+          const res = await sb.from('report_refdocs').select('slot_id, title, content, updated_at').eq('slot_id', id).maybeSingle();
+          // 06_refdocs.sql 을 아직 실행하지 않아 표가 없으면 '준비 중'으로 보여 줌
+          if (res.error && ['PGRST205', '42P01'].indexOf(res.error.code) >= 0) return null;
+          return must(res);
+        },
         // 함께 쓰는 계정이라 이 기기에서만 로그아웃(다른 선생님의 로그인은 그대로)
         async logout() { await sb.auth.signOut({ scope: 'local' }); }
       };
@@ -1700,6 +1835,33 @@
       return { people, slots, revisions, settings, refs, nextRev: rid };
     }
 
+    // 데모용 가짜 '초안' 표 (실제 보고서 내용 아님) — 실제 표처럼 머리글 3줄 + 학교마다 2줄
+    function demoRefdoc(s) {
+      const base = String(s.title || '').replace(/^[가-차]\.\s*/, '').replace(/\s*교과$/, '');
+      const head = [
+        [{ x: '학교명', rs: 3, h: 1 }, { x: '1학년', cs: 4, h: 1 }, { x: '2학년', cs: 4, h: 1 }, { x: '3학년', cs: 4, h: 1 }],
+        ['1학기', '2학기', '1학기', '2학기', '1학기', '2학기'].map(x => ({ x, cs: 2, h: 1 })),
+        [].concat(...Array.from({ length: 6 }, () => [{ x: '과목', h: 1 }, { x: '선택군\n(학점)', h: 1 }]))
+      ];
+      const rows = [];
+      ['가상고', '샘플여자고', '연습고\n(자율형공립고)', '예시고'].forEach((sc, i) => {
+        rows.push([{ x: sc, rs: 2 }, { x: `<(데모) ${base} 기초>`, rs: 2 }, { x: '지정\n(4)', rs: 2 }, { x: `<(데모) ${base} 응용>`, rs: 2 }, { x: '지정\n(4)', rs: 2 },
+          { x: `<(데모) ${base} 탐구>` }, { x: '지정\n(4)' }, { x: `<(데모) ${base}과 생활>\n<(데모) 진로 ${base}>` }, { x: `택${i + 2}*\n(3)` },
+          { x: `<(데모) 심화 ${base}>` }, { x: '택3*\n(3)' }, { x: '' }, { x: '' }]);
+        rows.push([{ x: `<(데모) ${base} 읽기>` }, { x: '지정\n(3)' }, { x: '' }, { x: '' }, { x: `<(데모) 융합 ${base}>` }, { x: '택1\n(3)' }, { x: '' }, { x: '' }]);
+      });
+      return {
+        v: 1, src: '(데모) 2027 고등학교 교육과정 분석보고서(초안 v0.7)', part: s.part === '공립' ? 'Ⅱ. 일반고등학교(공립)' : 'Ⅲ. 일반고등학교(사립)', head: s.title,
+        blocks: [
+          { t: 'h', x: '1) 학기별 과목 편성 현황' },
+          { t: 'table', cap: `<표 데모> ${base} 교과 학기별 과목 편성 현황(가짜 자료)`, cols: 13, w: [5318, 4597, 1767, 4314, 1767, 5729, 1767, 5163, 1767, 5729, 2050, 5730, 2051], rows: head.concat(rows) },
+          { t: 'p', x: `* ${base} 교과 외 과목과 함께 선택군에 편성됨을 의미함. (데모)` },
+          { t: 'p', x: '※ 과목명 줄임말 표기 방식' },
+          { t: 'table', cap: '<표 데모> 과목명 줄임말 표기(가짜 자료)', cols: 2, w: [1, 1], rows: [[{ x: '일반 선택 과목', cs: 2, f: 1 }], [{ x: `<(데모) ${base} 기초>→<기초>` }, { x: `<(데모) ${base} 응용>→<응용>` }]] }
+        ]
+      };
+    }
+
     function createMockApi() {
       const role = QS.get('demo') === 'admin' ? 'admin' : 'support';
       const db = buildDemoData();
@@ -1822,6 +1984,20 @@
           if (!r) return { school: null, curriculums: [] };
           return Object.assign({ school: { id: 'demo-' + schoolName, name: schoolName } }, clone(r));
         },
+        async refdoc(id) {
+          await wait();
+          // 로컬 시험용(?demo&docsrc=http://127.0.0.1:포트/refdocs.json): 이 PC에서 따로 띄운 실제 초안 자료로 화면 확인
+          // (자료는 저장소에 없음 — 비공개 폴더의 data/refdocs.json)
+          const src = QS.get('docsrc');
+          if (src && /^http:\/\/(127\.0\.0\.1|localhost)(:\d+)?\//.test(src)) {
+            if (!db.docs) db.docs = await fetch(src).then(r => r.json());
+            const d = db.docs[id];
+            return d ? { slot_id: id, title: d.title, content: d.content, updated_at: new Date().toISOString() } : null;
+          }
+          const s = db.slots.find(x => x.id === id);
+          if (!s || s.kind !== 'subject' || id === 'pri-subj-02') return null;   // pri-subj-02: '준비 중' 확인용
+          return { slot_id: id, title: `${s.part} · ${s.title}`, content: demoRefdoc(s), updated_at: new Date().toISOString() };
+        },
         async logout() { await wait(); },
         // 데모 전용: 다른 선생님이 이 칸을 저장한 것처럼 만들기 (동시 저장 충돌 시험용)
         demoTouch(id) {
@@ -1889,7 +2065,8 @@
         renderStrip();
         window.addEventListener('hashchange', route);
         await route();
-        if (!ok) openNamePicker(true);
+        // 초안 미리보기(#doc/…)는 새 창으로 여는 읽기 화면이라 이름을 묻지 않음
+        if ((!ok || PICK) && parseHash().view !== 'doc') openNamePicker(true);
         startPolling();
       } catch (e) {
         console.error(e);
@@ -2061,12 +2238,21 @@
       }
       grid.innerHTML = html;
       $('#nameCancel').classList.toggle('hidden', S.nameForced);
+      // 이 기기에서 지난번에 고른 이름 알려 주기 (그 이름 칸은 테두리로도 표시됨)
+      const last = $('#nameLast');
+      if (S.name !== null) {
+        last.innerHTML = `이 기기에서 지난번에 고른 이름: <b>${esc(nameLabel())}</b> — 내 이름이 맞는지 확인하고 골라 주세요.`;
+        last.classList.remove('hidden');
+      } else {
+        last.classList.add('hidden');
+      }
       openModal('nameModal');
     }
     async function pickName(name) {
       if (ED && ED.dirty) await saveNow();
       S.name = name;
       lsSet(LS_NAME, name);
+      ssSet(LS_PICK, null);   // 이름을 골랐으니 새로고침해도 다시 묻지 않음
       S.nameForced = false;
       closeModal('nameModal');
       showToast(`✅ ${nameLabel()}(으)로 들어왔어요`, 'success');
@@ -2195,17 +2381,26 @@
       let h = '';
       try { h = decodeURIComponent(location.hash.replace(/^#/, '')); } catch (e) { h = ''; }
       if (h.indexOf('slot/') === 0) return { view: 'slot', id: h.slice(5) };
+      if (h.indexOf('doc/') === 0) return { view: 'doc', id: h.slice(4) };
       if (['mine', 'all', 'merged', 'review'].indexOf(h) >= 0) return { view: h };
       return { view: defaultTab() };
     }
     async function route() {
       if (!S.loaded) return;
       const r = parseHash();
+      if (r.view !== 'doc') document.title = BASE_TITLE;   // 초안 미리보기에서 바꾼 창 제목 되돌리기
+      document.body.classList.toggle('doc-mode', r.view === 'doc');
       if (r.view === 'slot') {
         if (ED && ED.id === r.id) return;
         leaveEditor();
         renderTabs();
         await openSlot(r.id);
+        return;
+      }
+      if (r.view === 'doc') {
+        leaveEditor();
+        renderTabs();
+        await openDoc(r.id);
         return;
       }
       leaveEditor();
@@ -2220,6 +2415,7 @@
     function renderList() {
       const v = $('#view');
       if (!S.loaded || ED) return;
+      if (parseHash().view === 'doc') return;   // 초안 미리보기 화면은 목록으로 덮어쓰지 않음
       if (S.tab === 'all') v.innerHTML = viewAll();
       else if (S.tab === 'merged') v.innerHTML = viewMerged();
       else if (S.tab === 'review') v.innerHTML = viewReview();
@@ -2528,14 +2724,14 @@
       } catch (e) {
         const r = parseHash();
         if (r.view === 'slot' && r.id === id) {
-          v.innerHTML = emptyBox('칸을 불러오지 못했어요', esc(errMessage(e)), `<a class="btn-secondary" href="#${S.tab}">← 목록으로</a>`);
+          v.innerHTML = emptyBox('칸을 불러오지 못했어요', esc(errMessage(e)), `<a class="back-btn" href="#${S.tab}">← 목록으로</a>`);
         }
         return;
       }
       const r = parseHash();
       if (r.view !== 'slot' || r.id !== id || ED) return; // 그사이 다른 곳으로 이동함
       if (!slot) {
-        v.innerHTML = emptyBox('칸을 찾을 수 없어요', '', `<a class="btn-secondary" href="#${S.tab}">← 목록으로</a>`);
+        v.innerHTML = emptyBox('칸을 찾을 수 없어요', '', `<a class="back-btn" href="#${S.tab}">← 목록으로</a>`);
         return;
       }
       if (!Array.isArray(slot.writers)) slot.writers = [];
@@ -2599,7 +2795,7 @@
         <div class="slot-view">
           <div class="slot-top">
             <div class="slot-top-row">
-              <a class="btn-secondary" href="#${S.tab}">← 목록으로</a>
+              <a class="back-btn" href="#${S.tab}">← 목록으로</a>
               <button type="button" class="btn-secondary show-mobile" data-act="jump-ref">작년 예시·참고 자료 ↓</button>
             </div>
             <div class="sc-crumb" style="margin-top:14px;">${esc(s.part)} · ${esc(s.section)}</div>
@@ -3080,7 +3276,12 @@
       } else if (s.kind === 'school') {
         ed.refs = { type: 'error', msg: '이 칸에는 학교 이름(school_name)이 비어 있어요.' };
       } else if (s.kind === 'subject') {
-        ed.refs = { type: 'subject' };
+        try {
+          ed.refs = { type: 'subject', doc: await getRefdoc(s.id) };
+        } catch (e) {
+          if (isAuthLost(e)) { handleAuthLost(); return; }
+          ed.refs = { type: 'subject', doc: null, docErr: errMessage(e) };
+        }
       } else {
         ed.refs = { type: 'none' };
       }
@@ -3103,6 +3304,164 @@
       if (!c || c.sheet_type !== 'final') return false;
       const years = titleYears(c.title);
       return !years.length || years.includes(String(REPORT_YEAR));
+    }
+    // ====== 올해 보고서 초안 미리보기 (#doc/칸번호, 교과 칸 참고 자료) ======
+    const DOC_CACHE = new Map();
+    async function getRefdoc(id) {
+      if (DOC_CACHE.has(id)) return DOC_CACHE.get(id);
+      const d = await api.refdoc(id);
+      if (d) DOC_CACHE.set(id, d);   // '아직 없음'은 기억하지 않음 → 06 SQL 실행 뒤 새로고침 없이도 보임
+      return d;
+    }
+    // 같은 주소(?demo 등 그대로) + #doc/칸번호 → 새 창으로 열어 쓰는 칸과 나란히 보게 함
+    function docHref(id) { return `${location.pathname}${location.search}#doc/${encodeURIComponent(id)}`; }
+    function docCellHtml(x) {
+      return String(x || '').split('\n').map(line => {
+        const t = line.trim();
+        if (!t) return '';
+        if (/^지정\*?$/.test(t)) return `<span class="dpill fixed">${esc(t)}</span>`;
+        if (/^택\d+(~\d+)?\*?$/.test(t)) return `<span class="dpill pick">${esc(t)}</span>`;
+        if (/^\(\d+(\.\d+)?\)$/.test(t)) return `<span class="dcr">${esc(t)}</span>`;
+        return `<span class="dl">${esc(t)}</span>`;
+      }).join('');
+    }
+    function docTableHtml(tb) {
+      const ncol = Math.max(1, Number(tb.cols) || 1);
+      const rows = Array.isArray(tb.rows) ? tb.rows : [];
+      const occ = rows.map(() => new Array(ncol).fill(false));
+      const ws = Array.isArray(tb.w) && tb.w.length === ncol ? tb.w : new Array(ncol).fill(1);
+      const tot = ws.reduce((a, b) => a + (Number(b) || 0), 0) || ncol;
+      const cols = ws.map(w => `<col style="width:${(100 * (Number(w) || 0) / tot).toFixed(2)}%">`).join('');
+      const isHeadRow = row => row.length > 0 && row.every(c => c && c.h);
+      const main = rows.some(isHeadRow);   // 머리글이 있는 큰 표: 첫 칸=학교명 → 학교 묶음·고정 열
+      let head = '', body = '', school = '', group = 0;
+      rows.forEach((row, r) => {
+        const hr = isHeadRow(row);
+        let k = 0, cells = '', starts = false;
+        (row || []).forEach(c => {
+          c = c || {};
+          while (k < ncol && occ[r][k]) k++;
+          const rs = Math.max(1, Number(c.rs) || 1), cs = Math.max(1, Number(c.cs) || 1);
+          for (let rr = r; rr < Math.min(rows.length, r + rs); rr++) {
+            for (let kk = k; kk < Math.min(ncol, k + cs); kk++) occ[rr][kk] = true;
+          }
+          if (main && !hr && k === 0) { school = String(c.x || '').split('\n')[0]; starts = true; }
+          const tag = c.h ? 'th' : 'td';
+          const cls = [main && k === 0 ? 'c0' : '', c.f ? 'fill' : '', !String(c.x || '').trim() ? 'blank' : ''].filter(Boolean).join(' ');
+          cells += `<${tag}${rs > 1 ? ` rowspan="${rs}"` : ''}${cs > 1 ? ` colspan="${cs}"` : ''}${cls ? ` class="${cls}"` : ''}` +
+            `${main && !hr ? ` data-s="${esc(school)}"` : ''}>${docCellHtml(c.x)}</${tag}>`;
+          k += cs;
+        });
+        if (hr) head += `<tr>${cells}</tr>`;
+        else {
+          if (starts) group++;
+          body += `<tr class="${starts ? 'gs ' : ''}${group % 2 ? 'g1' : 'g0'}">${cells}</tr>`;
+        }
+      });
+      return `
+        <figure class="doc-fig">
+          ${tb.cap ? `<figcaption>${esc(tb.cap)}</figcaption>` : ''}
+          <div class="doc-scroll${main ? ' main' : ''}">
+            <table class="doc-table${main ? ' main' : ''}${ncol >= 8 ? ' wide' : ''}">
+              <colgroup>${cols}</colgroup>
+              ${head ? `<thead>${head}</thead>` : ''}
+              <tbody>${body}</tbody>
+            </table>
+          </div>
+        </figure>`;
+    }
+    function docBlocksHtml(c) {
+      return (c.blocks || []).map(b => {
+        if (!b) return '';
+        if (b.t === 'h') return `<h4 class="doc-h">${esc(b.x)}</h4>`;
+        if (b.t === 'table') return docTableHtml(b);
+        const x = String(b.x || '');
+        return /^[*※]/.test(x) ? `<div class="doc-note">${esc(x)}</div>` : `<p class="doc-p">${esc(x)}</p>`;
+      }).join('');
+    }
+    // 과목·학교 찾기: 글자가 들어 있는 칸을 칠하고, 몇 칸·몇 학교인지 보여 줌 (띄어쓰기·Ⅰ/1 무시)
+    function docSearch(q) {
+      const box = $('#docBody');
+      const out = $('#docHits');
+      if (!box || !out) return;
+      const key = normSubj(q || '');
+      let cells = 0;
+      const schools = new Set();
+      box.querySelectorAll('td').forEach(td => {
+        const hit = !!key && normSubj(td.textContent).indexOf(key) >= 0;
+        td.classList.toggle('hit', hit);
+        if (hit) {
+          cells++;
+          if (td.dataset.s) schools.add(td.dataset.s);
+        }
+      });
+      out.textContent = !key ? '' : cells ? `${cells}칸에서 찾았어요${schools.size ? ` · 학교 ${schools.size}곳` : ''}` : '찾는 글자가 없어요';
+      out.classList.toggle('none', !!key && !cells);
+      const first = box.querySelector('td.hit');
+      if (first) scrollToCell(first);
+    }
+    // 찾은 칸이 고정된 머리글·학교명 열·사이트 머리말에 가리지 않게 스크롤
+    function scrollToCell(td) {
+      const sc = td.closest('.doc-scroll');
+      if (!sc) return;
+      const hdr = document.querySelector('header');
+      const hh = hdr ? hdr.getBoundingClientRect().height : 0;
+      let sr = sc.getBoundingClientRect();
+      if (sr.top < hh || sr.top > window.innerHeight * 0.5) {
+        window.scrollBy(0, sr.top - hh - 12);
+        sr = sc.getBoundingClientRect();
+      }
+      const r = td.getBoundingClientRect();
+      const thead = sc.querySelector('thead');
+      const c0 = sc.querySelector('td.c0');
+      const topPad = thead ? thead.getBoundingClientRect().height : 0;
+      const leftPad = c0 && !td.classList.contains('c0') ? c0.getBoundingClientRect().width : 0;
+      sc.scrollTop += (r.top - sr.top) - topPad - 8;
+      sc.scrollLeft += (r.left - sr.left) - leftPad - 8;
+    }
+    async function openDoc(id) {
+      const v = $('#view');
+      const back = `<button type="button" class="back-btn" data-act="close-doc" data-id="${esc(id)}">← 작성 화면으로</button>`;
+      v.innerHTML = '<div class="loading">올해 보고서 초안 자료를 불러오는 중입니다...</div>';
+      let d = null;
+      try {
+        d = await getRefdoc(id);
+      } catch (e) {
+        if (isAuthLost(e)) { handleAuthLost(); return; }
+        const now = parseHash();
+        if (now.view !== 'doc' || now.id !== id) return;
+        v.innerHTML = emptyBox('초안 자료를 불러오지 못했어요', esc(errMessage(e)), back);
+        return;
+      }
+      const now = parseHash();
+      if (now.view !== 'doc' || now.id !== id) return;   // 기다리는 동안 다른 화면으로 옮김
+      const slot = S.slotById.get(id);
+      if (!d || !d.content) {
+        v.innerHTML = emptyBox('올해 보고서 초안 자료가 아직 없어요', '관리자가 초안 자료를 올리면 여기에서 볼 수 있어요.', back);
+        return;
+      }
+      const c = d.content;
+      document.title = `${d.title || (slot && slot.title) || '초안'} · 초안 미리보기`;
+      v.innerHTML = `
+        <div class="doc-view">
+          <div class="slot-top">
+            <div class="slot-top-row">
+              ${back}
+              <span class="doc-src">📄 ${esc(c.src || '')}</span>
+            </div>
+            <div class="sc-crumb" style="margin-top:14px;">${esc(c.part || (slot ? slot.part : ''))} · 3. 과목별 편성 현황</div>
+            <h3 class="slot-title">${esc(d.title || c.head || (slot ? slot.title : id))}</h3>
+            <div class="doc-tools">
+              <input type="text" id="docFind" class="doc-find" placeholder="과목·학교 찾기 (예: 기하, 미적분Ⅱ, 경제 수학)" autocomplete="off" readonly onfocus="this.removeAttribute('readonly')" onpointerdown="this.removeAttribute('readonly')">
+              <span id="docHits" class="doc-hits"></span>
+            </div>
+            <div class="doc-hint">${esc(c.src || '올해 보고서 초안')}의 내용을 옮겨 온 읽기 전용 화면이에요. 표가 넓으면 옆으로 밀어서 보세요. 학교 이름 열과 머리글은 고정돼요.</div>
+          </div>
+          <div class="card doc-card" id="docBody">${docBlocksHtml(c)}</div>
+        </div>`;
+      const inp = $('#docFind');
+      if (inp) inp.addEventListener('input', () => docSearch(inp.value));
+      window.scrollTo(0, 0);
     }
     // 공립 과목 칸 ↔ 사립 과목 칸 번호 (예: pub-subj-09 ↔ pri-subj-09). 짝이 없는 번호면 null
     function counterpartId(id) {
@@ -3147,11 +3506,26 @@
       }
       // 과목: 다른 부분(공립↔사립)의 같은 과목 칸 — 칸 번호 끝자리로 짝 찾기(pub-subj-NN ↔ pri-subj-NN)
       // (제목은 부분마다 쓰는 법이 조금 달라서 제목으로는 짝을 찾지 않음)
+      // 올해 보고서 초안(v0.7)의 이 교과 부분 → 새 창에서 크게 보기
+      let top = '';
+      if (r.docErr) {
+        top = `<div class="muted" style="margin-bottom:14px;">올해 보고서 초안 자료를 불러오지 못했어요: ${esc(r.docErr)}</div>`;
+      } else if (r.doc && r.doc.content) {
+        const caps = (r.doc.content.blocks || []).filter(b => b.t === 'table').map(b => b.cap).filter(Boolean);
+        top = `<div class="ref-sub-title">올해 보고서 초안 (${esc(r.doc.content.src || '초안')})</div>
+          <a class="doc-link" href="${esc(docHref(s.id))}" target="_blank" rel="noopener">
+            <span class="ic">📄</span>
+            <span class="tx"><b>${esc(r.doc.title || s.title)} 미리보기</b>${caps.map(c => `<span class="s">${esc(c)}</span>`).join('')}</span>
+            <span class="go">새 창에서 보기 ↗</span>
+          </a>`;
+      } else {
+        top = '<div class="muted" style="margin-bottom:14px;">올해 보고서 초안 자료는 아직 준비 중이에요.</div>';
+      }
       const pairId = counterpartId(s.id);
       const pair = pairId ? S.slotById.get(pairId) : null;
       const others = pair && pair.kind === 'subject' ? [pair] : [];
-      if (!others.length) { el.innerHTML = '<div class="muted">다른 부분에 같은 과목 칸이 없어요.</div>'; return; }
-      el.innerHTML = '<div class="ref-sub-title">다른 부분의 같은 과목 (읽기만)</div>' + others.map(o => `
+      if (!others.length) { el.innerHTML = top + '<div class="muted">다른 부분에 같은 과목 칸이 없어요.</div>'; return; }
+      el.innerHTML = top + '<div class="ref-sub-title">다른 부분의 같은 과목 (읽기만)</div>' + others.map(o => `
         <div class="cp">
           <div class="cp-head"><b>${esc(o.part)} · ${esc(o.title)}</b>${chip(o.status)}<span>담당 ${writersHtml(o)}</span><a class="small-btn" href="${slotHref(o)}">열기</a></div>
           <div class="cp-label">${esc(o.label1 || '')}</div>
@@ -3646,6 +4020,13 @@
         case 'jump-ref': {
           const ref = document.getElementById('refCol');
           if (ref) ref.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          break;
+        }
+        case 'close-doc': {
+          // 새 창으로 열었으면 창을 닫음(쓰던 창이 그대로 있음). 닫히지 않으면 이 창에서 그 칸으로 이동
+          const id = t.getAttribute('data-id') || '';
+          try { window.close(); } catch (err) { /* 무시 */ }
+          setTimeout(() => { if (!window.closed) location.hash = '#slot/' + encodeURIComponent(id); }, 250);
           break;
         }
         case 'close-text': closeModal('textModal'); break;
