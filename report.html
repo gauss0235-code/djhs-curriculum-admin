@@ -1571,12 +1571,12 @@
       };
       const mk = (o) => Object.assign({}, base, o);
       const SUBJ = { kind: 'subject', label1: '2) 자료 분석', label2: '3) 환류 방안' };
-      const SCH = { kind: 'school', label1: '① 특별한 문제점', label2: '② 개선 사항' };
+      const SCH = { kind: 'school', label1: '분석 결과', label2: null };   // 작년처럼 학교마다 한 칸
       const TRK = { kind: 'track', label1: '진행 메모', label2: null };
       const exS1 = '(데모 예시) 가상 학교 10곳 가운데 7곳이 1학년에 <공통국어1>과 <공통국어2>를 4학점씩 편성하였다.\n(데모 예시) 2학년 선택 과목은 <문학>과 <화법과 언어>를 중심으로 개설하였다.';
       const exS2 = '(데모 예시) 학생 선택 폭을 넓히도록 공동 교육과정 연계 방법을 안내한다.\n(데모 예시) 학기별 이수 학점이 한쪽으로 몰리지 않도록 다시 살펴보게 한다.';
       const exSch = '(데모 예시) 이 학교는 3학년 2학기에 진로 선택 과목이 몰려 있다. 학기별 학점 차이가 크지 않도록 조정하도록 안내한다.';
-      const noteSch = '작년 보고서는 학교마다 한 문단이어서 ①·② 구분 없이 보여 드려요. (데모)';
+      const noteSch = '작년 보고서 – 학교별 분석 (데모)';
       const S1 = 'Ⅱ부 공립 3. 과목별 편성 현황';
       const S2 = 'Ⅱ부 공립 4. 학교별 2027학년도 입학생 교육과정 편성표 분석';
       const P1 = 'Ⅱ부 사립 3. 과목별 편성 현황';
@@ -1620,7 +1620,7 @@
         mk(Object.assign({}, SCH, {
           id: 'pub-sch-03', part: '공립', section: S2, title: '연습고등학교(자율형 공립고)', school_name: '연습고', sort: 90, writers: ['교사H'], reviewer: '교사A',
           example_note: '작년 보고서에는 이 학교가 없어요(올해 새로 들어온 칸). (데모)', status: 'submitted', version: 3,
-          body1: '(데모 글) 특별한 문제점은 없다.', body2: '(데모 글) 학기별 학점 배치를 한 번 더 살펴보도록 안내한다.', updated_by: '교사H', updated_at: ago(180)
+          body1: '(데모 글) 특별한 문제점은 없다. 다만, 학기별 학점 배치를 한 번 더 살펴볼 필요가 있다.', updated_by: '교사H', updated_at: ago(180)
         })),
         mk(Object.assign({}, TRK, { id: 'trk-04', part: '사립', section: 'Ⅱ부 사립 1. 학기별 이수 학점 · 2. 교과 영역별 이수', title: '1·2 학기별·영역별 이수 현황 (사립 내용 기록 · 데모)', sort: 100, writers: ['교사I'], reviewer: '교사C' })),
         mk(Object.assign({}, SUBJ, {
@@ -1635,7 +1635,7 @@
         mk(Object.assign({}, SCH, {
           id: 'pri-sch-01', part: '사립', section: P2, title: '예시고등학교', school_name: '예시고', sort: 130, writers: ['교사I', '교사J'], reviewer: '교사B',
           example1: exSch, example_note: noteSch, status: 'submitted', version: 4,
-          body1: '(데모 글) 3학년 2학기 학점이 적다.', body2: '(데모 글) 학기별 학점을 고르게 나누도록 안내한다.', updated_by: '교사J', updated_at: ago(130)
+          body1: '(데모 글) 3학년 2학기 학점이 적다. 학기별 학점을 고르게 나눌 필요가 있다.', updated_by: '교사J', updated_at: ago(130)
         })),
         mk(Object.assign({}, SCH, {
           id: 'pri-sch-02', part: '사립', section: P2, title: '데모여자고등학교', school_name: '데모여자고', sort: 140, writers: ['교사D'], reviewer: '교사B',
@@ -2654,8 +2654,7 @@
         return h;
       }
       if (s.example1) {
-        const lab = (s.kind === 'school' && !s.example2) ? '작년 글 (①·② 구분 없이 한 문단)' : (s.label1 || '');
-        h += `<div class="ex-label">${esc(lab)}</div><div class="ex-text">${esc(s.example1)}</div>`;
+        h += `<div class="ex-label">${esc(s.label1 || '')}</div><div class="ex-text">${esc(s.example1)}</div>`;
       }
       if (s.example2) h += `<div class="ex-label">${esc(s.label2 || '')}</div><div class="ex-text">${esc(s.example2)}</div>`;
       return h;
