@@ -965,7 +965,7 @@
     window.handleLogout = async function() {
       const ok = confirm('로그아웃 하시겠습니까?');
       if (!ok) return;
-      await supabase.auth.signOut();
+      await supabase.auth.signOut({ scope: 'local' });
       window.location.href = 'login.html';
     };    
     // ====== 토스트 메시지 ======

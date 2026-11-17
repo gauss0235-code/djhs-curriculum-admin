@@ -134,7 +134,7 @@
       signIn: function (email, password) {
         return client().auth.signInWithPassword({ email: email, password: password }).then(must);
       },
-      signOut: function () { return client().auth.signOut(); },
+      signOut: function () { return client().auth.signOut({ scope: "local" }); },
       /* 로그인 사용자 + 워크스페이스 profiles 행.
        * - 로그인 안 됨/세션 만료 → null (화면이 로그인 페이지로 보냄)
        * - 인터넷·서버 오류 → 예외 (화면이 오류 안내 + 다시 시도)

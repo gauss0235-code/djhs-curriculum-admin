@@ -1361,7 +1361,7 @@
     window.handleLogout = async function() {
       const ok = confirm('로그아웃 하시겠습니까?');
       if (!ok) return;
-      await supabase.auth.signOut();
+      await supabase.auth.signOut({ scope: 'local' });
       window.location.href = 'login.html';
     };    
     // ====== 비밀번호 변경 (본인) ======

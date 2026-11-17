@@ -1,0 +1,3822 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="images/logo.png">
+  <link rel="shortcut icon" type="image/png" href="images/logo.png">
+  <link rel="apple-touch-icon" href="images/logo.png">
+  <title>교육과정 분석보고서 제작 — 대전광역시 고등학교 교육과정 업무담당자 워크스페이스</title>
+  <meta name="description" content="교육과정지원단이 함께 쓰는 교육과정 분석보고서 작성 공간입니다.">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Asta+Sans:wght@300..800&display=swap">
+  <link rel="preload" href="fonts/Paperlogy-7Bold.woff2" as="font" type="font/woff2" crossorigin>
+  <style>
+    @font-face {
+      font-family: 'Paperlogy';
+      src: url('fonts/Paperlogy-7Bold.woff2') format('woff2');
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+    :root {
+      --bg-sky: #e8f4fc;
+      --bg-sky-deep: #d4ecf8;
+      --surface: #ffffff;
+      --border: #d8e8f3;
+      --border-strong: #b8d4e8;
+      --text: #1e3a5f;
+      --text-muted: #5d7894;
+      --text-light: #8ba8c2;
+      --primary: #4a90d9;
+      --primary-hover: #3a7ec0;
+      --primary-soft: #e3f0fa;
+      --primary-dark: #2d5a8a;
+      --admin: #ec6f8e;
+      --admin-soft: #fde7ed;
+      --danger: #DC2626;
+      --danger-soft: #fdeaea;
+      --green: #7cb342;
+      --green-soft: #eef7e3;
+      --orange: #f4a261;
+      --orange-soft: #fef0e3;
+      --blue: #5a9fd4;
+      --blue-soft: #e3f0fa;
+      --shadow-soft: 0 4px 20px rgba(74, 144, 217, 0.08);
+      --shadow-card: 0 8px 32px rgba(74, 144, 217, 0.12);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    /* 스크롤바가 있든 없든 헤더 위치가 페이지마다 같도록 자리 고정 */
+    html { scrollbar-gutter: stable; }
+    body {
+      font-family: 'Asta Sans', -apple-system, BlinkMacSystemFont, 'Malgun Gothic', sans-serif;
+      background: linear-gradient(180deg, var(--bg-sky) 0%, var(--bg-sky-deep) 100%);
+      color: var(--text);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+    header {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 16px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: inherit;
+    }
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+    .brand-mark img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.2;
+    }
+    .brand-name {
+      font-family: 'Paperlogy', 'Asta Sans', sans-serif;
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--primary-dark);
+      letter-spacing: -0.01em;
+      line-height: 1.3;
+    }
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+    }
+    .badge {
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .badge-school {
+      background: var(--primary-soft);
+      color: var(--primary-dark);
+    }
+    .badge-admin {
+      background: var(--admin-soft);
+      color: var(--admin);
+    }
+    .user-name { font-weight: 500; }
+    .logout-btn {
+      background: #374151;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 13px;
+      color: white;
+      font-family: inherit;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .logout-btn:hover {
+      background: #1f2937;
+    }
+    /* 토스트 메시지 (성공/에러 알림) */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--primary-dark);
+      color: white;
+      padding: 14px 24px;
+      border-radius: 12px;
+      font-family: 'Paperlogy', 'Asta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      letter-spacing: 0.3px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+      z-index: 2000;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+      max-width: calc(100vw - 40px);
+      text-align: center;
+    }
+    .toast.show { opacity: 1; }
+    .toast.error { background: var(--danger); }
+    .toast.success { background: #16A34A; }
+
+    /* 정보수정 버튼: 로그아웃과 같은 크기, 색상만 살짝 강조 */
+    .profile-btn {
+      background: #374151;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 13px;
+      color: white;
+      font-weight: 500;
+      font-family: inherit;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .profile-btn:hover {
+      background: #1f2937;
+    }
+    /* 비밀번호 변경 모달 */
+    .pw-modal-bg {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.5);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 1000;
+    }
+    .pw-modal-bg.hidden { display: none; }
+    .pw-modal {
+      background: white;
+      border-radius: 20px;
+      padding: 32px;
+      width: 100%;
+      max-width: 540px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    }
+    .pw-modal h3 {
+      font-family: 'Paperlogy', 'Asta Sans', sans-serif;
+      font-size: 24px;
+      color: var(--primary-dark);
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+    .pw-modal .pw-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+    .pw-field { margin-bottom: 16px; }
+    .pw-field label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .pw-field input {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: inherit;
+      color: var(--text);
+      transition: border-color 0.15s ease;
+    }
+    .pw-field input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    .pw-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      margin-top: 24px;
+    }
+    .pw-btn-cancel {
+      background: white;
+      border: 1.5px solid var(--border);
+      padding: 11px 22px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+      font-family: inherit;
+    }
+    .pw-btn-cancel:hover { background: var(--bg-sky, #f4f8fc); }
+    .pw-btn-submit {
+      background: var(--primary);
+      border: none;
+      padding: 11px 22px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 14px;
+      color: white;
+      font-weight: 700;
+      font-family: inherit;
+      box-shadow: 0 2px 8px rgba(74, 144, 217, 0.25);
+    }
+    .pw-btn-submit:hover { background: var(--primary-hover, var(--primary-dark)); }
+    .pw-btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 48px 32px 80px;
+    }
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 28px;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .page-header h2 {
+      font-family: 'Paperlogy', 'Asta Sans', sans-serif;
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--primary-dark);
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+    .page-header .desc {
+      font-size: 16px;
+      color: var(--text-muted);
+    }
+    .page-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 12px 22px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: 600;
+      font-family: inherit;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+      box-shadow: 0 2px 8px rgba(74, 144, 217, 0.25);
+    }
+    .btn-primary:hover { background: var(--primary-hover); }
+    .btn-primary:disabled { opacity: 0.55; cursor: not-allowed; }
+    .btn-secondary {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      padding: 10px 18px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 14px;
+      font-family: inherit;
+      color: var(--text);
+      transition: all 0.15s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+    .btn-secondary:hover {
+      border-color: var(--border-strong);
+      background: var(--bg-sky);
+    }
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #6B7280;
+      color: white;
+      border: none;
+      padding: 12px 22px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 700;
+      font-family: inherit;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+      box-shadow: 0 3px 10px rgba(107, 114, 128, 0.3);
+      text-decoration: none;
+    }
+    .back-btn:hover {
+      background: #4B5563;
+      transform: translateY(-1px);
+      box-shadow: 0 5px 14px rgba(107, 114, 128, 0.4);
+    }
+    .hidden { display: none !important; }
+    .muted { color: var(--text-muted); font-size: 14px; }
+    .small { font-size: 12.5px; }
+    .pre { white-space: pre-wrap; word-break: keep-all; overflow-wrap: anywhere; }
+    footer {
+      max-width: 1200px;
+      margin: 40px auto 0;
+      padding: 28px 32px 40px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-light);
+      line-height: 1.6;
+    }
+    .loading {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-muted);
+      font-size: 15px;
+    }
+
+    /* ===== 데모 안내 ===== */
+    .demo-banner {
+      background: #FFF8E7;
+      border: 2px dashed #F59E0B;
+      color: #92400E;
+      padding: 14px 20px;
+      border-radius: 14px;
+      margin-bottom: 18px;
+      font-size: 14px;
+      display: flex;
+      gap: 8px 14px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .demo-banner b { font-family: 'Paperlogy', 'Asta Sans', sans-serif; font-weight: 700; }
+    .demo-banner a { color: #92400E; font-weight: 700; }
+
+    /* ===== 위쪽 정보 줄 (이름 · 마감 · 일정) ===== */
+    .strip {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr 1.4fr;
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+    .strip-card {
+      background: var(--surface);
+      border-radius: 18px;
+      padding: 20px 24px;
+      box-shadow: var(--shadow-soft);
+      min-width: 0;
+    }
+    .strip-label {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .strip-main {
+      font-family: 'Paperlogy', 'Asta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 21px;
+      color: var(--primary-dark);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      line-height: 1.3;
+    }
+    .strip-sub { font-size: 12.5px; color: var(--text-muted); margin-top: 6px; }
+    .dday { font-size: 30px; letter-spacing: -0.02em; }
+    .dday.soon, .dday.today { color: #c2410c; }
+    .dday.over { color: var(--danger); }
+    .schedule { list-style: none; display: grid; gap: 4px; font-size: 14px; }
+    .schedule b {
+      display: inline-block;
+      min-width: 40px;
+      color: var(--primary-dark);
+      font-family: 'Paperlogy', 'Asta Sans', sans-serif;
+      font-weight: 700;
+    }
+
+    /* ===== 탭 ===== */
+    .tabs {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 24px;
+      box-shadow: inset 0 -2px 0 var(--border);
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .tabs::-webkit-scrollbar { display: none; }
+    .tab {
+      padding: 12px 20px;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-decoration: none;
+      border-bottom: 3px solid transparent;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+    .tab:hover { color: var(--text); }
+    .tab.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+      font-weight: 700;
+    }
+    .tab .cnt {
+      background: var(--primary-soft);
+      color: var(--primary-dark);
+      border-radius: 10px;
+      padding: 1px 8px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .tab .cnt.hot { background: var(--danger); color: white; }
+
+    /* ===== 공통 조각 ===== */
+    .st {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 11px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+      line-height: 1.3;
+    }
+    .st-empty { background: #F3F4F6; color: #6B7280; }
+    .st-draft { background: var(--primary-soft); color: var(--primary-dark); }
+    .st-submitted { background: var(--orange-soft); color: #c2621b; }
+    .st-returned { background: var(--danger-soft); color: var(--danger); }
+    .st-approved { background: var(--green-soft); color: #4d8a1e; }
+    .dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 6px; padding: 0; }
+    .dot.st-empty { background: #9CA3AF; }
+    .dot.st-draft { background: var(--primary); }
+    .dot.st-submitted { background: var(--orange); }
+    .dot.st-returned { background: var(--danger); }
+    .dot.st-approved { background: var(--green); }
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 9px;
+      border-radius: 10px;
+      font-size: 11.5px;
+      font-weight: 700;
+      white-space: nowrap;
+      font-family: 'Asta Sans', sans-serif;
+      line-height: 1.3;
+    }
+    .tag-leader { background: var(--admin-soft); color: var(--admin); }
+    .tag-merger { background: #f0e9fa; color: #9b6fc9; }
+    .tag-claim { background: #fff4d6; color: #a16207; }
+    .tag-pair { background: #eef3f7; color: #5d7894; }
+    .tag-admin { background: #FEE2E2; color: #B91C1C; }
+    .wr.me { font-weight: 800; color: var(--primary-dark); text-decoration: underline; text-underline-offset: 3px; }
+    .wr.claimed { color: #a16207; font-weight: 700; }
+    .sep { margin: 0 3px; color: var(--text-light); }
+    .icon-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px 14px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.2;
+      text-decoration: none;
+      font-family: inherit;
+      color: white;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+      background: var(--primary);
+      box-shadow: 0 2px 8px rgba(74, 144, 217, 0.25);
+    }
+    .icon-btn:hover { background: var(--primary-hover); }
+    .icon-btn.ok { background: #16A34A; box-shadow: 0 2px 8px rgba(22, 163, 74, 0.25); }
+    .icon-btn.ok:hover { background: #15803D; }
+    .icon-btn.danger { background: #ec6f8e; box-shadow: 0 2px 8px rgba(236, 111, 142, 0.25); }
+    .icon-btn.danger:hover { background: #d65878; }
+    .icon-btn.warn { background: #f59e0b; box-shadow: 0 2px 8px rgba(245, 158, 11, 0.25); }
+    .icon-btn.warn:hover { background: #d97706; }
+    .icon-btn.ghost { background: white; color: var(--text); border: 1.5px solid var(--border); box-shadow: none; }
+    .icon-btn.ghost:hover { background: var(--bg-sky); }
+    .icon-btn.open { background: #D4A574; box-shadow: 0 2px 8px rgba(212, 165, 116, 0.25); }
+    .icon-btn.open:hover { background: #B8895A; }
+    .icon-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+    .small-btn {
+      padding: 6px 12px;
+      font-size: 12.5px;
+      font-weight: 700;
+      border-radius: 8px;
+      border: 1.5px solid var(--border);
+      background: white;
+      color: var(--text);
+      cursor: pointer;
+      font-family: inherit;
+      white-space: nowrap;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      line-height: 1.3;
+    }
+    .small-btn:hover { background: var(--bg-sky); border-color: var(--border-strong); }
+    .small-btn.primary { background: var(--primary); border-color: var(--primary); color: white; }
+    .small-btn.primary:hover { background: var(--primary-hover); }
+    .btn-row { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+    .filter-bar {
+      background: white;
+      border: 1.5px solid #E5E7EB;
+      padding: 16px 22px;
+      border-radius: 16px;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px 14px;
+      flex-wrap: wrap;
+      box-shadow: 0 2px 8px rgba(120, 80, 30, 0.06);
+    }
+    .filter-bar label {
+      font-family: 'Paperlogy', 'Asta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      color: #4A8AB8;
+    }
+    .filter-bar select {
+      padding: 10px 14px;
+      border: 1.5px solid #E5E7EB;
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: inherit;
+      background: white;
+      color: #2C3E50;
+      min-width: 120px;
+      cursor: pointer;
+    }
+    .filter-bar select:focus {
+      outline: none;
+      border-color: #4A8AB8;
+      box-shadow: 0 0 0 3px rgba(74, 138, 184, 0.15);
+    }
+    .filter-bar .spacer { flex: 1; }
+    .empty-box {
+      text-align: center;
+      padding: 56px 20px;
+      color: #6B7280;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 2px 8px rgba(120, 80, 30, 0.06);
+    }
+    .empty-box .t {
+      font-family: 'Paperlogy', 'Asta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      margin-bottom: 8px;
+      color: #4A8AB8;
+    }
+    .empty-box .s { font-size: 14px; margin-bottom: 14px; }
+    .empty-mini {
+      background: white;
+      border-radius: 14px;
+      padding: 18px 22px;
+      color: var(--text-muted);
+      font-size: 14px;
+      box-shadow: var(--shadow-soft);
+    }
+    .summary-line { font-size: 14px; color: var(--text-muted); margin: 0 4px 12px; }
+    .notice {
+      padding: 14px 18px;
+      border-radius: 14px;
+      font-size: 14px;
+      margin-bottom: 12px;
+      display: flex;
+      gap: 10px 14px;
+      flex-wrap: wrap;
+      align-items: center;
+      text-decoration: none;
+    }
+    .notice .grow { flex: 1; min-width: 220px; }
+    .notice b.big {
+      display: block;
+      font-family: 'Paperlogy', 'Asta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+    .notice.info { background: #eef5fc; color: var(--primary-dark); border: 1.5px solid #cfe3f5; }
+    .notice.warn { background: #fff4e0; color: #92400E; border: 1.5px solid #f8d9a8; }
+    .notice.danger { background: #fdeaea; color: #991B1B; border: 2px solid #f5b5b5; }
+    .notice.ok { background: #e8f6ec; color: #166534; border: 1.5px solid #b6e2c3; }
+    a.notice:hover { filter: brightness(0.98); }
+
+    /* ===== 칸 카드 (내 담당 · 확인 대기) ===== */
+    .slot-list { display: flex; flex-direction: column; gap: 14px; }
+    .slot-card {
+      background: var(--surface);
+      border: 2px solid transparent;
+      padding: 24px 28px;
+      border-radius: 18px;
+      box-shadow: var(--shadow-soft);
+      display: flex;
+      gap: 18px;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.2s ease;
+    }
+    .slot-card:hover { border-color: var(--primary); box-shadow: var(--shadow-card); }
+    .sc-main { flex: 1; min-width: 0; }
+    .sc-crumb { font-size: 12.5px; color: var(--text-muted); margin-bottom: 4px; }
+    .sc-title-row { display: flex; gap: 8px 10px; align-items: center; flex-wrap: wrap; margin-bottom: 8px; }
+    .sc-title {
+      font-family: 'Paperlogy', 'Asta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      color: #2C3E50;
+      text-decoration: none;
+    }
+    a.sc-title:hover { color: var(--primary); }
+    .sc-meta { font-size: 13px; color: #6B7280; display: flex; gap: 4px 14px; flex-wrap: wrap; align-items: center; }
+    .sc-actions { display: flex; gap: 8px; flex-shrink: 0; flex-wrap: wrap; justify-content: flex-end; }
+    .sc-preview {
+      margin-top: 10px;
+      font-size: 13.5px;
+      color: #4B5563;
+      background: #f8fbfd;
+      border-radius: 10px;
+      padding: 10px 12px;
+      word-break: keep-all;
+      overflow-wrap: anywhere;
+    }
+    .sc-review {
+      margin-top: 10px;
+      font-size: 13.5px;
+      background: #fdeaea;
+      color: #991B1B;
+      border-left: 4px solid var(--danger);
+      border-radius: 10px;
+      padding: 10px 12px;
+    }
+
+    /* ===== 전체 현황 ===== */
+    .count-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; align-items: center; }
+    .count-chip {
+      border: 1.5px solid var(--border);
+      background: white;
+      border-radius: 20px;
+      padding: 7px 14px;
+      font-size: 13px;
+      cursor: pointer;
+      font-family: inherit;
+      color: var(--text);
+      display: inline-flex;
+      align-items: center;
+    }
+    .count-chip.active { border-color: var(--primary); background: var(--primary-soft); font-weight: 700; }
+    .progress-wrap { font-size: 13px; color: var(--text-muted); display: inline-flex; align-items: center; gap: 8px; margin-left: auto; }
+    .progress { display: inline-block; height: 8px; width: 140px; background: #e5edf4; border-radius: 6px; overflow: hidden; }
+    .progress > span { display: block; height: 100%; background: linear-gradient(90deg, var(--primary), #16A34A); }
+    .group { margin-bottom: 26px; }
+    .group-head { display: flex; justify-content: space-between; align-items: baseline; gap: 6px 10px; margin: 0 4px 10px; flex-wrap: wrap; }
+    .group-head h3 {
+      font-family: 'Paperlogy', 'Asta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 19px;
+      color: var(--primary-dark);
+    }
+    .group-sub { font-size: 13px; color: var(--text-muted); }
+    .cnt-inline {
+      font-family: 'Asta Sans', sans-serif;
+      font-size: 13px;
+      background: var(--primary-soft);
+      color: var(--primary-dark);
+      padding: 2px 9px;
+      border-radius: 10px;
+      vertical-align: 2px;
+    }
+    .rows { background: var(--surface); border-radius: 18px; box-shadow: var(--shadow-soft); overflow: hidden; }
+    .row {
+      display: flex;
+      gap: 6px 16px;
+      padding: 14px 24px;
+      border-top: 1px solid #eef3f7;
+      text-decoration: none;
+      color: inherit;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .row:first-child { border-top: none; }
+    .row:hover { background: #f6fafd; }
+    .row-main { min-width: 0; flex: 1; }
+    .row-title { font-weight: 700; font-size: 15px; color: #2C3E50; }
+    .row-sub { font-size: 12.5px; color: #6B7280; margin-top: 2px; }
+    .row-side { flex-shrink: 0; }
+
+    /* ===== 합본 ===== */
+    .merged-doc { background: white; border-radius: 18px; box-shadow: var(--shadow-soft); padding: 32px 40px; }
+    .m-part {
+      font-family: 'Paperlogy', 'Asta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 24px;
+      color: var(--primary-dark);
+      border-bottom: 3px solid var(--primary);
+      padding-bottom: 6px;
+      margin: 34px 0 14px;
+    }
+    .m-part:first-child { margin-top: 0; }
+    .m-section {
+      font-family: 'Paperlogy', 'Asta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 17px;
+      color: #4A8AB8;
+      margin: 22px 0 10px;
+    }
+    .m-block { border: 1.5px solid #eef3f7; border-radius: 14px; padding: 18px 22px; margin-bottom: 12px; }
+    .m-head { display: flex; gap: 6px 10px; align-items: center; flex-wrap: wrap; margin-bottom: 6px; }
+    .m-title {
+      font-family: 'Paperlogy', 'Asta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 17px;
+      color: #2C3E50;
+      margin-right: auto;
+    }
+    .m-who { font-size: 12.5px; color: #6B7280; margin-bottom: 4px; }
+    .m-label { font-weight: 700; color: var(--primary-dark); margin: 12px 0 4px; font-size: 14.5px; }
+    .m-block p { font-size: 15px; line-height: 1.75; margin-bottom: 4px; word-break: keep-all; overflow-wrap: anywhere; }
+    .m-empty { color: #9CA3AF; font-style: italic; }
+
+    /* ===== 칸 화면 (쓰기) ===== */
+    .slot-top { background: white; border-radius: 18px; padding: 24px 28px; box-shadow: var(--shadow-soft); margin-bottom: 14px; }
+    .slot-top-row { display: flex; justify-content: space-between; gap: 10px; align-items: center; flex-wrap: wrap; }
+    .slot-title {
+      font-family: 'Paperlogy', 'Asta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 26px;
+      color: var(--primary-dark);
+      margin: 4px 0 10px;
+      line-height: 1.3;
+      letter-spacing: -0.01em;
+    }
+    .slot-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 14px; align-items: start; }
+    .ref-col {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      position: sticky;
+      top: 90px;
+      max-height: calc(100vh - 106px);
+      overflow-y: auto;
+      padding-right: 2px;
+      scrollbar-width: thin;
+    }
+    .edit-col { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+    .card { background: white; border-radius: 18px; padding: 24px 28px; box-shadow: var(--shadow-soft); }
+    .card h4 {
+      font-family: 'Paperlogy', 'Asta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 17px;
+      color: var(--primary-dark);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .ly-badge {
+      font-family: 'Asta Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      background: #FFF8E7;
+      color: #B45309;
+      border: 1.5px solid #F59E0B;
+      padding: 3px 10px;
+      border-radius: 10px;
+    }
+    .ex-note { font-size: 13px; color: var(--text-muted); margin-bottom: 8px; }
+    .ex-label { font-weight: 700; font-size: 14px; color: #92400E; margin: 12px 0 4px; }
+    .ex-text {
+      white-space: pre-wrap;
+      font-size: 14.5px;
+      line-height: 1.75;
+      background: #fffdf6;
+      border: 1px solid #f3e6c4;
+      border-radius: 12px;
+      padding: 12px 14px;
+      color: #3b3b3b;
+      word-break: keep-all;
+      overflow-wrap: anywhere;
+    }
+    .ref-sub-title { font-weight: 700; font-size: 14px; color: var(--text); margin: 4px 0 8px; }
+    .ref-list { list-style: none; display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
+    .ref-item {
+      display: flex;
+      align-items: center;
+      gap: 6px 8px;
+      flex-wrap: wrap;
+      font-size: 14px;
+      padding: 10px 12px;
+      border: 1.5px solid #eef3f7;
+      border-radius: 12px;
+    }
+    .ref-item a { color: var(--primary-dark); font-weight: 700; text-decoration: none; overflow-wrap: anywhere; }
+    .ref-item a:hover { text-decoration: underline; }
+    .ref-date { font-size: 12px; color: #6B7280; margin-left: auto; }
+    .ref-desc { flex-basis: 100%; font-size: 12.5px; color: #6B7280; }
+    .type-tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .type-practice { background: var(--green-soft); color: var(--green); }
+    .type-first_draft { background: var(--orange-soft); color: var(--orange); }
+    .type-second_draft { background: #f0e9fa; color: #9b6fc9; }
+    .type-final { background: var(--blue-soft); color: var(--blue); }
+    .type-inspect { background: #FEE2E2; color: #B91C1C; }
+    .cp { border: 1.5px solid #eef3f7; border-radius: 12px; padding: 12px 14px; margin-bottom: 10px; }
+    .cp-head { display: flex; gap: 6px 8px; align-items: center; flex-wrap: wrap; font-size: 13px; color: #6B7280; margin-bottom: 4px; }
+    .cp-head b { color: var(--text); font-size: 14px; }
+    .cp-label { font-weight: 700; font-size: 13.5px; color: var(--primary-dark); margin-top: 8px; }
+    .cp-text { font-size: 13.5px; line-height: 1.7; white-space: pre-wrap; word-break: keep-all; overflow-wrap: anywhere; color: #374151; }
+    .rules { padding-left: 20px; font-size: 14px; line-height: 1.7; }
+    .rules li { margin-bottom: 4px; }
+    .field { margin-bottom: 22px; }
+    .field:last-child { margin-bottom: 0; }
+    .field-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
+    .field-label {
+      font-family: 'Paperlogy', 'Asta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 17px;
+      color: #2C3E50;
+    }
+    .field-count { font-size: 12.5px; color: #6B7280; }
+    .field-count.over { color: var(--danger); font-weight: 700; }
+    .ed-text {
+      width: 100%;
+      min-height: 180px;
+      padding: 14px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      font-size: 16px;
+      line-height: 1.75;
+      font-family: inherit;
+      color: var(--text);
+      background: #f8fbfd;
+      resize: vertical;
+      overflow: hidden;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+    .ed-text:focus { outline: none; border-color: var(--primary); background: white; box-shadow: 0 0 0 3px var(--primary-soft); }
+    .ro-text {
+      white-space: pre-wrap;
+      word-break: keep-all;
+      overflow-wrap: anywhere;
+      font-size: 15.5px;
+      line-height: 1.75;
+      background: #f4f6f8;
+      border: 1.5px dashed #d6dde4;
+      border-radius: 12px;
+      padding: 14px 16px;
+      min-height: 80px;
+      color: #374151;
+    }
+    .lint { margin-top: 8px; font-size: 13px; }
+    .lint-sum { color: #6B7280; font-size: 12.5px; }
+    .lint-item {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+      padding: 7px 10px;
+      border-radius: 10px;
+      margin-top: 6px;
+      border: none;
+      width: 100%;
+      text-align: left;
+      font-family: inherit;
+      font-size: 13px;
+      line-height: 1.5;
+      cursor: pointer;
+    }
+    .lint-item.warn { background: #fdeaea; color: #991B1B; }
+    .lint-item.soft { background: #fff4e0; color: #92400E; }
+    .lint-item.info { background: #eef5fc; color: var(--primary-dark); }
+    .lint-item .lint-msg { flex: 1; }
+    .lint-item .lint-go { font-weight: 700; text-decoration: underline; white-space: nowrap; }
+    .action-bar {
+      position: sticky;
+      bottom: 0;
+      z-index: 5;
+      background: rgba(255, 255, 255, 0.97);
+      backdrop-filter: blur(6px);
+      border-radius: 16px;
+      padding: 14px 18px;
+      box-shadow: 0 -2px 18px rgba(74, 144, 217, 0.16);
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .save-state { font-size: 13.5px; font-weight: 700; color: #6B7280; margin-right: auto; }
+    .save-state.saved { color: #15803D; }
+    .save-state.saving { color: var(--primary); }
+    .save-state.dirty { color: #B45309; }
+    .save-state.error { color: var(--danger); }
+    .rev-card summary {
+      cursor: pointer;
+      font-family: 'Paperlogy', 'Asta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--primary-dark);
+    }
+    .rev-card[open] summary { margin-bottom: 8px; }
+    .rev-item { border-top: 1px solid #eef3f7; padding: 10px 0; font-size: 13.5px; }
+    .rev-line { display: flex; gap: 4px 8px; align-items: center; flex-wrap: wrap; }
+    .rev-line .small-btn { margin-left: auto; }
+    .rev-body { background: #f8fbfd; padding: 10px 12px; border-radius: 10px; margin-top: 8px; font-size: 13.5px; }
+    .show-mobile { display: none !important; }
+
+    /* ===== 창(모달) ===== */
+    .modal-bg {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(30, 58, 95, 0.5);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 16px;
+    }
+    .modal {
+      background: var(--surface);
+      padding: 32px;
+      border-radius: 20px;
+      width: 100%;
+      max-width: 540px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(30, 58, 95, 0.3);
+    }
+    .modal.wide { max-width: 880px; }
+    .modal h3 {
+      font-family: 'Paperlogy', 'Asta Sans', sans-serif;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--primary-dark);
+      margin-bottom: 8px;
+      letter-spacing: -0.01em;
+    }
+    .modal-desc { font-size: 14px; color: var(--text-muted); margin-bottom: 16px; }
+    .field-box label { display: block; font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+    .field-box textarea {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-size: 16px;
+      font-family: inherit;
+      color: var(--text);
+      background: #f8fbfd;
+      min-height: 120px;
+      resize: vertical;
+      line-height: 1.6;
+    }
+    .field-box textarea:focus { outline: none; border-color: var(--primary); background: white; box-shadow: 0 0 0 3px var(--primary-soft); }
+    .form-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 20px; flex-wrap: wrap; }
+    .name-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; margin: 6px 0 4px; }
+    .name-btn {
+      padding: 14px 14px;
+      border-radius: 14px;
+      border: 2px solid var(--border);
+      background: white;
+      cursor: pointer;
+      font-family: inherit;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      color: var(--text);
+      transition: all 0.15s ease;
+    }
+    .name-btn:hover, .name-btn.current { border-color: var(--primary); background: var(--primary-soft); }
+    .name-btn .nm {
+      font-family: 'Paperlogy', 'Asta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 17px;
+    }
+    .name-btn .nt { display: flex; gap: 4px; flex-wrap: wrap; font-size: 12px; color: #6B7280; }
+    .name-btn.admin-pick { border-style: dashed; }
+    .conflict-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 8px 0 4px; }
+    .conflict-pane { border: 1.5px solid var(--border); border-radius: 14px; padding: 14px; min-width: 0; }
+    .conflict-pane.mine { border-color: var(--primary); }
+    .conflict-pane h5 {
+      font-family: 'Paperlogy', 'Asta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      justify-content: space-between;
+    }
+    .conflict-text {
+      white-space: pre-wrap;
+      word-break: keep-all;
+      overflow-wrap: anywhere;
+      max-height: 38vh;
+      overflow-y: auto;
+      font-size: 13.5px;
+      line-height: 1.7;
+      background: #f8fbfd;
+      padding: 10px 12px;
+      border-radius: 10px;
+    }
+
+    @media (max-width: 900px) {
+      .slot-grid { grid-template-columns: 1fr; }
+      .ref-col { position: static; max-height: none; overflow: visible; order: 2; padding-right: 0; }
+      .edit-col { order: 1; }
+      .show-mobile { display: inline-flex !important; }
+      .strip { grid-template-columns: 1fr 1fr; }
+      .strip-card.sched { grid-column: 1 / -1; }
+    }
+    @media (max-width: 768px) {
+      .header-inner { padding: 14px 18px; }
+      main { padding: 32px 18px 60px; }
+      .page-header h2 { font-size: 24px; }
+      .page-header .desc { font-size: 14px; }
+      .user-info { font-size: 12px; gap: 4px; }
+      .profile-btn, .logout-btn { padding: 6px 12px; font-size: 12px; }
+      .brand-line1, .brand-line2 { display: block; }
+      .brand-name { font-size: 15px; line-height: 1.25; }
+      .strip { grid-template-columns: 1fr; }
+      .strip-card { padding: 16px 18px; }
+      .tab { padding: 12px 14px; font-size: 14px; }
+      .slot-card { flex-direction: column; align-items: stretch; padding: 20px 22px; }
+      .sc-actions { justify-content: flex-end; }
+      .filter-bar { padding: 14px 16px; }
+      .filter-bar select { flex: 1; min-width: 0; }
+      .progress-wrap { margin-left: 0; }
+      .row { padding: 12px 16px; flex-wrap: wrap; }
+      .merged-doc { padding: 20px 16px; }
+      .m-block { padding: 14px 14px; }
+      .m-part { font-size: 21px; }
+      .slot-top, .card { padding: 20px 18px; }
+      .slot-title { font-size: 21px; }
+      .action-bar { padding: 10px 12px; border-radius: 14px; gap: 6px; }
+      .action-bar .icon-btn { padding: 9px 11px; font-size: 12.5px; }
+      .save-state { flex-basis: 100%; font-size: 12.5px; }
+      .modal { padding: 24px 20px; }
+      .conflict-grid { grid-template-columns: 1fr; }
+      .conflict-text { max-height: 26vh; }
+      .name-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <a class="brand" href="dashboard.html">
+        <div class="brand-mark"><img src="images/logo.png" alt="대전광역시교육청"></div>
+        <div class="brand-text">
+          <span class="brand-name"><span class="brand-line1">대전광역시 고등학교</span> <span class="brand-line2">교육과정 업무담당자 워크스페이스</span></span>
+        </div>
+      </a>
+      <div class="user-info" id="userInfo"></div>
+    </div>
+  </header>
+
+  <main>
+    <div class="page-header">
+      <div>
+        <h2>교육과정 분석보고서 제작</h2>
+        <div class="desc" id="pageDesc">&nbsp;</div>
+      </div>
+      <div class="page-header-actions">
+        <a class="back-btn" href="dashboard.html">← 대시보드로</a>
+      </div>
+    </div>
+
+    <div id="demoBanner" class="demo-banner hidden"></div>
+    <section class="strip hidden" id="strip"></section>
+    <nav class="tabs hidden" id="tabs"></nav>
+
+    <div id="view">
+      <div class="loading">로그인 정보를 확인하는 중입니다...</div>
+    </div>
+  </main>
+
+  <footer>
+    Copyright © 대전광역시교육청 고등학교 교육과정지원단. All rights reserved.
+  </footer>
+
+  <!-- 이름 고르기 창 -->
+  <div id="nameModal" class="modal-bg hidden" role="dialog" aria-modal="true" aria-labelledby="nameModalTitle">
+    <div class="modal wide">
+      <h3 id="nameModalTitle">어느 선생님이신가요?</h3>
+      <div class="modal-desc">교육과정지원단은 로그인 계정 하나를 함께 써요. 내 이름을 고르면 그 이름으로 저장 기록이 남고, 내가 맡은 칸만 고칠 수 있어요. 고른 이름은 이 기기에 기억해 둬요. <b>꼭 내 이름을 골라 주세요.</b></div>
+      <div id="nameGrid" class="name-grid"></div>
+      <div class="form-actions">
+        <button class="btn-secondary" id="nameCancel" data-act="close-name">닫기</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 확인 완료 / 수정 요청 창 -->
+  <div id="reviewModal" class="modal-bg hidden" role="dialog" aria-modal="true" aria-labelledby="reviewTitle">
+    <div class="modal">
+      <h3 id="reviewTitle">수정 요청</h3>
+      <div class="modal-desc" id="reviewDesc"></div>
+      <div class="field-box">
+        <label for="reviewComment" id="reviewLabel">의견</label>
+        <textarea id="reviewComment" maxlength="2000" autocomplete="off" readonly onfocus="this.removeAttribute('readonly')" onpointerdown="this.removeAttribute('readonly')"></textarea>
+      </div>
+      <div class="form-actions">
+        <button class="btn-secondary" data-act="review-cancel">취소</button>
+        <button class="btn-primary" id="reviewSend" data-act="review-send">보내기</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 동시 저장 충돌 창 -->
+  <div id="conflictModal" class="modal-bg hidden" role="dialog" aria-modal="true" aria-labelledby="conflictTitle">
+    <div class="modal wide">
+      <h3 id="conflictTitle">다른 분이 먼저 저장했어요</h3>
+      <div class="modal-desc" id="conflictDesc"></div>
+      <div class="conflict-grid" id="conflictGrid"></div>
+      <div class="modal-desc small" id="conflictHint" style="margin-top:10px;"></div>
+      <div class="form-actions">
+        <button class="btn-secondary" id="conflictTheirs" data-act="conflict-theirs">다른 분 글로 바꾸기</button>
+        <button class="btn-primary" id="conflictMine" data-act="conflict-mine">내 글로 저장</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 글 보기 창 (이 기기에 남은 글) -->
+  <div id="textModal" class="modal-bg hidden" role="dialog" aria-modal="true" aria-labelledby="textTitle">
+    <div class="modal wide">
+      <h3 id="textTitle">글 보기</h3>
+      <div class="modal-desc" id="textDesc"></div>
+      <div id="textBody"></div>
+      <div class="form-actions">
+        <button class="btn-secondary" data-act="copy-text-modal">전체 복사</button>
+        <button class="btn-primary" data-act="close-text">닫기</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    // =====================================================================
+    // 교육과정 분석보고서 제작 (report.html)
+    // - 관리자(admin)·교육과정지원단(support)만 사용
+    // - 선생님 이름, 칸 목록, 작년 글은 이 파일에 없고 Supabase에서 불러온다
+    // - 로컬(localhost/127.0.0.1)에서 ?demo 를 붙이면 가짜 자료로만 움직이는 데모
+    // =====================================================================
+    const SUPABASE_URL = 'https://nzsgvjdotnvqpzhehfsg.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_ALakaYU4jTYEIQas_nWrsQ_An3IK9_h';
+    const SUPABASE_JS = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+    const XLSX_JS = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+
+    const REPORT_YEAR = 2027;
+    const MAX_LEN = 6000;
+    const AUTOSAVE_MS = 3000;
+    const LS_NAME = 'report_name';
+    const LS_DRAFT = 'report_draft_';
+
+    const DEFAULTS = {
+      title: '2027학년도 고등학교 입학생 교육과정 분석보고서',
+      deadline: '2026-12-03T12:00:00+09:00',
+      schedule: [
+        { label: '작성', text: '11월 18일(수) ~ 12월 3일(목) 12:00 · 팀장에게 제출' },
+        { label: '협의', text: '12월 4일(금) ~ 5일(토)' },
+        { label: '수정', text: '12월 6일(일) ~ 8일(화)' }
+      ]
+    };
+
+    const IS_LOCAL = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+    const QS = new URLSearchParams(location.search);
+    const DEMO = IS_LOCAL && QS.has('demo');
+
+    const STATUS = {
+      empty: { label: '미작성', cls: 'st-empty' },
+      draft: { label: '작성 중', cls: 'st-draft' },
+      submitted: { label: '제출', cls: 'st-submitted' },
+      returned: { label: '수정 요청', cls: 'st-returned' },
+      approved: { label: '확인 완료', cls: 'st-approved' }
+    };
+    const STATUS_ORDER = ['empty', 'draft', 'submitted', 'returned', 'approved'];
+    const KIND_LABEL = { subject: '과목별 분석', school: '학교별 분석', track: '보완·기록' };
+    const ACTION_LABEL = { save: '저장', submit: '제출', unsubmit: '제출 취소', approve: '확인 완료', return: '수정 요청', claim: '내가 쓸게요' };
+    const TYPE_LABELS = { practice: '연습용', first_draft: '1차본', second_draft: '2차본', final: '최종본' };
+    const LIST_FIELDS = ['id', 'year', 'part', 'kind', 'section', 'title', 'sort', 'writers', 'reviewer',
+      'label1', 'label2', 'school_name', 'body1', 'body2', 'status', 'version', 'updated_by', 'updated_at',
+      'claimed_by', 'review_comment', 'reviewed_by', 'reviewed_at'];
+
+    // 서버 오류 코드 → 한국어 안내
+    const ERROR_TEXT = {
+      FORBIDDEN: '권한이 없어요',
+      NOT_WRITER: '담당 칸만 고칠 수 있어요',
+      LOCKED: '확인 완료된 칸이에요. 팀장에게 수정 요청을 받아야 고칠 수 있어요',
+      SUBMITTED: "제출한 칸이에요. 고치려면 '제출 취소'를 눌러 주세요",
+      VERSION_CONFLICT: '다른 분이 먼저 저장했어요',
+      EMPTY: '내용을 먼저 써 주세요',
+      COMMENT_REQUIRED: '수정 요청 의견을 써 주세요',
+      UNKNOWN_NAME: '이름을 다시 골라 주세요',
+      BAD_STATUS: '지금 상태에서는 할 수 없어요',
+      NOT_FOUND: '칸을 찾을 수 없어요',
+      BAD_ACTION: '알 수 없는 요청이에요'
+    };
+    const DONE_TEXT = {
+      submit: '제출했어요. 팀장 확인을 기다려요',
+      unsubmit: '제출을 취소했어요. 다시 고칠 수 있어요',
+      approve: '확인 완료했어요',
+      return: '수정 요청을 보냈어요'
+    };
+
+    let supabase = null;
+    let api = null;
+
+    // 화면 전체 상태
+    const S = {
+      user: null,
+      profile: null,
+      isAdmin: false,
+      people: [],
+      peopleByName: new Map(),
+      settings: {},
+      subjectSet: new Set(),
+      subjectNorm: new Map(),
+      abbrev: {},
+      slots: [],
+      slotById: new Map(),
+      name: null,          // 고른 이름. null = 아직 안 고름, '' = 관리자(이름 없이)
+      tab: 'mine',
+      lastLoad: 0,
+      loaded: false,
+      nameForced: false,
+      fAll: { status: '', part: '', writer: '' },
+      fMerged: { part: '', status: '' }
+    };
+    // 칸 쓰기 화면 상태 (열려 있을 때만)
+    let ED = null;
+
+    // ====== 작은 도우미 ======
+    const $ = (sel) => document.querySelector(sel);
+    function esc(str) {
+      if (str === null || str === undefined) return '';
+      return String(str).replace(/[&<>"']/g, m => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      }[m]));
+    }
+    function lsGet(k) { try { return window.localStorage.getItem(k); } catch (e) { return null; } }
+    function lsSet(k, v) { try { window.localStorage.setItem(k, v); } catch (e) { /* 저장소를 못 쓰는 환경 */ } }
+    function lsDel(k) { try { window.localStorage.removeItem(k); } catch (e) { /* 무시 */ } }
+    function uniq(arr) { return Array.from(new Set(arr)); }
+    function hasText(t) { return /\S/.test(t || ''); }
+    function paragraphs(t) { return String(t || '').split(/\r?\n/).map(x => x.trim()).filter(Boolean); }
+    function safeUrl(u) { return /^https?:\/\//i.test(String(u || '')) ? String(u) : '#'; }
+
+    // 구글 스프레드시트 URL을 읽기 전용(preview) 모드로 변환
+    // 참고 자료로 볼 때 학교 시트를 실수로 고치지 않도록 보호
+    // PDF, 일반 URL은 변환하지 않고 그대로 반환
+    function toReadOnlyUrl(url) {
+      if (!url) return url;
+      const sheetsPattern = /docs\.google\.com\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/;
+      const match = url.match(sheetsPattern);
+      if (!match) return url;
+      const sheetId = match[1];
+      return `https://docs.google.com/spreadsheets/d/${sheetId}/preview`;
+    }
+
+    // 날짜·시각 (한국 시간 기준)
+    const KST = new Intl.DateTimeFormat('ko-KR', {
+      timeZone: 'Asia/Seoul', year: 'numeric', month: 'numeric', day: 'numeric',
+      weekday: 'short', hour: '2-digit', minute: '2-digit', hourCycle: 'h23'
+    });
+    function tparts(ts) {
+      const o = {};
+      KST.formatToParts(new Date(ts)).forEach(p => { o[p.type] = p.value; });
+      return o;
+    }
+    function fmt(ts) {
+      if (!ts) return '';
+      const d = new Date(ts);
+      if (isNaN(d)) return '';
+      const p = tparts(d);
+      return `${p.month}월 ${p.day}일 ${p.hour}:${p.minute}`;
+    }
+    function hm(ts) {
+      if (!ts) return '';
+      const d = new Date(ts);
+      if (isNaN(d)) return '';
+      const p = tparts(d);
+      return `${p.hour}:${p.minute}`;
+    }
+    function fmtDay(ts) {
+      if (!ts) return '';
+      const d = new Date(ts);
+      if (isNaN(d)) return '';
+      const p = tparts(d);
+      return `${p.year}. ${p.month}. ${p.day}.`;
+    }
+    function stamp() {
+      const p = tparts(new Date());
+      const two = (x) => String(x).padStart(2, '0');
+      return `${p.year}${two(p.month)}${two(p.day)}_${p.hour}${p.minute}`;
+    }
+
+    function errCode(err) {
+      if (!err) return '';
+      if (typeof err === 'string') return err.trim();
+      return String(err.message || err.error_description || err.details || '').trim();
+    }
+    function errMessage(err) {
+      const c = errCode(err);
+      if (ERROR_TEXT[c]) return ERROR_TEXT[c];
+      if (/Failed to fetch|NetworkError|Load failed|network/i.test(c)) return '인터넷 연결을 확인해 주세요';
+      return '문제가 생겼어요' + (c ? ': ' + c : '');
+    }
+
+    // ====== 로그인 풀림 ======
+    // 로그인이 풀린 채로 보낸 요청은 401, PGRST301(JWT), 42501(권한 없음) 등으로 돌아옴
+    let authLost = false;     // 로그인이 풀린 것을 알아챔 → 자동 저장 멈춤
+    let loggingOut = false;   // 이 페이지에서 직접 로그아웃하는 중
+    function isAuthLost(e) {
+      if (!e || typeof e !== 'object') return false;
+      if (e.status === 401 || e.code === 'PGRST301' || e.code === '42501') return true;
+      return /JWT|permission denied|not authenticated|auth session missing/i.test(errCode(e));
+    }
+    function handleAuthLost() {
+      // 처음 불러오는 중(S.user 없음)에는 init 이 로그인 확인을 따로 하므로 여기서는 넘어감
+      if (authLost || loggingOut || !S.user) return;
+      authLost = true;
+      if (ED) {
+        clearTimeout(ED.timer); ED.timer = null;
+        clearTimeout(ED.retryTimer); ED.retryTimer = null;
+        if (ED.dirty) writeBackup(ED);   // 쓰던 글은 이 기기에 남김
+        setSaveState('error');
+      }
+      alert('로그인이 풀렸어요. 쓰던 글은 이 기기에 남아 있어요. 다시 로그인한 뒤 이 칸을 열면 불러올 수 있어요.');
+      window.location.href = 'login.html';
+    }
+
+    // ====== 토스트 메시지 ======
+    let toastTimer = null;
+    function showToast(message, type = 'success') {
+      const toast = document.getElementById('toast');
+      if (!toast) return;
+      toast.textContent = message;
+      toast.className = `toast show ${type}`;
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => { toast.className = `toast ${type}`; }, 3000);
+    }
+
+    async function copyText(text) {
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(text);
+          return true;
+        }
+      } catch (e) { /* 아래 방법으로 다시 시도 */ }
+      try {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.top = '-1000px';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        const ok = document.execCommand('copy');
+        ta.remove();
+        return ok;
+      } catch (e) {
+        return false;
+      }
+    }
+    async function copyAndToast(text, what) {
+      const ok = await copyText(text);
+      if (ok) showToast(`✅ ${what} 복사했어요`, 'success');
+      else showToast('❌ 복사하지 못했어요. 글을 직접 선택해서 복사해 주세요', 'error');
+    }
+
+    function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
+    function closeModal(id) { const el = document.getElementById(id); if (el) el.classList.add('hidden'); }
+
+    // =====================================================================
+    // 자료 연결 (Supabase)
+    // =====================================================================
+    function createSupabaseApi(sb) {
+      const must = ({ data, error, status }) => {
+        if (error) {
+          // 로그인 풀림(401)을 알아볼 수 있게 HTTP 상태를 오류에 붙여 둠
+          if (status && typeof error === 'object' && error.status === undefined) {
+            try { error.status = status; } catch (e) { /* 무시 */ }
+          }
+          throw error;
+        }
+        return data;
+      };
+      return {
+        async whoAmI() {
+          const { data: { user } } = await sb.auth.getUser();
+          if (!user) return null;
+          const { data: profile } = await sb
+            .from('profiles')
+            .select('display_name, role, school_id, schools(name, code)')
+            .eq('id', user.id)
+            .single();
+          return { user, profile };
+        },
+        async people() {
+          return must(await sb.from('report_people').select('name, sort, is_leader, is_merger, note').order('sort'));
+        },
+        async settings() {
+          const rows = must(await sb.from('report_settings').select('key, value'));
+          const o = {};
+          (rows || []).forEach(r => { o[r.key] = r.value; });
+          return o;
+        },
+        async slots() {
+          return must(await sb.from('report_slots').select(LIST_FIELDS.join(', ')).eq('year', REPORT_YEAR).order('sort'));
+        },
+        async slot(id) {
+          return must(await sb.from('report_slots').select('*').eq('id', id).maybeSingle());
+        },
+        async slotHead(id) {
+          return must(await sb.from('report_slots').select('id, version, status, updated_by, updated_at, claimed_by').eq('id', id).maybeSingle());
+        },
+        async save(id, version, b1, b2, name, newRev) {
+          return must(await sb.rpc('report_save', {
+            p_id: id, p_expected_version: version, p_body1: b1, p_body2: b2, p_name: name,
+            p_new_revision: !!newRev
+          }));
+        },
+        async setStatus(id, action, name, comment, version) {
+          return must(await sb.rpc('report_set_status', {
+            p_id: id, p_action: action, p_name: name,
+            p_comment: comment === undefined ? null : comment,
+            p_expected_version: version === undefined ? null : version
+          }));
+        },
+        async revisions(id) {
+          return must(await sb.from('report_revisions')
+            .select('id, version, body1, body2, status, action, by_name, at')
+            .eq('slot_id', id)
+            .order('at', { ascending: false })
+            .order('id', { ascending: false })
+            .limit(30));
+        },
+        async schoolRefs(schoolName) {
+          const sch = must(await sb.from('schools').select('id, name').eq('name', schoolName).maybeSingle());
+          if (!sch) return { school: null, curriculums: [], inspections: [] };
+          const [c, i] = await Promise.all([
+            sb.from('curriculums')
+              .select('id, title, sheet_type, spreadsheet_url, description, created_at, updated_at')
+              .eq('school_id', sch.id)
+              .order('created_at', { ascending: false }),
+            sb.from('inspections')
+              .select('id, title, spreadsheet_url, created_at, updated_at')
+              .eq('school_id', sch.id)
+              .order('created_at', { ascending: false })
+          ]);
+          if (c.error) throw c.error;
+          if (i.error) throw i.error;
+          return { school: sch, curriculums: c.data || [], inspections: i.data || [] };
+        },
+        // 함께 쓰는 계정이라 이 기기에서만 로그아웃(다른 선생님의 로그인은 그대로)
+        async logout() { await sb.auth.signOut({ scope: 'local' }); }
+      };
+    }
+
+    // =====================================================================
+    // 데모 (로컬 + ?demo 에서만) — 가짜 이름·가짜 글, 서버에 아무것도 보내지 않음
+    // =====================================================================
+    function buildDemoData() {
+      const now = Date.now();
+      const ago = (min) => new Date(now - min * 60000).toISOString();
+      const people = [
+        { name: '교사A', sort: 1, is_leader: true, is_merger: false, note: '공립 팀장 (데모)' },
+        { name: '교사B', sort: 2, is_leader: true, is_merger: false, note: '사립 팀장 (데모)' },
+        { name: '교사C', sort: 3, is_leader: false, is_merger: true, note: '합본 담당 (데모)' },
+        { name: '교사D', sort: 4, is_leader: false, is_merger: false, note: null },
+        { name: '교사E', sort: 5, is_leader: false, is_merger: false, note: null },
+        { name: '교사F', sort: 6, is_leader: false, is_merger: false, note: null },
+        { name: '교사G', sort: 7, is_leader: false, is_merger: false, note: null },
+        { name: '교사H', sort: 8, is_leader: false, is_merger: false, note: null },
+        { name: '교사I', sort: 9, is_leader: false, is_merger: false, note: null },
+        { name: '교사J', sort: 10, is_leader: false, is_merger: false, note: null }
+      ];
+      const base = {
+        year: 2027, writers: [], reviewer: null, label2: null, school_name: null, anchor: null, anchor_part: null,
+        example1: null, example2: null, example_note: null, body1: '', body2: '', status: 'empty', version: 0,
+        updated_by: null, updated_at: null, claimed_by: null, review_comment: null, reviewed_by: null, reviewed_at: null
+      };
+      const mk = (o) => Object.assign({}, base, o);
+      const SUBJ = { kind: 'subject', label1: '2) 자료 분석', label2: '3) 환류 방안' };
+      const SCH = { kind: 'school', label1: '① 특별한 문제점', label2: '② 개선 사항' };
+      const TRK = { kind: 'track', label1: '진행 메모', label2: null };
+      const exS1 = '(데모 예시) 가상 학교 10곳 가운데 7곳이 1학년에 <공통국어1>과 <공통국어2>를 4학점씩 편성하였다.\n(데모 예시) 2학년 선택 과목은 <문학>과 <화법과 언어>를 중심으로 개설하였다.';
+      const exS2 = '(데모 예시) 학생 선택 폭을 넓히도록 공동 교육과정 연계 방법을 안내한다.\n(데모 예시) 학기별 이수 학점이 한쪽으로 몰리지 않도록 다시 살펴보게 한다.';
+      const exSch = '(데모 예시) 이 학교는 3학년 2학기에 진로 선택 과목이 몰려 있다. 학기별 학점 차이가 크지 않도록 조정하도록 안내한다.';
+      const noteSch = '작년 보고서는 학교마다 한 문단이어서 ①·② 구분 없이 보여 드려요. (데모)';
+      const S1 = 'Ⅱ부 공립 3. 과목별 편성 현황';
+      const S2 = 'Ⅱ부 공립 4. 학교별 2027학년도 입학생 교육과정 편성표 분석';
+      const P1 = 'Ⅱ부 사립 3. 과목별 편성 현황';
+      const P2 = 'Ⅱ부 사립 4. 학교별 2027학년도 입학생 교육과정 편성표 분석';
+      const slots = [
+        mk(Object.assign({}, TRK, { id: 'trk-01', part: '공통', section: 'Ⅰ부 교육과정 편성·운영의 기본 방향', title: 'Ⅰ부 기본 방향 (내용 보완 · 데모)', sort: 10, writers: ['교사D'], reviewer: '교사C', status: 'draft', version: 2, body1: '(데모 글) 올해 바뀐 지침 두 가지를 반영해야 함.\n- 학점 기준 문구 고치기\n- 공동 교육과정 안내 문단 추가', updated_by: '교사D', updated_at: ago(300) })),
+        mk(Object.assign({}, TRK, { id: 'trk-03', part: '공립', section: 'Ⅱ부 공립 1. 학기별 이수 학점 · 2. 교과 영역별 이수', title: '1·2 학기별·영역별 이수 현황 (공립 내용 기록 · 데모)', sort: 20, writers: ['교사E', '교사F'], reviewer: '교사C' })),
+        mk(Object.assign({}, SUBJ, {
+          id: 'pub-subj-01', part: '공립', section: S1, title: '가. 국어 교과', sort: 30, writers: ['교사D', '교사E'], reviewer: '교사A',
+          example1: exS1, example2: exS2, example_note: '2026학년도 입학생 보고서 – 공립 3. 가. 국어 교과 (데모)',
+          status: 'submitted', version: 5,
+          body1: '(데모 글) 가상 학교들은 <공통국어1>을 4 학점으로 편성하여  바람직한 구조를 갖추었다.\n<인경> 과목과 <미적분1>, <확율과 통계>를 함께 개설한 학교가 매우 많았다.',
+          body2: '(데모 글) 선택 과목 개설 현황을 학교끼리 나누는 자리를 마련한다.\n<독서와 작문 은 2학년에 두는 경우가 많았다.',
+          updated_by: '교사E', updated_at: ago(95)
+        })),
+        mk(Object.assign({}, SUBJ, {
+          id: 'pub-subj-02', part: '공립', section: S1, title: '나. 수학 교과', sort: 40, writers: ['교사F'], reviewer: '교사A',
+          example1: exS1.replace(/국어/g, '수학'), example2: exS2, example_note: '2026학년도 입학생 보고서 – 공립 3. 나. 수학 교과 (데모)',
+          status: 'returned', version: 4, body1: '(데모 글) 1학년 수학은 모든 학교가 같은 학점으로 편성하였다.', body2: '',
+          updated_by: '교사F', updated_at: ago(60 * 26), review_comment: '(데모) 환류 방안을 한두 문장 더 써 주세요.', reviewed_by: '교사A', reviewed_at: ago(60 * 20)
+        })),
+        mk(Object.assign({}, SUBJ, {
+          id: 'pub-subj-03', part: '공립', section: S1, title: '다. 영어 교과', sort: 50, writers: ['교사A'], reviewer: '교사C',
+          example1: exS1.replace(/국어/g, '영어'), example2: exS2, example_note: '2026학년도 입학생 보고서 – 공립 3. 다. 영어 교과 (데모)',
+          status: 'approved', version: 6, body1: '(데모 글) 영어 교과는 학교마다 비슷한 흐름으로 편성되어 있었다.', body2: '(데모 글) 진로 선택 과목 개설 정보를 함께 나눈다.',
+          updated_by: '교사A', updated_at: ago(60 * 30), reviewed_by: '교사C', reviewed_at: ago(60 * 28)
+        })),
+        mk(Object.assign({}, SUBJ, {
+          id: 'pub-subj-04', part: '공립', section: S1, title: '라. 사회(역사/도덕 포함) 교과', sort: 60, writers: ['교사G', '교사H'], reviewer: '교사A',
+          example1: exS1.replace(/국어/g, '사회'), example2: exS2, example_note: '2026학년도 입학생 보고서 – 공립 3. 라. 사회(역사/도덕 포함) 교과 (데모)'
+        })),
+        mk(Object.assign({}, SCH, {
+          id: 'pub-sch-01', part: '공립', section: S2, title: '가상고등학교', school_name: '가상고', sort: 70, writers: ['교사D', '교사E'], reviewer: '교사A',
+          example1: exSch, example_note: noteSch, claimed_by: '교사E', status: 'draft', version: 1,
+          body1: '(데모 글) 2학년 1학기 학점이 다른 학기보다 많다.', updated_by: '교사E', updated_at: ago(12)
+        })),
+        mk(Object.assign({}, SCH, {
+          id: 'pub-sch-02', part: '공립', section: S2, title: '샘플여자고등학교', school_name: '샘플여자고', sort: 80, writers: ['교사F', '교사G'], reviewer: '교사A',
+          example1: exSch, example_note: noteSch
+        })),
+        mk(Object.assign({}, SCH, {
+          id: 'pub-sch-03', part: '공립', section: S2, title: '연습고등학교(자율형 공립고)', school_name: '연습고', sort: 90, writers: ['교사H'], reviewer: '교사A',
+          example_note: '작년 보고서에는 이 학교가 없어요(올해 새로 들어온 칸). (데모)', status: 'submitted', version: 3,
+          body1: '(데모 글) 특별한 문제점은 없다.', body2: '(데모 글) 학기별 학점 배치를 한 번 더 살펴보도록 안내한다.', updated_by: '교사H', updated_at: ago(180)
+        })),
+        mk(Object.assign({}, TRK, { id: 'trk-04', part: '사립', section: 'Ⅱ부 사립 1. 학기별 이수 학점 · 2. 교과 영역별 이수', title: '1·2 학기별·영역별 이수 현황 (사립 내용 기록 · 데모)', sort: 100, writers: ['교사I'], reviewer: '교사C' })),
+        mk(Object.assign({}, SUBJ, {
+          id: 'pri-subj-01', part: '사립', section: P1, title: '가. 국어 교과', sort: 110, writers: ['교사I'], reviewer: '교사B',
+          example1: exS1, example2: exS2, example_note: '2026학년도 입학생 보고서 – 사립 3. 가. 국어 교과 (데모)',
+          status: 'draft', version: 2, body1: '(데모 글) 사립 학교들은 <공통국어1>, <공통국어2>를 1학년에 두었다.', updated_by: '교사I', updated_at: ago(45)
+        })),
+        mk(Object.assign({}, SUBJ, {
+          id: 'pri-subj-02', part: '사립', section: P1, title: '나. 수학 교과', sort: 120, writers: ['교사J', '교사D'], reviewer: '교사B',
+          example1: exS1.replace(/국어/g, '수학'), example2: exS2, example_note: '2026학년도 입학생 보고서 – 사립 3. 나. 수학 교과 (데모)'
+        })),
+        mk(Object.assign({}, SCH, {
+          id: 'pri-sch-01', part: '사립', section: P2, title: '예시고등학교', school_name: '예시고', sort: 130, writers: ['교사I', '교사J'], reviewer: '교사B',
+          example1: exSch, example_note: noteSch, status: 'submitted', version: 4,
+          body1: '(데모 글) 3학년 2학기 학점이 적다.', body2: '(데모 글) 학기별 학점을 고르게 나누도록 안내한다.', updated_by: '교사J', updated_at: ago(130)
+        })),
+        mk(Object.assign({}, SCH, {
+          id: 'pri-sch-02', part: '사립', section: P2, title: '데모여자고등학교', school_name: '데모여자고', sort: 140, writers: ['교사D'], reviewer: '교사B',
+          example1: exSch, example_note: noteSch
+        })),
+        mk(Object.assign({}, TRK, { id: 'trk-05', part: '공통', section: 'Ⅲ부 교육감 승인 과목', title: 'Ⅲ부 교육감 승인 과목 (데모)', sort: 150, writers: ['교사C'], reviewer: '교사C' }))
+      ];
+      const revisions = [];
+      let rid = 1;
+      slots.forEach(s => {
+        if (s.status === 'empty') return;
+        revisions.push({ id: rid++, slot_id: s.id, version: Math.max(1, s.version - 1), body1: s.body1, body2: s.body2, status: 'draft', action: 'save', by_name: s.updated_by || s.writers[0], at: s.updated_at || ago(400) });
+        if (s.status === 'submitted' || s.status === 'approved' || s.status === 'returned') {
+          revisions.push({ id: rid++, slot_id: s.id, version: s.version, body1: s.body1, body2: s.body2, status: 'submitted', action: 'submit', by_name: s.writers[0], at: s.updated_at });
+        }
+        if (s.status === 'approved' || s.status === 'returned') {
+          revisions.push({ id: rid++, slot_id: s.id, version: s.version, body1: s.body1, body2: s.body2, status: s.status, action: s.status === 'approved' ? 'approve' : 'return', by_name: s.reviewed_by, at: s.reviewed_at });
+        }
+      });
+      const settings = {
+        title: '2027학년도 고등학교 입학생 교육과정 분석보고서 (데모)',
+        deadline: '2026-12-03T12:00:00+09:00',
+        rules: [
+          '(데모 규칙) 사실과 분석 위주로 쓰고, ‘바람직하다’, ‘적절하다’ 같은 평가하는 말은 쓰지 않습니다.',
+          '(데모 규칙) 과목명은 <과목명>처럼 꺾쇠로 감싸고 공식 과목명으로 씁니다.',
+          '(데모 규칙) 학점은 숫자에 붙여 씁니다. (예: 3학점)'
+        ],
+        subjects: ['공통국어1', '공통국어2', '화법과 언어', '독서와 작문', '문학', '공통수학1', '공통수학2', '대수', '미적분Ⅰ',
+          '확률과 통계', '기하', '미적분Ⅱ', '공통영어1', '공통영어2', '영어Ⅰ', '영어Ⅱ', '통합사회1', '통합사회2', '한국사1', '한국사2',
+          '사회와 문화', '세계시민과 지리', '인간과 경제활동', '통합과학1', '통합과학2', '물리학', '화학', '생명과학', '지구과학', '정보'],
+        abbrev: { '인경': '인간과 경제활동', '확통': '확률과 통계', '사문': '사회와 문화', '세지': '세계시민과 지리' }
+      };
+      const refs = {
+        '가상고': {
+          curriculums: [
+            { id: 'dc3', title: '(데모) 2027학년도 입학생 편성표 2차본', sheet_type: 'second_draft', spreadsheet_url: 'https://docs.google.com/spreadsheets/d/DEMO-SHEET-0003/edit#gid=0', description: '데모용 가짜 링크예요', created_at: ago(60 * 24 * 3), updated_at: ago(60 * 24 * 3) },
+            { id: 'dc2', title: '(데모) 2027학년도 입학생 편성표 1차본', sheet_type: 'first_draft', spreadsheet_url: 'https://docs.google.com/spreadsheets/d/DEMO-SHEET-0002/edit', description: null, created_at: ago(60 * 24 * 20), updated_at: ago(60 * 24 * 20) },
+            { id: 'dc1', title: '(데모) 연습용 편성표', sheet_type: 'practice', spreadsheet_url: 'https://docs.google.com/spreadsheets/d/DEMO-SHEET-0001/edit', description: null, created_at: ago(60 * 24 * 40), updated_at: ago(60 * 24 * 40) }
+          ],
+          inspections: [
+            { id: 'di1', title: '(데모) 2차 편성표 점검 결과', spreadsheet_url: 'https://docs.google.com/spreadsheets/d/DEMO-CHECK-0001/edit', created_at: ago(60 * 24 * 2), updated_at: ago(60 * 24 * 2) }
+          ]
+        },
+        '샘플여자고': {
+          curriculums: [
+            { id: 'dc4', title: '(데모) 2027학년도 입학생 편성표 최종본', sheet_type: 'final', spreadsheet_url: 'https://docs.google.com/spreadsheets/d/DEMO-SHEET-0004/edit', description: null, created_at: ago(60 * 24), updated_at: ago(60 * 24) }
+          ],
+          inspections: []
+        },
+        '연습고': { curriculums: [], inspections: [] },
+        '예시고': {
+          curriculums: [
+            { id: 'dc5', title: '(데모) 2027학년도 입학생 편성표 (PDF)', sheet_type: 'first_draft', spreadsheet_url: 'https://example.com/demo.pdf', description: null, created_at: ago(60 * 24 * 5), updated_at: ago(60 * 24 * 5) }
+          ],
+          inspections: []
+        }
+        // '데모여자고'는 일부러 없음 → "학교 목록에서 찾지 못했어요" 안내 확인용
+      };
+      return { people, slots, revisions, settings, refs, nextRev: rid };
+    }
+
+    function createMockApi() {
+      const role = QS.get('demo') === 'admin' ? 'admin' : 'support';
+      const db = buildDemoData();
+      const wait = (ms = 180) => new Promise(r => setTimeout(r, ms));
+      const clone = (o) => JSON.parse(JSON.stringify(o));
+      const fail = (code) => { throw new Error(code); };
+      const byAtDesc = (a, b) => (Date.parse(b.at) - Date.parse(a.at)) || (b.id - a.id);
+      const find = (id) => db.slots.find(x => x.id === id);
+      function who(p_name) {
+        const name = String(p_name || '').trim();
+        const isAdmin = role === 'admin';
+        let isMerger = false;
+        if (name === '') {
+          if (!isAdmin) fail('UNKNOWN_NAME');
+        } else {
+          const p = db.people.find(x => x.name === name);
+          if (!p) { if (!isAdmin) fail('UNKNOWN_NAME'); } else isMerger = !!p.is_merger;
+        }
+        return { name, isAdmin, isMerger, by: name === '' ? '관리자' : name };
+      }
+      function addRev(s, action, by) {
+        const now = new Date().toISOString();
+        db.revisions.push({ id: db.nextRev++, slot_id: s.id, version: s.version, body1: s.body1, body2: s.body2, status: s.status, action, by_name: by, at: now, started_at: now });
+      }
+      return {
+        async whoAmI() {
+          await wait(80);
+          return {
+            user: { id: 'demo-user', email: 'demo@example.com' },
+            profile: { display_name: role === 'admin' ? '데모 관리자' : '데모 지원단', role, school_id: null, schools: null }
+          };
+        },
+        async people() { await wait(); return clone(db.people); },
+        async settings() { await wait(); return clone(db.settings); },
+        async slots() {
+          await wait();
+          return clone(db.slots.slice().sort((a, b) => a.sort - b.sort).map(s => {
+            const o = {};
+            LIST_FIELDS.forEach(f => { o[f] = s[f]; });
+            return o;
+          }));
+        },
+        async slot(id) { await wait(); const s = find(id); return s ? clone(s) : null; },
+        async slotHead(id) {
+          await wait(60);
+          const s = find(id);
+          return s ? { id: s.id, version: s.version, status: s.status, updated_by: s.updated_by, updated_at: s.updated_at, claimed_by: s.claimed_by } : null;
+        },
+        async save(id, version, b1, b2, p_name, p_new_revision) {
+          await wait(250);
+          const w = who(p_name);
+          const s = find(id);
+          if (!s) fail('NOT_FOUND');
+          const isWriter = w.name !== '' && s.writers.includes(w.name);
+          const elevated = w.isAdmin || w.isMerger || (w.name !== '' && s.reviewer === w.name);
+          if (!(isWriter || elevated)) fail('NOT_WRITER');
+          if (s.status === 'approved' && !elevated) fail('LOCKED');
+          if (s.status === 'submitted' && !elevated) fail('SUBMITTED');
+          if (version === null || version === undefined || s.version !== version) fail('VERSION_CONFLICT');
+          s.body1 = String(b1 || '').slice(0, MAX_LEN);
+          s.body2 = String(b2 || '').slice(0, MAX_LEN);
+          if (s.status === 'empty' && (hasText(s.body1) || hasText(s.body2))) s.status = 'draft';
+          s.version += 1;
+          s.updated_by = w.by;
+          s.updated_at = new Date().toISOString();
+          // 서버와 같은 규칙: 같은 사람의 저장 줄이고, 그 줄을 처음 만든 지 10분 안이고,
+          // 글이 절반 넘게 줄지 않았고, 새 기록 요청이 아닐 때만 그 줄을 고쳐 씀(started_at 은 그대로)
+          const last = db.revisions.filter(r => r.slot_id === id).sort(byAtDesc)[0];
+          const newLen = s.body1.length + s.body2.length;
+          const lastLen = last ? String(last.body1 || '').length + String(last.body2 || '').length : 0;
+          if (last && !p_new_revision && last.action === 'save' && last.by_name === w.by &&
+            Date.now() - Date.parse(last.started_at || last.at) < 600000 && newLen * 2 >= lastLen) {
+            Object.assign(last, { version: s.version, body1: s.body1, body2: s.body2, status: s.status, at: s.updated_at });
+          } else {
+            addRev(s, 'save', w.by);
+          }
+          return clone(s);
+        },
+        async setStatus(id, action, p_name, comment, version) {
+          await wait(250);
+          const act = String(action || '').trim();
+          if (['submit', 'unsubmit', 'approve', 'return', 'claim'].indexOf(act) < 0) fail('BAD_ACTION');
+          const w = who(p_name);
+          const s = find(id);
+          if (!s) fail('NOT_FOUND');
+          const isWriter = w.name !== '' && s.writers.includes(w.name);
+          const isReviewer = w.name !== '' && s.reviewer === w.name;
+          if (act === 'submit' || act === 'unsubmit' || act === 'claim') {
+            if (!(isWriter || w.isAdmin)) fail('NOT_WRITER');
+          } else if (!(isReviewer || w.isMerger || w.isAdmin)) {
+            fail('FORBIDDEN');
+          }
+          if (version !== null && version !== undefined && s.version !== version) fail('VERSION_CONFLICT');
+          const cm = String(comment || '').trim().slice(0, 2000) || null;
+          const now = new Date().toISOString();
+          if (act === 'submit') {
+            if (['empty', 'draft', 'returned'].indexOf(s.status) < 0) fail('BAD_STATUS');
+            if (!hasText(s.body1) && !hasText(s.body2)) fail('EMPTY');
+            s.status = 'submitted'; s.version += 1;
+          } else if (act === 'unsubmit') {
+            if (s.status !== 'submitted') fail('BAD_STATUS');
+            s.status = 'draft'; s.version += 1;
+          } else if (act === 'approve') {
+            if (s.status !== 'submitted') fail('BAD_STATUS');
+            s.status = 'approved'; s.version += 1; s.review_comment = cm; s.reviewed_by = w.by; s.reviewed_at = now;
+          } else if (act === 'return') {
+            if (s.status !== 'submitted' && s.status !== 'approved') fail('BAD_STATUS');
+            if (!cm) fail('COMMENT_REQUIRED');
+            s.status = 'returned'; s.version += 1; s.review_comment = cm; s.reviewed_by = w.by; s.reviewed_at = now;
+          } else {
+            s.claimed_by = (w.name === '' || s.claimed_by === w.name) ? null : w.name;
+          }
+          addRev(s, act, w.by);
+          return clone(s);
+        },
+        async revisions(id) { await wait(); return clone(db.revisions.filter(r => r.slot_id === id).sort(byAtDesc).slice(0, 30)); },
+        async schoolRefs(schoolName) {
+          await wait();
+          const r = db.refs[schoolName];
+          if (!r) return { school: null, curriculums: [], inspections: [] };
+          return Object.assign({ school: { id: 'demo-' + schoolName, name: schoolName } }, clone(r));
+        },
+        async logout() { await wait(); },
+        // 데모 전용: 다른 선생님이 이 칸을 저장한 것처럼 만들기 (동시 저장 충돌 시험용)
+        demoTouch(id) {
+          const s = find(id);
+          if (!s) return null;
+          const other = s.writers.find(n => n !== S.name) || people0(db, S.name);
+          s.body1 = (s.body1 ? s.body1 + '\n' : '') + `(데모) ${other}님이 이 문장을 덧붙였어요.`;
+          if (s.status === 'empty') s.status = 'draft';
+          s.version += 1;
+          s.updated_by = other;
+          s.updated_at = new Date().toISOString();
+          addRev(s, 'save', other);
+          return other;
+        }
+      };
+    }
+    function people0(db, except) {
+      const p = db.people.find(x => x.name !== except);
+      return p ? p.name : '교사Z';
+    }
+
+    // =====================================================================
+    // 시작
+    // =====================================================================
+    async function init() {
+      try {
+        if (DEMO) {
+          api = createMockApi();
+          showDemoBanner();
+        } else {
+          const mod = await import(SUPABASE_JS);
+          supabase = mod.createClient(SUPABASE_URL, SUPABASE_KEY);
+          api = createSupabaseApi(supabase);
+          // 로그인이 풀리면(다른 탭에서 로그아웃, 로그인 연장 실패 등) 바로 알림
+          // 이 페이지에서 직접 로그아웃할 때는 알리지 않음
+          supabase.auth.onAuthStateChange((event) => {
+            if (event === 'SIGNED_OUT' && !loggingOut) setTimeout(handleAuthLost, 0);
+          });
+        }
+        const who = await api.whoAmI();
+        if (!who) {
+          alert('로그인이 필요합니다.');
+          window.location.href = 'login.html';
+          return;
+        }
+        if (!who.profile) {
+          alert('프로필을 불러오지 못했습니다. 다시 로그인해 주세요.');
+          window.location.href = 'login.html';
+          return;
+        }
+        if (who.profile.role !== 'admin' && who.profile.role !== 'support') {
+          alert('관리자와 교육과정지원단만 들어올 수 있는 메뉴입니다.');
+          window.location.href = 'dashboard.html';
+          return;
+        }
+        S.user = who.user;
+        S.profile = who.profile;
+        S.isAdmin = who.profile.role === 'admin';
+        renderUserInfo();
+        $('#view').innerHTML = '<div class="loading">보고서 자료를 불러오는 중입니다...</div>';
+        await loadAll();
+        const ok = resolveName();
+        $('#strip').classList.remove('hidden');
+        $('#tabs').classList.remove('hidden');
+        renderStrip();
+        window.addEventListener('hashchange', route);
+        await route();
+        if (!ok) openNamePicker(true);
+        startPolling();
+      } catch (e) {
+        console.error(e);
+        $('#view').innerHTML = `
+          <div class="empty-box">
+            <div class="t">보고서 자료를 불러오지 못했어요</div>
+            <div class="s">${esc(errMessage(e))}</div>
+            <div class="s">잠시 뒤 새로고침해 보세요. 계속 안 되면 관리자에게 알려 주세요.</div>
+          </div>`;
+      }
+    }
+
+    function showDemoBanner() {
+      const el = $('#demoBanner');
+      el.innerHTML = `
+        <b>데모 모드</b>
+        <span>가짜 이름(교사A~J)과 가짜 글로 움직이는 연습 화면이에요. 실제 서버에는 아무것도 보내지 않고, 새로고침하면 처음 상태로 돌아가요.</span>
+        <span>지금: ${QS.get('demo') === 'admin' ? '관리자 계정' : '지원단 계정'}</span>
+        <a href="?demo#mine">지원단으로 보기</a>
+        <a href="?demo=admin#mine">관리자로 보기</a>`;
+      el.classList.remove('hidden');
+    }
+
+    function renderUserInfo() {
+      const p = S.profile;
+      const label = S.isAdmin ? '관리자' : '교육과정지원단';
+      // 지원단 계정은 여러 선생님이 함께 쓰므로 비밀번호는 관리자만 바꿈(정보수정 버튼 숨김)
+      const canChangePw = !(p && p.role === 'support');
+      document.getElementById('userInfo').innerHTML = `
+          <span class="badge badge-admin">${label}</span>
+          <span class="user-name">${esc(p.display_name)}</span>
+          ${canChangePw ? `<button class="profile-btn" onclick="openPasswordModal()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px;"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>정보수정</button>` : ''}
+          <button class="logout-btn" onclick="handleLogout()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px;"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>로그아웃</button>
+        `;
+    }
+
+    async function loadAll() {
+      const [people, settings, slots] = await Promise.all([api.people(), api.settings(), api.slots()]);
+      S.people = (people || []).slice().sort((a, b) => (a.sort - b.sort) || String(a.name).localeCompare(String(b.name), 'ko'));
+      S.peopleByName = new Map(S.people.map(p => [p.name, p]));
+      S.settings = settings || {};
+      prepSubjects();
+      setSlots(slots || []);
+      S.lastLoad = Date.now();
+      S.loaded = true;
+      const title = typeof S.settings.title === 'string' && S.settings.title ? S.settings.title : DEFAULTS.title;
+      $('#pageDesc').textContent = `${title} · 함께 쓰고, 팀장이 확인하고, 합본으로 모아요.`;
+    }
+
+    function setSlots(rows) {
+      S.slots = rows.slice().sort((a, b) => (a.sort - b.sort) || String(a.id).localeCompare(String(b.id)));
+      S.slots.forEach(s => {
+        if (!Array.isArray(s.writers)) s.writers = [];
+        if (s.body1 === null || s.body1 === undefined) s.body1 = '';
+        if (s.body2 === null || s.body2 === undefined) s.body2 = '';
+      });
+      S.slotById = new Map(S.slots.map(s => [s.id, s]));
+    }
+
+    // 저장·상태 변경 결과(칸 한 줄)를 목록에도 반영
+    function applyRowToList(row) {
+      if (!row || !row.id) return;
+      const ex = S.slotById.get(row.id);
+      if (!ex) return;
+      LIST_FIELDS.forEach(f => { if (f in row) ex[f] = row[f]; });
+      if (!Array.isArray(ex.writers)) ex.writers = [];
+      if (ex.body1 === null || ex.body1 === undefined) ex.body1 = '';
+      if (ex.body2 === null || ex.body2 === undefined) ex.body2 = '';
+    }
+
+    async function refreshSlots() {
+      try {
+        const rows = await api.slots();
+        setSlots(rows || []);
+        S.lastLoad = Date.now();
+        renderTabs();
+        if (!ED) {
+          const view = $('#view');
+          const ae = document.activeElement;
+          const sel = window.getSelection ? window.getSelection() : null;
+          const busy = (ae && view.contains(ae) && /^(SELECT|INPUT|TEXTAREA)$/.test(ae.tagName)) ||
+            (sel && !sel.isCollapsed && sel.anchorNode && view.contains(sel.anchorNode));
+          if (!busy) {
+            const y = window.scrollY;
+            renderList();
+            window.scrollTo(0, y);
+          }
+        } else if (ED.refs && ED.refs.type === 'subject') {
+          renderRefs();
+        }
+      } catch (e) {
+        console.warn('refreshSlots', e);
+      }
+    }
+
+    function startPolling() {
+      setInterval(() => {
+        if (document.hidden) return;
+        renderStrip();
+        if (ED) pollSlot();
+        else if (Date.now() - S.lastLoad > 60000) refreshSlots();
+      }, 20000);
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+          // 다른 앱으로 넘어갈 때(휴대폰) 쓰던 글을 바로 저장
+          if (ED && ED.dirty) saveNow();
+          return;
+        }
+        if (ED) pollSlot();
+        else if (Date.now() - S.lastLoad > 15000) refreshSlots();
+      });
+    }
+
+    // ====== 과목명 목록 준비 (점검용) ======
+    function normSubj(s) {
+      return String(s).normalize('NFC')
+        .replace(/[\s·ㆍ･・‧∙•]/g, '')
+        .replace(/Ⅲ/g, '3').replace(/Ⅱ/g, '2').replace(/Ⅰ/g, '1')
+        .replace(/III/g, '3').replace(/II/g, '2').replace(/I(?![A-Za-z])/g, '1')
+        .toLowerCase();
+    }
+    function prepSubjects() {
+      const subs = Array.isArray(S.settings.subjects) ? S.settings.subjects.filter(x => typeof x === 'string' && x.trim()) : [];
+      S.subjectSet = new Set(subs);
+      S.subjectNorm = new Map();
+      subs.forEach(n => { const k = normSubj(n); if (!S.subjectNorm.has(k)) S.subjectNorm.set(k, n); });
+      const ab = S.settings.abbrev;
+      S.abbrev = (ab && typeof ab === 'object' && !Array.isArray(ab)) ? ab : {};
+    }
+
+    // =====================================================================
+    // 이름 고르기
+    // =====================================================================
+    function me() { return S.name ? (S.peopleByName.get(S.name) || null) : null; }
+    function canSeeReview() { const p = me(); return S.isAdmin || !!(p && (p.is_leader || p.is_merger)); }
+    function nameLabel() {
+      if (S.name === '') return '관리자 (이름 없이)';
+      return S.name || '이름을 골라 주세요';
+    }
+    function personTags(p) {
+      if (!p) return '';
+      return (p.is_leader ? '<span class="tag tag-leader">팀장</span>' : '') +
+        (p.is_merger ? '<span class="tag tag-merger">합본 담당</span>' : '');
+    }
+    function resolveName() {
+      const saved = lsGet(LS_NAME);
+      if (saved === null) return false;
+      if (saved === '' && S.isAdmin) { S.name = ''; return true; }
+      if (saved && S.peopleByName.has(saved)) { S.name = saved; return true; }
+      return false;
+    }
+    function openNamePicker(force) {
+      S.nameForced = !!force || S.name === null;
+      const grid = $('#nameGrid');
+      let html = S.people.map(p => `
+        <button type="button" class="name-btn${p.name === S.name ? ' current' : ''}" data-act="pick-name" data-name="${esc(p.name)}">
+          <span class="nm">${esc(p.name)}</span>
+          <span class="nt">${personTags(p)}${p.note ? `<span>${esc(p.note)}</span>` : ''}</span>
+        </button>`).join('');
+      if (S.isAdmin) {
+        html += `
+        <button type="button" class="name-btn admin-pick${S.name === '' ? ' current' : ''}" data-act="pick-admin">
+          <span class="nm">관리자</span>
+          <span class="nt"><span class="tag tag-admin">이름 없이</span><span>모든 칸을 고치고 확인할 수 있어요</span></span>
+        </button>`;
+      }
+      if (!S.people.length) {
+        html = `<div class="empty-mini" style="grid-column:1/-1;">명단이 아직 비어 있어요. 관리자에게 알려 주세요.</div>` + (S.isAdmin ? html : '');
+      }
+      grid.innerHTML = html;
+      $('#nameCancel').classList.toggle('hidden', S.nameForced);
+      openModal('nameModal');
+    }
+    async function pickName(name) {
+      if (ED && ED.dirty) await saveNow();
+      S.name = name;
+      lsSet(LS_NAME, name);
+      S.nameForced = false;
+      closeModal('nameModal');
+      showToast(`✅ ${nameLabel()}(으)로 들어왔어요`, 'success');
+      renderStrip();
+      renderTabs();
+      if (ED) {
+        ED.perm = perms(ED.slot);
+        renderEditor();
+      } else {
+        const r = parseHash();
+        if (r.view === 'review' && !canSeeReview()) { location.hash = 'mine'; return; }
+        renderList();
+      }
+    }
+
+    // =====================================================================
+    // 권한 (서버 규칙과 같게 — 실제 판단은 서버가 함)
+    // =====================================================================
+    function perms(s) {
+      const chosen = S.name !== null;
+      const name = S.name || '';
+      const p = name ? S.peopleByName.get(name) : null;
+      const isAdmin = S.isAdmin;
+      const isWriter = !!name && (s.writers || []).includes(name);
+      const isReviewer = !!name && s.reviewer === name;
+      const isMerger = !!(p && p.is_merger);
+      const elevated = isAdmin || isMerger || isReviewer;
+      const st = s.status;
+      let canEdit = false;
+      let reason = '';
+      if (!chosen) reason = '이름을 먼저 골라 주세요.';
+      else if (!isWriter && !elevated) reason = '내 담당 칸이 아니라서 읽기만 할 수 있어요.';
+      else if (!elevated && st === 'approved') reason = ERROR_TEXT.LOCKED + '.';
+      else if (!elevated && st === 'submitted') reason = ERROR_TEXT.SUBMITTED + '.';
+      else canEdit = true;
+      const writerish = chosen && (isWriter || isAdmin);
+      const reviewish = chosen && (isReviewer || isMerger || isAdmin);
+      return {
+        isAdmin, isWriter, isReviewer, isMerger, elevated, canEdit, reason,
+        canSubmit: writerish && (st === 'empty' || st === 'draft' || st === 'returned'),
+        canUnsubmit: writerish && st === 'submitted',
+        canApprove: reviewish && st === 'submitted',
+        canReturn: reviewish && (st === 'submitted' || st === 'approved'),
+        canClaim: writerish
+      };
+    }
+
+    // =====================================================================
+    // 위쪽 정보 줄 · 탭
+    // =====================================================================
+    function ddayInfo() {
+      const dl = new Date(S.settings.deadline || DEFAULTS.deadline);
+      if (isNaN(dl)) return { label: '-', sub: '', cls: '' };
+      const now = new Date();
+      const p = tparts(dl);
+      const when = `${p.month}월 ${p.day}일(${p.weekday}) ${p.hour}:${p.minute}까지 팀장에게 제출`;
+      if (now >= dl) return { label: '마감', sub: `${p.month}월 ${p.day}일 ${p.hour}:${p.minute} 마감 시각이 지났어요`, cls: 'over' };
+      const day = (d) => Math.floor((d.getTime() + 9 * 3600000) / 86400000);
+      const n = day(dl) - day(now);
+      if (n <= 0) {
+        const left = dl - now;
+        const h = Math.floor(left / 3600000);
+        const m = Math.floor((left % 3600000) / 60000);
+        return { label: 'D-day', sub: `오늘 ${p.hour}:${p.minute} 마감 · ${h}시간 ${m}분 남음`, cls: 'today' };
+      }
+      return { label: `D-${n}`, sub: when, cls: n <= 3 ? 'soon' : '' };
+    }
+    function renderStrip() {
+      const el = $('#strip');
+      if (!el || !S.loaded) return;
+      const dd = ddayInfo();
+      const sched = Array.isArray(S.settings.schedule) && S.settings.schedule.length ? S.settings.schedule : DEFAULTS.schedule;
+      el.innerHTML = `
+        <div class="strip-card">
+          <div class="strip-label">지금 쓰는 이름</div>
+          <div class="strip-main"><span>${esc(nameLabel())}</span>${personTags(me())}<button type="button" class="small-btn" data-act="open-name">이름 바꾸기</button></div>
+          <div class="strip-sub">함께 쓰는 계정이에요. 꼭 내 이름으로 골라 주세요.</div>
+        </div>
+        <div class="strip-card">
+          <div class="strip-label">작성 마감</div>
+          <div class="strip-main"><span class="dday ${dd.cls}">${esc(dd.label)}</span></div>
+          <div class="strip-sub">${esc(dd.sub)}</div>
+        </div>
+        <div class="strip-card sched">
+          <div class="strip-label">일정</div>
+          <ul class="schedule">${sched.map(x => `<li><b>${esc(x.label)}</b> ${esc(x.text)}</li>`).join('')}</ul>
+        </div>`;
+    }
+
+    function mySlots() { return S.name ? S.slots.filter(s => (s.writers || []).includes(S.name)) : []; }
+    function reviewQueue() {
+      const name = S.name || '';
+      const p = me();
+      const wide = S.isAdmin || !!(p && p.is_merger);
+      const sub = S.slots.filter(s => s.status === 'submitted');
+      const mine = sub.filter(s => name && s.reviewer === name);
+      const others = wide ? sub.filter(s => !(name && s.reviewer === name)) : [];
+      const returned = S.slots.filter(s => s.status === 'returned' && (wide || (name && (s.reviewer === name || s.reviewed_by === name))));
+      const approved = S.slots.filter(s => s.status === 'approved' && (wide || (name && s.reviewer === name)));
+      return { wide, mine, others, returned, approved };
+    }
+    function renderTabs() {
+      const el = $('#tabs');
+      if (!el || !S.loaded) return;
+      const mine = mySlots();
+      const hot = mine.some(s => s.status === 'returned');
+      const tabs = [
+        { id: 'mine', label: '내 담당', cnt: S.name ? mine.length : null, hot },
+        { id: 'all', label: '전체 현황', cnt: S.slots.length },
+        { id: 'merged', label: '합본 보기' }
+      ];
+      if (canSeeReview()) {
+        const q = reviewQueue();
+        const n = q.mine.length + q.others.length;
+        tabs.push({ id: 'review', label: '확인 대기', cnt: n, hot: n > 0 });
+      }
+      el.innerHTML = tabs.map(t => `
+        <a class="tab${S.tab === t.id ? ' active' : ''}" href="#${t.id}">${t.label}${t.cnt !== null && t.cnt !== undefined ? ` <span class="cnt${t.hot ? ' hot' : ''}">${t.cnt}</span>` : ''}</a>`).join('');
+    }
+
+    // =====================================================================
+    // 화면 이동 (#mine, #all, #merged, #review, #slot/칸번호)
+    // =====================================================================
+    function defaultTab() { return S.name === '' ? 'all' : 'mine'; }
+    function parseHash() {
+      let h = '';
+      try { h = decodeURIComponent(location.hash.replace(/^#/, '')); } catch (e) { h = ''; }
+      if (h.indexOf('slot/') === 0) return { view: 'slot', id: h.slice(5) };
+      if (['mine', 'all', 'merged', 'review'].indexOf(h) >= 0) return { view: h };
+      return { view: defaultTab() };
+    }
+    async function route() {
+      if (!S.loaded) return;
+      const r = parseHash();
+      if (r.view === 'slot') {
+        if (ED && ED.id === r.id) return;
+        leaveEditor();
+        renderTabs();
+        await openSlot(r.id);
+        return;
+      }
+      leaveEditor();
+      let v = r.view;
+      if (v === 'review' && !canSeeReview()) v = 'mine';
+      S.tab = v;
+      renderTabs();
+      renderList();
+      if (Date.now() - S.lastLoad > 15000) refreshSlots();
+    }
+
+    function renderList() {
+      const v = $('#view');
+      if (!S.loaded || ED) return;
+      if (S.tab === 'all') v.innerHTML = viewAll();
+      else if (S.tab === 'merged') v.innerHTML = viewMerged();
+      else if (S.tab === 'review') v.innerHTML = viewReview();
+      else v.innerHTML = viewMine();
+    }
+
+    // ====== 공통 조각 ======
+    function chip(status) {
+      const st = STATUS[status] || { label: status || '-', cls: 'st-empty' };
+      return `<span class="st ${st.cls}">${esc(st.label)}</span>`;
+    }
+    function writersHtml(s) {
+      const ws = s.writers || [];
+      if (!ws.length) return '<span class="muted">없음</span>';
+      return ws.map(w => {
+        const cls = 'wr' + (w === S.name ? ' me' : '') + (w === s.claimed_by ? ' claimed' : '');
+        return `<span class="${cls}">${esc(w)}${w === s.claimed_by ? '✍' : ''}</span>`;
+      }).join('<span class="sep">·</span>');
+    }
+    function lastSavedText(s) {
+      return s.updated_at ? `마지막 저장 ${esc(s.updated_by || '')} ${esc(fmt(s.updated_at))}` : '아직 저장 없음';
+    }
+    function claimTag(s) {
+      if (s.claimed_by) return `<span class="tag tag-claim">✍ ${esc(s.claimed_by)}님이 쓰는 중</span>`;
+      if ((s.writers || []).length >= 2) return '<span class="tag tag-pair">함께 맡은 칸</span>';
+      return '';
+    }
+    function claimButton(s) {
+      const pm = perms(s);
+      if (!pm.canClaim || s.status === 'approved') return '';
+      const pair = (s.writers || []).length >= 2;
+      const dis = claimBusy.has(s.id) ? ' disabled' : '';   // 서버 답을 기다리는 중이면 못 누르게
+      if (S.name === '') {
+        return s.claimed_by ? `<button type="button" class="icon-btn ghost" data-act="claim" data-id="${esc(s.id)}"${dis}>쓰는 사람 표시 지우기</button>` : '';
+      }
+      if (!pair && !s.claimed_by) return '';
+      if (s.claimed_by === S.name) return `<button type="button" class="icon-btn ghost" data-act="claim" data-id="${esc(s.id)}"${dis}>내가 쓸게요 취소</button>`;
+      return `<button type="button" class="icon-btn warn" data-act="claim" data-id="${esc(s.id)}"${dis}>✍ 내가 쓸게요</button>`;
+    }
+    function previewText(s) {
+      const t = paragraphs(s.body1).concat(paragraphs(s.body2)).join(' ');
+      if (!t) return '(아직 글이 없어요)';
+      return t.length > 160 ? t.slice(0, 160) + '…' : t;
+    }
+    function emptyBox(title, sub, extra) {
+      return `<div class="empty-box"><div class="t">${title}</div>${sub ? `<div class="s">${sub}</div>` : ''}${extra || ''}</div>`;
+    }
+    function countBy(list) {
+      const c = {};
+      list.forEach(s => { c[s.status] = (c[s.status] || 0) + 1; });
+      return c;
+    }
+    function countsText(list) {
+      const c = countBy(list);
+      return STATUS_ORDER.filter(k => c[k]).map(k => `${STATUS[k].label} ${c[k]}`).join(' · ') || '-';
+    }
+    const slotHref = (s) => `#slot/${encodeURIComponent(s.id)}`;
+
+    function slotCard(s, opts) {
+      const o = opts || {};
+      const pm = perms(s);
+      const openLabel = o.review ? (pm.canApprove ? '열어서 확인' : '보기') : (pm.canEdit ? '✎ 쓰기' : '보기');
+      const returned = s.status === 'returned' && s.review_comment
+        ? `<div class="sc-review"><b>수정 요청</b> — ${esc(s.reviewed_by || '')} ${esc(fmt(s.reviewed_at))}<div class="pre">${esc(s.review_comment)}</div></div>` : '';
+      return `
+        <div class="slot-card">
+          <div class="sc-main">
+            <div class="sc-crumb">${esc(s.part)} · ${esc(s.section)}</div>
+            <div class="sc-title-row"><a class="sc-title" href="${slotHref(s)}">${esc(s.title)}</a>${chip(s.status)}${claimTag(s)}</div>
+            <div class="sc-meta">
+              <span>담당 ${writersHtml(s)}</span>
+              ${s.reviewer ? `<span>확인 ${esc(s.reviewer)}</span>` : ''}
+              <span>${lastSavedText(s)}</span>
+            </div>
+            ${returned}
+            ${o.preview ? `<div class="sc-preview">${esc(previewText(s))}</div>` : ''}
+          </div>
+          <div class="sc-actions">
+            ${o.review ? '' : claimButton(s)}
+            <a class="icon-btn${pm.canEdit && !o.review ? '' : ' open'}" href="${slotHref(s)}">${openLabel}</a>
+          </div>
+        </div>`;
+    }
+
+    // ====== 내 담당 ======
+    function viewMine() {
+      if (S.name === null) {
+        return emptyBox('이름을 먼저 골라 주세요', '고른 이름에 맡겨진 칸이 여기에 보여요.',
+          '<button type="button" class="btn-primary" data-act="open-name">이름 고르기</button>');
+      }
+      if (S.name === '') {
+        return emptyBox('관리자(이름 없이)로 들어왔어요', '전체 현황에서 칸을 열면 모든 칸을 고치고 확인할 수 있어요.',
+          '<a class="btn-primary" style="text-decoration:none;display:inline-block;" href="#all">전체 현황으로</a>');
+      }
+      let html = '';
+      if (canSeeReview()) {
+        const q = reviewQueue();
+        const n = q.mine.length + q.others.length;
+        if (n) {
+          html += `<a class="notice info" href="#review"><span class="grow"><b class="big">확인을 기다리는 칸이 ${n}개 있어요</b>내가 확인할 칸 ${q.mine.length}개${q.wide ? ` · 다른 확인 담당 칸 ${q.others.length}개` : ''}</span><span class="small-btn primary">확인 대기로 →</span></a>`;
+        }
+      }
+      const mine = mySlots();
+      if (!mine.length) {
+        return html + emptyBox('맡은 칸이 없어요', '분담표와 다르면 관리자에게 알려 주세요. 전체 현황에서 다른 칸을 읽을 수 있어요.');
+      }
+      const c = countBy(mine);
+      const done = (c.submitted || 0) + (c.approved || 0);
+      html += `<div class="summary-line">내 칸 ${mine.length}개 · 제출 이상 ${done}개 — ${countsText(mine)}</div>`;
+      html += `<div class="slot-list">${mine.map(s => slotCard(s)).join('')}</div>`;
+      return html;
+    }
+
+    // ====== 전체 현황 ======
+    function optHtml(v, label, cur) {
+      return `<option value="${esc(v)}"${v === cur ? ' selected' : ''}>${esc(label)}</option>`;
+    }
+    function rowHtml(s) {
+      return `
+        <a class="row" href="${slotHref(s)}">
+          <div class="row-main">
+            <div class="row-title">${esc(s.title)}${s.claimed_by ? ` <span class="tag tag-claim">✍ ${esc(s.claimed_by)}</span>` : ''}</div>
+            <div class="row-sub">담당 ${writersHtml(s)}${s.reviewer ? ` · 확인 ${esc(s.reviewer)}` : ''} · ${lastSavedText(s)}</div>
+          </div>
+          <div class="row-side">${chip(s.status)}</div>
+        </a>`;
+    }
+    function viewAll() {
+      if (!S.slots.length) return emptyBox('아직 칸이 없어요', '관리자가 칸 목록을 올리면 여기에 보여요.');
+      const f = S.fAll;
+      const parts = uniq(S.slots.map(s => s.part));
+      const base = S.slots.filter(s => (!f.part || s.part === f.part) && (!f.writer || (s.writers || []).includes(f.writer)));
+      const list = base.filter(s => !f.status || s.status === f.status);
+      const cnt = countBy(base);
+      const done = (cnt.submitted || 0) + (cnt.approved || 0);
+      const pct = base.length ? Math.round(done / base.length * 100) : 0;
+      let html = `
+        <div class="filter-bar">
+          <label for="fStatus">상태</label>
+          <select id="fStatus" data-filter="all.status">${optHtml('', '전체', f.status)}${STATUS_ORDER.map(k => optHtml(k, STATUS[k].label, f.status)).join('')}</select>
+          <label for="fPart">구분</label>
+          <select id="fPart" data-filter="all.part">${optHtml('', '전체', f.part)}${parts.map(p => optHtml(p, p, f.part)).join('')}</select>
+          <label for="fWriter">담당자</label>
+          <select id="fWriter" data-filter="all.writer">${optHtml('', '전체', f.writer)}${S.people.map(p => optHtml(p.name, p.name, f.writer)).join('')}</select>
+        </div>
+        <div class="count-chips">
+          <button type="button" class="count-chip${!f.status ? ' active' : ''}" data-act="count-chip" data-status="">전체 ${base.length}</button>
+          ${STATUS_ORDER.map(k => `<button type="button" class="count-chip${f.status === k ? ' active' : ''}" data-act="count-chip" data-status="${k}"><span class="dot ${STATUS[k].cls}"></span>${STATUS[k].label} ${cnt[k] || 0}</button>`).join('')}
+          <span class="progress-wrap">제출 이상 ${done}/${base.length} <span class="progress"><span style="width:${pct}%"></span></span></span>
+        </div>`;
+      if (!list.length) return html + emptyBox('조건에 맞는 칸이 없어요', '위 필터를 바꿔 보세요.');
+      const groups = [];
+      const gmap = new Map();
+      list.forEach(s => {
+        const k = s.part + '|' + s.kind;
+        if (!gmap.has(k)) { const g = { part: s.part, kind: s.kind, items: [] }; gmap.set(k, g); groups.push(g); }
+        gmap.get(k).items.push(s);
+      });
+      html += groups.map(g => {
+        const d = g.items.filter(s => s.status === 'submitted' || s.status === 'approved').length;
+        return `
+          <section class="group">
+            <div class="group-head"><h3>${esc(g.part)} · ${esc(KIND_LABEL[g.kind] || g.kind)}</h3><span class="group-sub">${g.items.length}칸 · 제출 이상 ${d}칸</span></div>
+            <div class="rows">${g.items.map(rowHtml).join('')}</div>
+          </section>`;
+      }).join('');
+      return html;
+    }
+
+    // ====== 확인 대기 ======
+    function viewReview() {
+      if (!canSeeReview()) return emptyBox('팀장·합본 담당·관리자만 보는 탭이에요', '');
+      const q = reviewQueue();
+      const sec = (title, sub, items, empty) => `
+        <section class="group">
+          <div class="group-head"><h3>${title} <span class="cnt-inline">${items.length}</span></h3>${sub ? `<span class="group-sub">${sub}</span>` : ''}</div>
+          ${items.length ? `<div class="slot-list">${items.map(s => slotCard(s, { preview: true, review: true })).join('')}</div>` : `<div class="empty-mini">${empty}</div>`}
+        </section>`;
+      let html = '';
+      if (S.name) html += sec('내가 확인할 칸', `확인 담당이 ${esc(S.name)}님인 제출 칸`, q.mine, '지금 확인을 기다리는 칸이 없어요.');
+      if (q.wide) html += sec(S.name ? '다른 확인 담당의 제출 칸' : '제출된 칸', '합본 담당·관리자도 확인 완료·수정 요청을 할 수 있어요', q.others, '없어요.');
+      html += sec('수정 요청 보낸 칸', '담당자가 고쳐서 다시 제출하기를 기다려요', q.returned, '없어요.');
+      html += `<div class="summary-line">확인 완료 ${q.approved.length}칸</div>`;
+      return html;
+    }
+
+    // ====== 합본 보기 ======
+    function mergedSlots() {
+      const f = S.fMerged;
+      return S.slots.filter(s => {
+        if (f.part && s.part !== f.part) return false;
+        if (f.status === 'sub') return s.status === 'submitted' || s.status === 'approved';
+        if (f.status === 'ok') return s.status === 'approved';
+        return true;
+      });
+    }
+    function blockLines(s) {
+      const out = [s.title];
+      const add = (label, body) => {
+        if (label) out.push(label);
+        const ps = paragraphs(body);
+        if (ps.length) ps.forEach(x => out.push(x)); else out.push('(미작성)');
+      };
+      add(s.label1, s.body1);
+      if (s.label2) add(s.label2, s.body2);
+      return out;
+    }
+    function mergedLines(list) {
+      const out = [];
+      let lp = null;
+      let ls = null;
+      list.forEach(s => {
+        if (s.part !== lp) { out.push(`[${s.part}]`); lp = s.part; ls = null; }
+        if (s.section !== ls) { out.push(s.section); ls = s.section; }
+        blockLines(s).forEach(x => out.push(x));
+      });
+      return out;
+    }
+    function bodyHtml(body) {
+      const ps = paragraphs(body);
+      if (!ps.length) return '<p class="m-empty">(미작성)</p>';
+      return ps.map(x => `<p>${esc(x)}</p>`).join('');
+    }
+    function viewMerged() {
+      if (!S.slots.length) return emptyBox('아직 칸이 없어요', '');
+      const f = S.fMerged;
+      const parts = uniq(S.slots.map(s => s.part));
+      const list = mergedSlots();
+      let html = `
+        <div class="filter-bar">
+          <label for="mPart">구분</label>
+          <select id="mPart" data-filter="merged.part">${optHtml('', '전체', f.part)}${parts.map(p => optHtml(p, p, f.part)).join('')}</select>
+          <label for="mStatus">상태</label>
+          <select id="mStatus" data-filter="merged.status">${optHtml('', '전체', f.status)}${optHtml('sub', '제출 이상', f.status)}${optHtml('ok', '확인 완료', f.status)}</select>
+          <span class="spacer"></span>
+          <button type="button" class="icon-btn" data-act="copy-all">전체 복사</button>
+          <button type="button" class="icon-btn ok" data-act="excel">엑셀로 내려받기</button>
+        </div>
+        <div class="summary-line">보이는 칸 ${list.length}개${S.slots.length - list.length ? ` · 필터로 숨긴 칸 ${S.slots.length - list.length}개` : ''} — 복사하면 한 문단이 한 줄로 들어가요(소제목 포함).</div>`;
+      if (!list.length) return html + emptyBox('조건에 맞는 칸이 없어요', '위 필터를 바꿔 보세요.');
+      let lp = null;
+      let ls = null;
+      let doc = '';
+      list.forEach(s => {
+        if (s.part !== lp) { doc += `<h3 class="m-part">${esc(s.part)}</h3>`; lp = s.part; ls = null; }
+        if (s.section !== ls) { doc += `<h4 class="m-section">${esc(s.section)}</h4>`; ls = s.section; }
+        doc += `
+          <article class="m-block">
+            <div class="m-head">
+              <h5 class="m-title">${esc(s.title)}</h5>
+              ${chip(s.status)}
+              <button type="button" class="small-btn" data-act="copy-block" data-id="${esc(s.id)}">복사</button>
+              <a class="small-btn" href="${slotHref(s)}">열기</a>
+            </div>
+            <div class="m-who">담당 ${writersHtml(s)} · ${lastSavedText(s)}</div>
+            ${s.label1 ? `<div class="m-label">${esc(s.label1)}</div>` : ''}
+            ${bodyHtml(s.body1)}
+            ${s.label2 ? `<div class="m-label">${esc(s.label2)}</div>${bodyHtml(s.body2)}` : ''}
+          </article>`;
+      });
+      html += `<div class="merged-doc">${doc}</div>`;
+      return html;
+    }
+
+    let xlsxLoading = null;
+    function loadXlsx() {
+      if (window.XLSX) return Promise.resolve(window.XLSX);
+      if (xlsxLoading) return xlsxLoading;
+      xlsxLoading = new Promise((resolve, reject) => {
+        const sc = document.createElement('script');
+        sc.src = XLSX_JS;
+        sc.onload = () => resolve(window.XLSX);
+        sc.onerror = () => { xlsxLoading = null; reject(new Error('엑셀 도구를 불러오지 못했어요')); };
+        document.head.appendChild(sc);
+      });
+      return xlsxLoading;
+    }
+    async function downloadExcel() {
+      let XLSX;
+      try { XLSX = await loadXlsx(); } catch (e) { showToast('❌ ' + e.message, 'error'); return; }
+      const list = mergedSlots();
+      const head = ['순서', '구분', '위치', '제목', '담당자', '상태', 'label1', 'body1', 'label2', 'body2', '마지막 저장'];
+      const rows = list.map((s, i) => [
+        i + 1, s.part, s.section, s.title, (s.writers || []).join(', '),
+        (STATUS[s.status] || { label: s.status }).label,
+        s.label1 || '', s.body1 || '', s.label2 || '', s.body2 || '',
+        s.updated_at ? `${s.updated_by || ''} ${fmt(s.updated_at)}`.trim() : ''
+      ]);
+      const ws = XLSX.utils.aoa_to_sheet([head].concat(rows));
+      ws['!cols'] = [{ wch: 6 }, { wch: 6 }, { wch: 34 }, { wch: 28 }, { wch: 16 }, { wch: 9 }, { wch: 14 }, { wch: 70 }, { wch: 14 }, { wch: 70 }, { wch: 20 }];
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, '합본');
+      XLSX.writeFile(wb, `${REPORT_YEAR}학년도_분석보고서_합본_${stamp()}.xlsx`);
+      showToast('✅ 엑셀 파일을 내려받았어요', 'success');
+    }
+
+    // =====================================================================
+    // 칸 쓰기 화면
+    // =====================================================================
+    async function openSlot(id) {
+      const v = $('#view');
+      v.innerHTML = '<div class="loading">칸을 불러오는 중...</div>';
+      let slot = null;
+      try {
+        slot = await api.slot(id);
+      } catch (e) {
+        const r = parseHash();
+        if (r.view === 'slot' && r.id === id) {
+          v.innerHTML = emptyBox('칸을 불러오지 못했어요', esc(errMessage(e)), `<a class="btn-secondary" href="#${S.tab}">← 목록으로</a>`);
+        }
+        return;
+      }
+      const r = parseHash();
+      if (r.view !== 'slot' || r.id !== id || ED) return; // 그사이 다른 곳으로 이동함
+      if (!slot) {
+        v.innerHTML = emptyBox('칸을 찾을 수 없어요', '', `<a class="btn-secondary" href="#${S.tab}">← 목록으로</a>`);
+        return;
+      }
+      if (!Array.isArray(slot.writers)) slot.writers = [];
+      slot.body1 = slot.body1 || '';
+      slot.body2 = slot.body2 || '';
+      applyRowToList(slot);
+      ED = {
+        id, slot,
+        base: { v: slot.version, b1: slot.body1, b2: slot.body2 },
+        cur: { b1: slot.body1, b2: slot.body2 },
+        dirty: false, saving: null, timer: null, retryTimer: null, lintTimer: null,
+        conflict: false, conflictLatest: null, savedAt: null, saveState: 'idle',
+        remote: null, prevMine: null, refs: null, revs: null, lint: {}, netWarned: false,
+        forceNewRev: false   // true면 다음 저장을 수정 기록 새 줄로(되돌리기·불러오기)
+      };
+      ED.perm = perms(slot);
+      renderEditor();
+      window.scrollTo(0, 0);
+      loadRefs(ED);
+      loadRevisions(ED);
+    }
+
+    function leaveEditor() {
+      if (!ED) return;
+      const ed = ED;
+      clearTimeout(ed.timer);
+      clearTimeout(ed.retryTimer);
+      clearTimeout(ed.lintTimer);
+      ED = null;
+      closeModal('conflictModal');
+      closeModal('reviewModal');
+      closeModal('textModal');
+      if (ed.dirty && ed.perm.canEdit && !ed.conflict) saveDetached(ed);
+    }
+
+    // 화면을 떠날 때 남은 글 한 번 더 저장 (실패해도 이 기기에 백업이 남아 있음)
+    async function saveDetached(ed) {
+      try {
+        while (ed.saving) await ed.saving;
+        if (ed.cur.b1 === ed.base.b1 && ed.cur.b2 === ed.base.b2) return;
+        if (authLost) return;
+        const row = await api.save(ed.id, ed.base.v, ed.cur.b1, ed.cur.b2, S.name || '', !!ed.forceNewRev);
+        ed.forceNewRev = false;
+        applyRowToList(row);
+        if ((row.body1 || '') === ed.cur.b1 && (row.body2 || '') === ed.cur.b2) lsDel(LS_DRAFT + ed.id);
+        showToast(`✅ '${ed.slot.title}' 저장했어요`, 'success');
+        if (!ED) renderList();
+      } catch (e) {
+        if (isAuthLost(e)) { handleAuthLost(); return; }
+        showToast('❌ ' + errMessage(e) + ' — 쓴 글은 이 기기에 남아 있어요', 'error');
+      }
+    }
+
+    function renderEditor() {
+      const ed = ED;
+      if (!ed) return;
+      const s = ed.slot;
+      ed.perm = perms(s);
+      const ly = `작년(${REPORT_YEAR - 1}학년도 입학생) 보고서`;
+      $('#view').innerHTML = `
+        <div class="slot-view">
+          <div class="slot-top">
+            <div class="slot-top-row">
+              <a class="btn-secondary" href="#${S.tab}">← 목록으로</a>
+              <button type="button" class="btn-secondary show-mobile" data-act="jump-ref">작년 예시·참고 자료 ↓</button>
+            </div>
+            <div class="sc-crumb" style="margin-top:14px;">${esc(s.part)} · ${esc(s.section)}</div>
+            <h3 class="slot-title">${esc(s.title)}</h3>
+            <div class="sc-meta" id="edMeta"></div>
+          </div>
+          <div id="edNotices"></div>
+          <div class="slot-grid">
+            <aside class="ref-col" id="refCol">
+              <div class="card" id="exCard">
+                <h4>작년 예시 <span class="ly-badge">${esc(ly)}</span></h4>
+                ${exampleHtml(s)}
+              </div>
+              <div class="card${s.kind === 'track' ? ' hidden' : ''}" id="refCard">
+                <h4>참고 자료</h4>
+                <div id="refBody" class="muted">불러오는 중...</div>
+              </div>
+              ${rulesHtml()}
+            </aside>
+            <section class="edit-col">
+              <div class="card">
+                ${fieldHtml(1, s.label1)}
+                ${s.label2 ? fieldHtml(2, s.label2) : ''}
+              </div>
+              <div class="action-bar" id="edActions"></div>
+              <details class="card rev-card" id="revBox">
+                <summary>수정 기록 <span class="muted">(최근 30개)</span></summary>
+                <div id="revList" class="muted">불러오는 중...</div>
+              </details>
+              ${DEMO ? `
+              <div class="card">
+                <h4>데모 도구</h4>
+                <div class="muted" style="margin-bottom:10px;">동시 저장 충돌을 시험해 볼 수 있어요. 누른 뒤 글을 고치면 비교 화면이 떠요.</div>
+                <button type="button" class="small-btn" data-act="demo-touch">다른 선생님이 이 칸을 저장한 것처럼 만들기</button>
+              </div>` : ''}
+            </section>
+          </div>
+        </div>`;
+      renderEdMeta();
+      renderEdNotices();
+      renderEdActions();
+      setupFields();
+      runLint();
+      renderRefs();
+      renderRevisions();
+    }
+
+    function exampleHtml(s) {
+      let h = s.example_note ? `<div class="ex-note">${esc(s.example_note)}</div>` : '';
+      if (!s.example1 && !s.example2) {
+        h += `<div class="muted">${s.kind === 'track' ? '이 칸은 작년 예시가 없어요. 진행 상황과 메모를 자유롭게 남겨 주세요.' : '작년 보고서에 같은 부분이 없어요.'}</div>`;
+        return h;
+      }
+      if (s.example1) {
+        const lab = (s.kind === 'school' && !s.example2) ? '작년 글 (①·② 구분 없이 한 문단)' : (s.label1 || '');
+        h += `<div class="ex-label">${esc(lab)}</div><div class="ex-text">${esc(s.example1)}</div>`;
+      }
+      if (s.example2) h += `<div class="ex-label">${esc(s.label2 || '')}</div><div class="ex-text">${esc(s.example2)}</div>`;
+      return h;
+    }
+    function rulesHtml() {
+      const rules = Array.isArray(S.settings.rules) ? S.settings.rules.filter(r => typeof r === 'string' && r.trim()) : [];
+      if (!rules.length) return '';
+      return `<div class="card"><h4>유의 사항</h4><ol class="rules">${rules.map(r => `<li>${esc(r)}</li>`).join('')}</ol></div>`;
+    }
+    function fieldHtml(n, label) {
+      const editable = ED.perm.canEdit && !ED.conflict;
+      const key = 'b' + n;
+      const box = editable
+        ? `<textarea class="ed-text" id="ed${n}" data-field="${key}" maxlength="${MAX_LEN}" autocomplete="off" readonly onfocus="this.removeAttribute('readonly')" onpointerdown="this.removeAttribute('readonly')" placeholder="${esc(label || '')} 내용을 써 주세요. 몇 초마다 자동으로 저장돼요."></textarea>`
+        : `<div class="ro-text" id="ed${n}">${hasText(ED.cur[key]) ? esc(ED.cur[key]) : '<span class="m-empty">(미작성)</span>'}</div>`;
+      return `
+        <div class="field">
+          <div class="field-head">
+            <label class="field-label" for="ed${n}">${esc(label || '')}</label>
+            <span class="field-count" id="cnt${n}"></span>
+          </div>
+          ${box}
+          <div class="lint" id="lint${n}"></div>
+        </div>`;
+    }
+
+    function autoGrow(el) {
+      const y = window.scrollY;
+      el.style.height = 'auto';
+      el.style.height = Math.max(180, el.scrollHeight + 4) + 'px';
+      window.scrollTo(window.scrollX, y);
+    }
+    function setupFields() {
+      ['b1', 'b2'].forEach((k, i) => {
+        const el = document.getElementById('ed' + (i + 1));
+        if (!el) return;
+        updateCount(k);
+        if (el.tagName !== 'TEXTAREA') return;
+        el.value = ED.cur[k];
+        autoGrow(el);
+        el.addEventListener('input', () => onEdInput(k, el));
+        el.addEventListener('blur', () => { if (ED && ED.dirty) saveNow(); });
+      });
+    }
+    function updateCount(k) {
+      const el = document.getElementById(k === 'b1' ? 'cnt1' : 'cnt2');
+      if (!el || !ED) return;
+      const n = (ED.cur[k] || '').length;
+      el.textContent = `${n.toLocaleString('ko-KR')} / ${MAX_LEN.toLocaleString('ko-KR')}자`;
+      el.classList.toggle('over', n >= MAX_LEN);
+    }
+    function onEdInput(k, el) {
+      if (!ED) return;
+      ED.cur[k] = el.value;
+      autoGrow(el);
+      ED.dirty = ED.cur.b1 !== ED.base.b1 || ED.cur.b2 !== ED.base.b2;
+      writeBackup(ED);
+      updateCount(k);
+      setSaveState(ED.dirty ? 'dirty' : 'saved');
+      clearTimeout(ED.timer);
+      ED.timer = ED.dirty ? setTimeout(() => saveNow(), AUTOSAVE_MS) : null;
+      clearTimeout(ED.lintTimer);
+      ED.lintTimer = setTimeout(runLint, 350);
+    }
+
+    // ====== 이 기기에 백업 (저장 전 글) ======
+    function writeBackup(ed) {
+      const key = LS_DRAFT + ed.id;
+      if (ed.dirty) lsSet(key, JSON.stringify({ b1: ed.cur.b1, b2: ed.cur.b2, v: ed.base.v, t: Date.now(), by: S.name }));
+      else lsDel(key);
+    }
+    function readBackup(ed) {
+      if (ed.dirty) return null;
+      let bk = null;
+      try { bk = JSON.parse(lsGet(LS_DRAFT + ed.id) || 'null'); } catch (e) { bk = null; }
+      if (!bk || typeof bk.b1 !== 'string') return null;
+      if (bk.b1 === (ed.slot.body1 || '') && (bk.b2 || '') === (ed.slot.body2 || '')) {
+        lsDel(LS_DRAFT + ed.id);
+        return null;
+      }
+      const serverT = ed.slot.updated_at ? Date.parse(ed.slot.updated_at) : 0;
+      bk.newer = Number(bk.t) > serverT;
+      return bk;
+    }
+
+    // ====== 저장 ======
+    function setSaveState(st) {
+      if (!ED) return;
+      ED.saveState = st;
+      const el = document.getElementById('saveState');
+      if (!el) return;
+      const s = ED.slot;
+      const map = {
+        idle: ['', s.updated_at ? `마지막 저장 ${s.updated_by || ''} ${hm(s.updated_at)}` : '아직 저장한 글이 없어요'],
+        saved: ['saved', (ED.savedAt || s.updated_at) ? `✓ 저장됨 ${hm(ED.savedAt || s.updated_at)}` : '바뀐 내용 없음'],
+        saving: ['saving', '저장 중…'],
+        dirty: ['dirty', '● 저장 전 — 잠시 후 자동 저장'],
+        error: ['error', '⚠ 저장 실패 — 잠시 후 다시 시도해요'],
+        conflict: ['error', '⚠ 다른 분이 먼저 저장했어요'],
+        readonly: ['', `읽기 전용${s.updated_at ? ` · 마지막 저장 ${s.updated_by || ''} ${hm(s.updated_at)}` : ''}`]
+      };
+      const m = map[st] || map.idle;
+      el.className = 'save-state ' + m[0];
+      el.textContent = m[1];
+    }
+
+    async function saveNow() {
+      const ed = ED;
+      if (!ed) return true;
+      if (!ed.perm.canEdit || ed.conflict) return !ed.dirty;
+      clearTimeout(ed.timer); ed.timer = null;
+      clearTimeout(ed.retryTimer); ed.retryTimer = null;
+      if (authLost) return false;   // 로그인이 풀렸으면 다시 시도하지 않음(글은 이 기기에 남아 있음)
+      while (ed.saving) await ed.saving;
+      if (ED !== ed || ed.conflict) return false;
+      if (!ed.dirty) return true;
+      const sent = { b1: ed.cur.b1, b2: ed.cur.b2 };
+      const newRev = !!ed.forceNewRev;   // 되돌리기·불러오기 뒤 첫 저장은 수정 기록 새 줄로
+      setSaveState('saving');
+      const p = (async () => {
+        try {
+          const row = await api.save(ed.id, ed.base.v, sent.b1, sent.b2, S.name || '', newRev);
+          if (newRev) ed.forceNewRev = false;
+          onSaved(ed, row);
+          return true;
+        } catch (e) {
+          await onSaveError(ed, e);
+          return false;
+        }
+      })();
+      ed.saving = p;
+      const ok = await p;
+      if (ed.saving === p) ed.saving = null;
+      if (ok && ED === ed && ed.dirty && !ed.timer) ed.timer = setTimeout(() => saveNow(), 1200);
+      return ok && !ed.dirty;
+    }
+
+    function onSaved(ed, row) {
+      applyRowToList(row);
+      ed.slot = Object.assign({}, ed.slot, row);
+      ed.base = { v: row.version, b1: row.body1 || '', b2: row.body2 || '' };
+      ed.savedAt = new Date();
+      ed.netWarned = false;
+      const hadRemote = !!ed.remote;
+      ed.remote = null;
+      ed.dirty = ed.cur.b1 !== ed.base.b1 || ed.cur.b2 !== ed.base.b2;
+      if (!ed.dirty) lsDel(LS_DRAFT + ed.id);
+      if (ED !== ed) return;
+      writeBackup(ed);
+      ed.perm = perms(ed.slot);
+      renderEdMeta();
+      renderEdActions();
+      if (hadRemote) renderEdNotices();
+      setSaveState(ed.dirty ? 'dirty' : 'saved');
+      renderTabs();
+      const box = document.getElementById('revBox');
+      if (box && box.open) loadRevisions(ed);
+    }
+
+    async function onSaveError(ed, e) {
+      const code = errCode(e);
+      if (code === 'VERSION_CONFLICT') {
+        if (ED === ed) await openConflict(ed);
+        else showToast('❌ 다른 분이 먼저 저장해서 저장하지 않았어요. 쓴 글은 이 기기에 남아 있어요', 'error');
+        return;
+      }
+      // 로그인이 풀림: 다시 시도하지 않고, 글은 이 기기에 남긴 채 로그인 화면으로
+      if (isAuthLost(e)) { handleAuthLost(); return; }
+      if (ERROR_TEXT[code]) {
+        showToast('❌ ' + ERROR_TEXT[code], 'error');
+        if (code === 'UNKNOWN_NAME') openNamePicker(true);
+        if (ED === ed) { setSaveState('error'); await reloadEditor(ed, false); }
+        return;
+      }
+      // 인터넷 끊김 등: 잠시 뒤 다시 시도 (글은 이 기기에 백업되어 있음)
+      if (ED === ed) {
+        setSaveState('error');
+        if (!ed.netWarned) {
+          showToast('❌ 저장하지 못했어요. ' + errMessage(e) + ' (쓴 글은 이 기기에 남아 있어요)', 'error');
+          ed.netWarned = true;
+        }
+        clearTimeout(ed.retryTimer);
+        ed.retryTimer = setTimeout(() => saveNow(), 10000);
+      }
+    }
+
+    // 서버의 최신 칸을 다시 읽어 화면에 반영
+    async function reloadEditor(ed, quiet) {
+      let fresh = null;
+      try { fresh = await api.slot(ed.id); } catch (e) { return; }
+      if (!fresh || ED !== ed) return;
+      if (!Array.isArray(fresh.writers)) fresh.writers = [];
+      fresh.body1 = fresh.body1 || '';
+      fresh.body2 = fresh.body2 || '';
+      applyRowToList(fresh);
+      ed.slot = fresh;
+      const nextPerm = perms(fresh);
+      if (!ed.dirty || !nextPerm.canEdit) {
+        // 내 글이 저장 전이었다면 백업은 이 기기에 남겨 둠 → 위쪽 안내에서 다시 볼 수 있음
+        ed.base = { v: fresh.version, b1: fresh.body1, b2: fresh.body2 };
+        ed.cur = { b1: fresh.body1, b2: fresh.body2 };
+        ed.dirty = false;
+        ed.forceNewRev = false;
+        ed.remote = null;
+      } else {
+        ed.remote = { by: fresh.updated_by, at: fresh.updated_at };
+      }
+      const ae = document.activeElement;
+      const focusId = ae && (ae.id === 'ed1' || ae.id === 'ed2') ? ae.id : null;
+      const selS = focusId ? ae.selectionStart : 0;
+      const selE = focusId ? ae.selectionEnd : 0;
+      renderEditor();
+      setSaveState(ed.perm.canEdit ? (ed.dirty ? 'dirty' : 'idle') : 'readonly');
+      if (focusId) {
+        const el = document.getElementById(focusId);
+        if (el && el.tagName === 'TEXTAREA') {
+          el.removeAttribute('readonly');
+          el.focus();
+          try { el.setSelectionRange(Math.min(selS, el.value.length), Math.min(selE, el.value.length)); } catch (err) { /* 무시 */ }
+        }
+      }
+      if (quiet && !ed.dirty && fresh.updated_by) showToast(`${fresh.updated_by}님이 고친 내용을 불러왔어요`);
+      loadRevisions(ed);
+    }
+
+    // 다른 사람이 저장했는지 가끔 확인
+    async function pollSlot() {
+      const ed = ED;
+      if (!ed || ed.saving || ed.conflict) return;
+      let head = null;
+      try { head = await api.slotHead(ed.id); } catch (e) { return; }
+      if (!head || ED !== ed || ed.saving || ed.conflict) return;
+      if (head.version === ed.base.v) {
+        if (head.claimed_by !== ed.slot.claimed_by) {
+          ed.slot.claimed_by = head.claimed_by;
+          applyRowToList({ id: ed.id, claimed_by: head.claimed_by });
+          renderEdMeta();
+          renderEdActions();
+        }
+        return;
+      }
+      if (ed.dirty) {
+        ed.remote = { by: head.updated_by, at: head.updated_at };
+        renderEdNotices();
+        return;
+      }
+      await reloadEditor(ed, true);
+    }
+
+    // ====== 동시 저장 충돌 ======
+    function rawText(slotLike, b1, b2) {
+      const out = [];
+      if (slotLike.label1) out.push(slotLike.label1);
+      out.push(b1 || '');
+      if (slotLike.label2) { out.push(slotLike.label2); out.push(b2 || ''); }
+      return out.join('\n');
+    }
+    function paneHtml(slotLike, b1, b2) {
+      let h = '';
+      if (slotLike.label1) h += `<div class="cp-label">${esc(slotLike.label1)}</div>`;
+      h += `<div class="conflict-text">${hasText(b1) ? esc(b1) : '<span class="m-empty">(비어 있음)</span>'}</div>`;
+      if (slotLike.label2) {
+        h += `<div class="cp-label">${esc(slotLike.label2)}</div>`;
+        h += `<div class="conflict-text">${hasText(b2) ? esc(b2) : '<span class="m-empty">(비어 있음)</span>'}</div>`;
+      }
+      return h;
+    }
+    async function openConflict(ed) {
+      ed.conflict = true;
+      clearTimeout(ed.timer);
+      setSaveState('conflict');
+      let latest = null;
+      try { latest = await api.slot(ed.id); } catch (e) { latest = null; }
+      if (ED !== ed) return;
+      if (!latest) {
+        ed.conflict = false;
+        setSaveState('error');
+        showToast('❌ 최신 글을 불러오지 못했어요. 잠시 뒤 다시 저장해 볼게요', 'error');
+        ed.retryTimer = setTimeout(() => saveNow(), 10000);
+        return;
+      }
+      if (!Array.isArray(latest.writers)) latest.writers = [];
+      latest.body1 = latest.body1 || '';
+      latest.body2 = latest.body2 || '';
+      ed.conflictLatest = latest;
+      const who = latest.updated_by || '다른 분';
+      $('#conflictDesc').innerHTML = `<b>${esc(who)}</b>님이 ${esc(fmt(latest.updated_at))}에 이 칸을 저장했어요. 그냥 덮어쓰지 않아요 — 두 글을 비교하고 남길 글을 골라 주세요.`;
+      $('#conflictGrid').innerHTML = `
+        <div class="conflict-pane mine">
+          <h5><span>내 글 (저장 안 됨)</span><button type="button" class="small-btn" data-act="copy-pane" data-pane="mine">복사</button></h5>
+          ${paneHtml(ed.slot, ed.cur.b1, ed.cur.b2)}
+        </div>
+        <div class="conflict-pane">
+          <h5><span>${esc(who)}님 글 (서버에 저장됨)</span><button type="button" class="small-btn" data-act="copy-pane" data-pane="theirs">복사</button></h5>
+          ${paneHtml(latest, latest.body1, latest.body2)}
+        </div>`;
+      const canKeep = perms(latest).canEdit;
+      $('#conflictMine').disabled = !canKeep;
+      $('#conflictHint').innerHTML = canKeep
+        ? '두 글을 합치고 싶으면 한쪽을 복사해 두고 다른 쪽을 고른 뒤, 붙여 넣어 고치면 돼요. ‘다른 분 글로 바꾸기’를 골라도 내 글은 이 화면을 떠나기 전까지 다시 복사할 수 있어요.'
+        : `지금 이 칸은 ‘${esc((STATUS[latest.status] || {}).label || latest.status)}’ 상태라 내 글로 저장할 수 없어요. 내 글을 복사해 두세요.`;
+      openModal('conflictModal');
+    }
+    function resolveConflict(choice) {
+      const ed = ED;
+      if (!ed || !ed.conflictLatest) { closeModal('conflictModal'); return; }
+      const latest = ed.conflictLatest;
+      closeModal('conflictModal');
+      ed.conflict = false;
+      ed.conflictLatest = null;
+      ed.slot = latest;
+      applyRowToList(latest);
+      ed.base = { v: latest.version, b1: latest.body1, b2: latest.body2 };
+      ed.remote = null;
+      if (choice === 'mine' && perms(latest).canEdit) {
+        ed.dirty = ed.cur.b1 !== ed.base.b1 || ed.cur.b2 !== ed.base.b2;
+        renderEditor();
+        if (ed.dirty) { writeBackup(ed); saveNow(); } else setSaveState('saved');
+      } else {
+        if (ed.cur.b1 !== latest.body1 || ed.cur.b2 !== latest.body2) ed.prevMine = { b1: ed.cur.b1, b2: ed.cur.b2 };
+        ed.cur = { b1: latest.body1, b2: latest.body2 };
+        ed.dirty = false;
+        ed.forceNewRev = false;
+        lsDel(LS_DRAFT + ed.id);
+        renderEditor();
+        setSaveState(ed.perm.canEdit ? 'idle' : 'readonly');
+      }
+      loadRevisions(ed);
+    }
+
+    // ====== 칸 화면 조각 그리기 ======
+    function renderEdMeta() {
+      const el = document.getElementById('edMeta');
+      if (!el || !ED) return;
+      const s = ED.slot;
+      el.innerHTML = `
+        ${chip(s.status)}
+        <span>담당 ${writersHtml(s)}</span>
+        ${s.reviewer ? `<span>확인 ${esc(s.reviewer)}</span>` : ''}
+        <span>${lastSavedText(s)}</span>
+        ${claimTag(s)}`;
+    }
+    function renderEdNotices() {
+      const el = document.getElementById('edNotices');
+      if (!el || !ED) return;
+      const ed = ED;
+      const s = ed.slot;
+      const pm = ed.perm;
+      const out = [];
+      if (s.status === 'returned' && s.review_comment) {
+        out.push(`
+          <div class="notice danger"><div class="grow">
+            <b class="big">수정 요청이 왔어요</b>
+            <div class="pre">${esc(s.review_comment)}</div>
+            <div class="small" style="margin-top:6px;">— ${esc(s.reviewed_by || '')} · ${esc(fmt(s.reviewed_at))} · 고친 뒤 다시 ‘제출’을 눌러 주세요.</div>
+          </div></div>`);
+      }
+      if (s.status === 'approved') {
+        out.push(`
+          <div class="notice ok"><div class="grow">
+            <b class="big">확인 완료된 칸이에요</b>
+            ${s.review_comment ? `<div class="pre">${esc(s.review_comment)}</div>` : ''}
+            <div class="small" style="margin-top:4px;">${esc(s.reviewed_by || '')} · ${esc(fmt(s.reviewed_at))}${pm.canEdit ? ' · 확인 담당·합본 담당·관리자는 계속 고칠 수 있어요.' : ' · 고쳐야 하면 팀장에게 수정 요청을 받아 주세요.'}</div>
+          </div></div>`);
+      }
+      if (s.status === 'submitted') {
+        const tail = (pm.isWriter && !pm.elevated) ? " 고치려면 ‘제출 취소’를 눌러 주세요." : '';
+        out.push(`<div class="notice info"><div class="grow">제출한 칸이에요. 확인 담당(${esc(s.reviewer || '-')})의 확인을 기다리고 있어요.${tail}</div></div>`);
+      }
+      if (!pm.canEdit && pm.reason && s.status !== 'approved' && s.status !== 'submitted') {
+        out.push(`<div class="notice info"><div class="grow">${esc(pm.reason)}</div>${S.name === null ? '<button type="button" class="small-btn primary" data-act="open-name">이름 고르기</button>' : ''}</div>`);
+      }
+      if (ed.remote) {
+        out.push(`<div class="notice warn"><div class="grow"><b class="big">${esc(ed.remote.by || '다른 분')}님이 ${esc(hm(ed.remote.at))}에 이 칸을 저장했어요</b>내 글을 저장하면 두 글을 비교하는 화면이 나와요. 덮어쓰지 않아요.</div></div>`);
+      }
+      const bk = readBackup(ed);
+      if (bk) {
+        const canRestore = pm.canEdit && !ed.conflict && bk.newer;
+        out.push(`
+          <div class="notice warn"><div class="grow">
+            <b class="big">이 기기에 저장되지 않은 글이 있어요 (${esc(fmt(new Date(Number(bk.t)).toISOString()))})</b>
+            ${bk.newer ? '서버에 있는 글보다 나중에 쓴 글이에요.' : `서버에는 그 뒤에 ${esc(s.updated_by || '다른 분')}님이 저장한 글이 있어요. 필요한 부분만 복사해 쓰세요.`}
+          </div>
+          <div class="btn-row">
+            ${canRestore ? '<button type="button" class="small-btn primary" data-act="restore-backup">불러오기</button>' : ''}
+            <button type="button" class="small-btn" data-act="view-backup">보기·복사</button>
+            <button type="button" class="small-btn" data-act="discard-backup">지우기</button>
+          </div></div>`);
+      }
+      if (ed.prevMine) {
+        out.push(`
+          <div class="notice info"><div class="grow"><b class="big">바꾸기 전 내 글을 아직 복사할 수 있어요</b>이 화면을 떠나면 사라져요.</div>
+          <div class="btn-row"><button type="button" class="small-btn" data-act="copy-prev">내 글 복사</button><button type="button" class="small-btn" data-act="dismiss-prev">닫기</button></div></div>`);
+      }
+      el.innerHTML = out.join('');
+    }
+    function renderEdActions() {
+      const el = document.getElementById('edActions');
+      if (!el || !ED) return;
+      const s = ED.slot;
+      const pm = ED.perm;
+      const b = [];
+      if (pm.canEdit) b.push('<button type="button" class="icon-btn ghost" data-act="save-now">지금 저장</button>');
+      if (pm.canSubmit) b.push('<button type="button" class="icon-btn" data-act="submit">제출</button>');
+      if (pm.canUnsubmit) b.push('<button type="button" class="icon-btn ghost" data-act="unsubmit">제출 취소</button>');
+      if (pm.canApprove) b.push('<button type="button" class="icon-btn ok" data-act="approve">확인 완료</button>');
+      if (pm.canReturn) b.push('<button type="button" class="icon-btn danger" data-act="return">수정 요청</button>');
+      el.innerHTML = `<span class="save-state" id="saveState"></span>${claimButton(s)}${b.join('')}`;
+      if (!pm.canEdit) setSaveState('readonly');
+      else if (ED.saveState === 'readonly') setSaveState(ED.dirty ? 'dirty' : 'idle');
+      else setSaveState(ED.saveState);
+    }
+
+    // ====== 참고 자료 ======
+    async function loadRefs(ed) {
+      const s = ed.slot;
+      if (s.kind === 'school' && s.school_name) {
+        try {
+          ed.refs = { type: 'school', data: await api.schoolRefs(s.school_name) };
+        } catch (e) {
+          ed.refs = { type: 'error', msg: errMessage(e) };
+        }
+      } else if (s.kind === 'school') {
+        ed.refs = { type: 'error', msg: '이 칸에는 학교 이름(school_name)이 비어 있어요.' };
+      } else if (s.kind === 'subject') {
+        ed.refs = { type: 'subject' };
+      } else {
+        ed.refs = { type: 'none' };
+      }
+      if (ED === ed) renderRefs();
+    }
+    // 공립 과목 칸 ↔ 사립 과목 칸 번호 (예: pub-subj-09 ↔ pri-subj-09). 짝이 없는 번호면 null
+    function counterpartId(id) {
+      const m = /^(pub|pri)-(subj-.+)$/.exec(String(id || ''));
+      if (!m) return null;
+      return (m[1] === 'pub' ? 'pri-' : 'pub-') + m[2];
+    }
+    function renderRefs() {
+      const el = document.getElementById('refBody');
+      if (!el || !ED) return;
+      const s = ED.slot;
+      const r = ED.refs;
+      if (!r) { el.innerHTML = '불러오는 중...'; return; }
+      if (r.type === 'error') { el.innerHTML = `<div class="muted">참고 자료를 불러오지 못했어요: ${esc(r.msg)}</div>`; return; }
+      if (r.type === 'none') { el.innerHTML = ''; return; }
+      if (r.type === 'school') {
+        const d = r.data;
+        if (!d.school) {
+          el.innerHTML = `<div class="muted">학교 목록에서 ‘${esc(s.school_name)}’을(를) 찾지 못했어요. 관리자에게 학교 이름을 확인해 달라고 알려 주세요.</div>`;
+          return;
+        }
+        let h = `<div class="ref-sub-title">${esc(d.school.name)} 교육과정 편성표 <span class="muted">(최신순, 읽기 전용으로 열려요)</span></div>`;
+        h += d.curriculums.length
+          ? `<ul class="ref-list">${d.curriculums.map(c => `
+              <li class="ref-item">
+                <span class="type-tag type-${esc(c.sheet_type)}">${esc(TYPE_LABELS[c.sheet_type] || c.sheet_type || '')}</span>
+                <a href="${esc(safeUrl(toReadOnlyUrl(c.spreadsheet_url)))}" target="_blank" rel="noopener">${esc(c.title)} ↗</a>
+                <span class="ref-date">${esc(fmtDay(c.created_at))}</span>
+                ${c.description ? `<span class="ref-desc">${esc(c.description)}</span>` : ''}
+              </li>`).join('')}</ul>`
+          : '<div class="muted" style="margin-bottom:14px;">등록된 편성표가 없어요.</div>';
+        h += '<div class="ref-sub-title">편성표 점검 결과</div>';
+        h += d.inspections.length
+          ? `<ul class="ref-list">${d.inspections.map(c => `
+              <li class="ref-item">
+                <span class="type-tag type-inspect">점검</span>
+                <a href="${esc(safeUrl(toReadOnlyUrl(c.spreadsheet_url)))}" target="_blank" rel="noopener">${esc(c.title)} ↗</a>
+                <span class="ref-date">${esc(fmtDay(c.created_at))}</span>
+              </li>`).join('')}</ul>`
+          : '<div class="muted">등록된 점검 결과가 없어요.</div>';
+        el.innerHTML = h;
+        return;
+      }
+      // 과목: 다른 부분(공립↔사립)의 같은 과목 칸 — 칸 번호 끝자리로 짝 찾기(pub-subj-NN ↔ pri-subj-NN)
+      // (제목은 부분마다 쓰는 법이 조금 달라서 제목으로는 짝을 찾지 않음)
+      const pairId = counterpartId(s.id);
+      const pair = pairId ? S.slotById.get(pairId) : null;
+      const others = pair && pair.kind === 'subject' ? [pair] : [];
+      if (!others.length) { el.innerHTML = '<div class="muted">다른 부분에 같은 과목 칸이 없어요.</div>'; return; }
+      el.innerHTML = '<div class="ref-sub-title">다른 부분의 같은 과목 (읽기만)</div>' + others.map(o => `
+        <div class="cp">
+          <div class="cp-head"><b>${esc(o.part)} · ${esc(o.title)}</b>${chip(o.status)}<span>담당 ${writersHtml(o)}</span><a class="small-btn" href="${slotHref(o)}">열기</a></div>
+          <div class="cp-label">${esc(o.label1 || '')}</div>
+          <div class="cp-text">${hasText(o.body1) ? esc(o.body1) : '<span class="m-empty">(미작성)</span>'}</div>
+          ${o.label2 ? `<div class="cp-label">${esc(o.label2)}</div><div class="cp-text">${hasText(o.body2) ? esc(o.body2) : '<span class="m-empty">(미작성)</span>'}</div>` : ''}
+        </div>`).join('');
+    }
+
+    // ====== 수정 기록 ======
+    async function loadRevisions(ed) {
+      try {
+        const revs = await api.revisions(ed.id);
+        if (ED !== ed) return;
+        ed.revs = revs || [];
+      } catch (e) {
+        if (ED !== ed) return;
+        ed.revs = null;
+        const el = document.getElementById('revList');
+        if (el) el.innerHTML = `<div class="muted">기록을 불러오지 못했어요: ${esc(errMessage(e))}</div>`;
+        return;
+      }
+      renderRevisions();
+    }
+    function renderRevisions() {
+      const el = document.getElementById('revList');
+      if (!el || !ED) return;
+      const revs = ED.revs;
+      if (!revs) { el.innerHTML = '불러오는 중...'; return; }
+      if (!revs.length) { el.innerHTML = '<div class="muted">아직 기록이 없어요.</div>'; return; }
+      el.innerHTML = revs.map(r => `
+        <div class="rev-item">
+          <div class="rev-line">
+            <b>${esc(ACTION_LABEL[r.action] || r.action || '')}</b>
+            <span>${esc(r.by_name || '')}</span>
+            <span class="muted small">${esc(fmt(r.at))}${r.version !== null && r.version !== undefined ? ` · ${r.version}판` : ''}${r.status ? ` · ${esc((STATUS[r.status] || {}).label || r.status)}` : ''}</span>
+            <button type="button" class="small-btn" data-act="rev-toggle" data-rev="${esc(r.id)}">보기</button>
+          </div>
+          <div class="rev-body hidden" id="rev-${esc(r.id)}"></div>
+        </div>`).join('');
+    }
+    function toggleRevision(id) {
+      if (!ED || !ED.revs) return;
+      const box = document.getElementById('rev-' + id);
+      const r = ED.revs.find(x => String(x.id) === String(id));
+      if (!box || !r) return;
+      if (!box.classList.contains('hidden')) { box.classList.add('hidden'); return; }
+      const s = ED.slot;
+      box.innerHTML = `
+        ${s.label1 ? `<div class="cp-label">${esc(s.label1)}</div>` : ''}
+        <div class="cp-text">${hasText(r.body1) ? esc(r.body1) : '<span class="m-empty">(비어 있음)</span>'}</div>
+        ${s.label2 ? `<div class="cp-label">${esc(s.label2)}</div><div class="cp-text">${hasText(r.body2) ? esc(r.body2) : '<span class="m-empty">(비어 있음)</span>'}</div>` : ''}
+        <div class="btn-row" style="margin-top:8px;">
+          <button type="button" class="small-btn" data-act="rev-copy" data-rev="${esc(r.id)}">복사</button>
+          ${ED.perm.canEdit && !ED.conflict ? `<button type="button" class="small-btn" data-act="rev-restore" data-rev="${esc(r.id)}">이 글로 되돌리기</button>` : ''}
+        </div>`;
+      box.classList.remove('hidden');
+    }
+
+    // 글 상자 내용을 코드로 바꿀 때 (되돌리기·불러오기)
+    function setEditorText(b1, b2) {
+      if (!ED) return;
+      ED.cur = { b1: b1 || '', b2: b2 || '' };
+      ['b1', 'b2'].forEach((k, i) => {
+        const el = document.getElementById('ed' + (i + 1));
+        if (el && el.tagName === 'TEXTAREA') { el.value = ED.cur[k]; autoGrow(el); }
+        updateCount(k);
+      });
+      ED.dirty = ED.cur.b1 !== ED.base.b1 || ED.cur.b2 !== ED.base.b2;
+      writeBackup(ED);
+      setSaveState(ED.dirty ? 'dirty' : 'saved');
+      clearTimeout(ED.timer);
+      ED.timer = ED.dirty ? setTimeout(() => saveNow(), 1000) : null;
+      runLint();
+      renderEdNotices();
+    }
+
+    // 수정 기록의 글로 되돌리기
+    // 1) 저장 안 된 지금 글을 먼저 저장해서 수정 기록에 남기고
+    // 2) 되돌린 글은 수정 기록의 새 줄로 저장(지금 글이 담긴 줄을 덮어쓰지 않게)
+    async function restoreRevision(r) {
+      const ed = ED;
+      if (!ed || !r) return;
+      if (ed.dirty && !(await saveNow())) {
+        if (!authLost) showToast('❌ 지금 글을 먼저 저장하지 못했어요. 잠시 후 다시 해 주세요', 'error');
+        return;
+      }
+      if (ED !== ed || !ed.perm.canEdit || ed.conflict) return;
+      ed.forceNewRev = true;
+      setEditorText(r.body1 || '', r.body2 || '');
+      showToast('✅ 기록의 글로 바꿨어요. 곧 자동 저장돼요', 'success');
+    }
+
+    // ====== 상태 바꾸기 (제출·확인·수정 요청·내가 쓸게요) ======
+    async function flushBeforeAction() {
+      if (!ED) return false;
+      if (!ED.dirty) return true;
+      const ed = ED;
+      const ok = await saveNow();
+      if (!ok || ED !== ed || ed.dirty) {
+        showToast('❌ 저장이 끝나야 할 수 있어요. 저장 상태를 확인해 주세요', 'error');
+        return false;
+      }
+      return true;
+    }
+    function lintTotal() {
+      if (!ED || !ED.lint) return 0;
+      return ['b1', 'b2'].reduce((n, k) => n + ((ED.lint[k] || []).reduce((m, it) => m + (it.hits ? it.hits.length : 1), 0)), 0);
+    }
+    // 성공하면 true, 실패하면 false
+    async function runStatus(action, comment) {
+      const ed = ED;
+      if (!ed) return false;
+      try {
+        const row = await api.setStatus(ed.id, action, S.name || '', comment || null, ed.base.v);
+        applyStatusRow(ed, row);
+        showToast('✅ ' + (DONE_TEXT[action] || '바꿨어요'), 'success');
+        return true;
+      } catch (e) {
+        await handleActionError(e, ed);
+        return false;
+      }
+    }
+    function applyStatusRow(ed, row) {
+      applyRowToList(row);
+      renderTabs();
+      if (ED !== ed) return;
+      ed.slot = Object.assign({}, ed.slot, row);
+      ed.base = { v: row.version, b1: row.body1 || '', b2: row.body2 || '' };
+      ed.dirty = ed.cur.b1 !== ed.base.b1 || ed.cur.b2 !== ed.base.b2;
+      const before = ed.perm.canEdit;
+      ed.perm = perms(ed.slot);
+      if (before !== ed.perm.canEdit) renderEditor();
+      else { renderEdMeta(); renderEdNotices(); renderEdActions(); }
+      loadRevisions(ed);
+    }
+    async function handleActionError(e, ed) {
+      if (isAuthLost(e)) { handleAuthLost(); return; }
+      const code = errCode(e);
+      showToast('❌ ' + errMessage(e), 'error');
+      if (code === 'UNKNOWN_NAME') openNamePicker(true);
+      if (ed && ED === ed && ['VERSION_CONFLICT', 'BAD_STATUS', 'LOCKED', 'SUBMITTED', 'NOT_WRITER', 'FORBIDDEN'].indexOf(code) >= 0) {
+        await reloadEditor(ed, false);
+      }
+    }
+    async function doSubmit() {
+      if (!ED) return;
+      if (!(await flushBeforeAction())) return;
+      if (!hasText(ED.cur.b1) && !hasText(ED.cur.b2)) { showToast('❌ ' + ERROR_TEXT.EMPTY, 'error'); return; }
+      const n = lintTotal();
+      const msg = '이 칸을 제출할까요?\n\n제출하면 확인 담당(팀장)이 볼 수 있고, 다시 고치려면 ‘제출 취소’를 눌러야 해요.' +
+        (n ? `\n\n점검 알림이 ${n}곳 있어요. (제출은 할 수 있어요)` : '');
+      if (!confirm(msg)) return;
+      await runStatus('submit');
+    }
+    async function doUnsubmit() {
+      if (!ED) return;
+      if (!confirm('제출을 취소하고 다시 고칠까요?')) return;
+      await runStatus('unsubmit');
+    }
+    let reviewMode = null;
+    let reviewKey = null;   // 의견을 쓰던 칸·종류(같은 칸·같은 종류로 다시 열면 쓰던 의견을 그대로 둠)
+    function openReviewModal(mode) {
+      if (!ED) return;
+      reviewMode = mode;
+      const s = ED.slot;
+      $('#reviewTitle').textContent = mode === 'approve' ? '확인 완료' : '수정 요청';
+      $('#reviewDesc').textContent = mode === 'approve'
+        ? `‘${s.title}’ 칸을 확인 완료로 바꿔요. 담당자는 더 이상 고칠 수 없어요. 의견은 쓰지 않아도 돼요.`
+        : `‘${s.title}’ 칸 담당자(${(s.writers || []).join(', ')})에게 고칠 점을 알려 주세요. 의견은 꼭 써야 해요.`;
+      $('#reviewLabel').textContent = mode === 'approve' ? '의견 (선택)' : '수정 요청 의견 (필수)';
+      $('#reviewSend').textContent = mode === 'approve' ? '확인 완료' : '수정 요청 보내기';
+      const ta = $('#reviewComment');
+      const key = ED.id + ':' + mode;
+      if (reviewKey !== key) ta.value = '';
+      reviewKey = key;
+      ta.setAttribute('readonly', '');
+      ta.placeholder = mode === 'approve' ? '예: 잘 정리되었어요. 합본에 그대로 넣을게요.' : '예: 환류 방안을 학교가 바로 할 수 있는 일로 한두 문장 더 써 주세요.';
+      openModal('reviewModal');
+      setTimeout(() => { ta.removeAttribute('readonly'); ta.focus(); }, 60);
+    }
+    async function submitReview() {
+      if (!ED || !reviewMode) return;
+      const comment = $('#reviewComment').value.trim();
+      if (reviewMode === 'return' && !comment) { showToast('❌ ' + ERROR_TEXT.COMMENT_REQUIRED, 'error'); return; }
+      const btn = $('#reviewSend');
+      btn.disabled = true;
+      try {
+        if (!(await flushBeforeAction())) return;
+        // 성공했을 때만 창을 닫고 의견을 지움(실패하면 쓴 의견이 그대로 남아 다시 보낼 수 있음)
+        const ok = await runStatus(reviewMode, comment || null);
+        if (ok) {
+          closeModal('reviewModal');
+          $('#reviewComment').value = '';
+          reviewKey = null;
+        }
+      } finally {
+        btn.disabled = false;
+      }
+    }
+    // '내가 쓸게요'는 누를 때마다 표시·취소가 바뀌므로, 서버 답을 기다리는 동안 다시 누르면 무시
+    const claimBusy = new Set();
+    async function doClaim(id, btn) {
+      if (!id || claimBusy.has(id)) return;
+      const s = (ED && ED.id === id) ? ED.slot : S.slotById.get(id);
+      if (!s) return;
+      if (s.claimed_by && s.claimed_by !== S.name && S.name !== '' &&
+        !confirm(`${s.claimed_by}님이 쓰고 있다고 표시한 칸이에요. 그래도 내가 쓸게요로 바꿀까요?`)) return;
+      if (claimBusy.has(id)) return;
+      claimBusy.add(id);
+      if (btn) btn.disabled = true;
+      try {
+        const row = await api.setStatus(id, 'claim', S.name || '', null, null);
+        applyRowToList({ id: row.id, claimed_by: row.claimed_by });
+        if (ED && ED.id === id) {
+          ED.slot.claimed_by = row.claimed_by;
+          renderEdMeta();
+          renderEdActions();
+          loadRevisions(ED);
+        } else {
+          renderList();
+        }
+        showToast(row.claimed_by && row.claimed_by === S.name ? '✅ 내가 쓰는 칸으로 표시했어요' : '✅ 쓰는 사람 표시를 지웠어요', 'success');
+      } catch (e) {
+        await handleActionError(e, ED && ED.id === id ? ED : null);
+      } finally {
+        claimBusy.delete(id);
+        if (btn && btn.isConnected) btn.disabled = false;
+        // 응답을 기다리는 동안 다시 그려진 버튼도 다시 누를 수 있게
+        document.querySelectorAll('[data-act="claim"]').forEach(b => { if (b.getAttribute('data-id') === id) b.disabled = false; });
+      }
+    }
+
+    // =====================================================================
+    // 글 점검 (경고만, 제출을 막지 않음)
+    // =====================================================================
+    function lev(a, b) {
+      if (a === b) return 0;
+      const m = a.length;
+      const n = b.length;
+      if (!m) return n;
+      if (!n) return m;
+      let prev = [];
+      for (let j = 0; j <= n; j++) prev.push(j);
+      for (let i = 1; i <= m; i++) {
+        const cur = [i];
+        for (let j = 1; j <= n; j++) {
+          cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+        }
+        prev = cur;
+      }
+      return prev[n];
+    }
+    function closestSubject(name) {
+      const k = normSubj(name);
+      if (S.subjectNorm.has(k)) return { exact: S.subjectNorm.get(k) };
+      let best = null;
+      let bd = Infinity;
+      S.subjectNorm.forEach((off, nk) => {
+        const d = lev(k, nk);
+        if (d < bd) { bd = d; best = off; }
+      });
+      const lim = Math.max(1, Math.ceil(k.length * 0.4));
+      return bd <= lim ? { near: best } : {};
+    }
+    function collect(text, re) {
+      const hits = [];
+      re.lastIndex = 0;
+      let m;
+      while ((m = re.exec(text))) {
+        if (!m[0].length) { re.lastIndex++; continue; }
+        hits.push({ s: m.index, e: m.index + m[0].length, w: m[0] });
+      }
+      return hits;
+    }
+    function lintText(text) {
+      const t = text || '';
+      const items = [];
+      if (!t.trim()) return items;
+      // 1. 평가하는 말 (분담표 유의 사항)
+      const strong = collect(t, /[가-힣A-Za-z0-9]*(?:바람직|적절)[가-힣A-Za-z0-9]*/g);
+      if (strong.length) {
+        items.push({ lv: 'warn', hits: strong, msg: `평가하는 말 ${strong.length}곳: ${uniq(strong.map(h => h.w)).slice(0, 6).join(', ')} — ‘바람직’, ‘적절’ 같은 평가어는 빼 주세요` });
+      }
+      const soft = collect(t, /[가-힣]*(?:우수|매우|긍정적)[가-힣]*/g);
+      if (soft.length) {
+        items.push({ lv: 'soft', hits: soft, msg: `평가처럼 읽힐 수 있는 말 ${soft.length}곳: ${uniq(soft.map(h => h.w)).slice(0, 6).join(', ')} — 꼭 필요한지 살펴 주세요` });
+      }
+      // 2. 꺾쇠 < > 짝
+      const bad = [];
+      let open = -1;
+      for (let i = 0; i < t.length; i++) {
+        const c = t[i];
+        if (c === '<') { if (open >= 0) bad.push({ s: open, e: open + 1, w: '<' }); open = i; }
+        else if (c === '>') { if (open < 0) bad.push({ s: i, e: i + 1, w: '>' }); else open = -1; }
+        else if (c === '\n' && open >= 0) { bad.push({ s: open, e: open + 1, w: '<' }); open = -1; }
+      }
+      if (open >= 0) bad.push({ s: open, e: open + 1, w: '<' });
+      if (bad.length) {
+        const nl = (t.match(/</g) || []).length;
+        const nr = (t.match(/>/g) || []).length;
+        items.push({ lv: 'warn', hits: bad, msg: `꺾쇠 < > 짝이 맞지 않는 곳 ${bad.length}곳 (‘<’ ${nl}개, ‘>’ ${nr}개)` });
+      }
+      // 3. <과목명> 확인 (줄임말 풀기 포함)
+      const hasSubjects = S.subjectNorm.size > 0;
+      const abKeys = Object.keys(S.abbrev);
+      if (hasSubjects || abKeys.length) {
+        const abMap = new Map();
+        const unMap = new Map();
+        const re = /<([^<>\n]{1,60})>/g;
+        let m;
+        while ((m = re.exec(t))) {
+          const hit = { s: m.index, e: m.index + m[0].length, w: m[0] };
+          m[1].split(/[,，、]/).forEach(raw => {
+            const name = raw.trim();
+            if (!name) return;
+            if (Object.prototype.hasOwnProperty.call(S.abbrev, name)) {
+              if (!abMap.has(name)) abMap.set(name, []);
+              abMap.get(name).push(hit);
+            } else if (hasSubjects && !S.subjectSet.has(name)) {
+              if (!unMap.has(name)) unMap.set(name, []);
+              unMap.get(name).push(hit);
+            }
+          });
+        }
+        abMap.forEach((hits, name) => {
+          items.push({ lv: 'soft', hits, msg: `줄임말 <${name}> → <${S.abbrev[name]}>(으)로 풀어 써 주세요${hits.length > 1 ? ` (${hits.length}곳)` : ''}` });
+        });
+        unMap.forEach((hits, name) => {
+          const c = closestSubject(name);
+          const cntTxt = hits.length > 1 ? ` (${hits.length}곳)` : '';
+          if (c.exact) items.push({ lv: 'soft', hits, msg: `<${name}> → 공식 과목명은 <${c.exact}>예요${cntTxt}` });
+          else if (c.near) items.push({ lv: 'soft', hits, msg: `<${name}>은(는) 과목 목록에 없어요. 혹시 <${c.near}>?${cntTxt}` });
+          else items.push({ lv: 'info', hits, msg: `<${name}>은(는) 과목 목록에 없어요. 과목명이 아니면 넘어가도 돼요${cntTxt}` });
+        });
+      }
+      // 4. 띄어쓰기 두 번
+      const ds = [];
+      const reDs = /(\S)( {2,})(?=\S)/g;
+      let d;
+      while ((d = reDs.exec(t))) ds.push({ s: d.index + 1, e: d.index + 1 + d[2].length, w: d[2] });
+      if (ds.length) items.push({ lv: 'soft', hits: ds, msg: `띄어쓰기가 두 번 이상 들어간 곳 ${ds.length}곳` });
+      // 5. 숫자와 '학점' 사이 띄어쓰기
+      const hk = collect(t, /\d[ \t]+학점/g);
+      if (hk.length) items.push({ lv: 'soft', hits: hk, msg: `숫자와 ‘학점’ 사이 띄어쓰기 ${hk.length}곳 (예: ‘3 학점’ → ‘3학점’)` });
+      return items;
+    }
+    function runLint() {
+      if (!ED) return;
+      ED.lint = {};
+      const editable = ED.perm.canEdit && !ED.conflict;
+      ['b1', 'b2'].forEach((k, i) => {
+        const el = document.getElementById('lint' + (i + 1));
+        if (!el) return;
+        const items = lintText(ED.cur[k]);
+        ED.lint[k] = items;
+        const sumOf = (lv) => items.filter(x => x.lv === lv).reduce((n, x) => n + (x.hits ? x.hits.length : 1), 0);
+        const w = sumOf('warn');
+        const so = sumOf('soft');
+        const inf = sumOf('info');
+        let sum = '';
+        if (items.length) {
+          const parts = [];
+          if (w) parts.push(`꼭 확인 ${w}`);
+          if (so) parts.push(`살펴보기 ${so}`);
+          if (inf) parts.push(`참고 ${inf}`);
+          sum = `점검 알림 — ${parts.join(' · ')} (제출을 막지는 않아요)`;
+        } else if (hasText(ED.cur[k])) {
+          sum = '점검 알림 없음';
+        }
+        const icon = { warn: '!', soft: '?', info: 'i' };
+        el.innerHTML = (sum ? `<div class="lint-sum">${sum}</div>` : '') + items.map((it, j) => `
+          <button type="button" class="lint-item ${it.lv}" data-act="lint-go" data-field="${k}" data-idx="${j}">
+            <b>${icon[it.lv]}</b><span class="lint-msg">${esc(it.msg)}</span>${editable && it.hits && it.hits.length ? '<span class="lint-go">찾기</span>' : ''}
+          </button>`).join('');
+      });
+    }
+    function caretTop(ta, pos) {
+      const cs = getComputedStyle(ta);
+      const div = document.createElement('div');
+      ['boxSizing', 'width', 'paddingTop', 'paddingRight', 'paddingBottom', 'paddingLeft', 'borderTopWidth', 'borderRightWidth',
+        'borderBottomWidth', 'borderLeftWidth', 'fontFamily', 'fontSize', 'fontWeight', 'lineHeight', 'letterSpacing',
+        'wordBreak', 'overflowWrap', 'tabSize'].forEach(p => { div.style[p] = cs[p]; });
+      div.style.position = 'absolute';
+      div.style.visibility = 'hidden';
+      div.style.whiteSpace = 'pre-wrap';
+      div.style.top = '0';
+      div.style.left = '-9999px';
+      div.textContent = ta.value.slice(0, pos);
+      const mark = document.createElement('span');
+      mark.textContent = '​';
+      div.appendChild(mark);
+      document.body.appendChild(div);
+      const top = mark.offsetTop;
+      div.remove();
+      return top;
+    }
+    function lintGo(k, idx) {
+      if (!ED || !ED.lint || !ED.lint[k]) return;
+      const it = ED.lint[k][idx];
+      const ta = document.getElementById(k === 'b1' ? 'ed1' : 'ed2');
+      if (!it || !it.hits || !it.hits.length || !ta || ta.tagName !== 'TEXTAREA') return;
+      it.cursor = ((typeof it.cursor === 'number' ? it.cursor : -1) + 1) % it.hits.length;
+      const h = it.hits[it.cursor];
+      ta.removeAttribute('readonly');
+      ta.focus({ preventScroll: true });
+      ta.setSelectionRange(h.s, h.e);
+      const y = ta.getBoundingClientRect().top + window.scrollY + caretTop(ta, h.s) - window.innerHeight / 3;
+      window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+    }
+
+    // =====================================================================
+    // 클릭 · 선택 처리 (한 곳에서)
+    // =====================================================================
+    document.addEventListener('click', (e) => {
+      const t = e.target.closest('[data-act]');
+      if (!t) return;
+      const act = t.getAttribute('data-act');
+      switch (act) {
+        case 'open-name': openNamePicker(false); break;
+        case 'pick-name': pickName(t.getAttribute('data-name')); break;
+        case 'pick-admin': if (S.isAdmin) pickName(''); break;
+        case 'close-name': if (!S.nameForced) closeModal('nameModal'); break;
+        case 'claim': doClaim(t.getAttribute('data-id'), t); break;
+        case 'save-now':
+          saveNow().then(ok => {
+            if (ok) { setSaveState('saved'); showToast('✅ 저장했어요', 'success'); }
+          });
+          break;
+        case 'submit': doSubmit(); break;
+        case 'unsubmit': doUnsubmit(); break;
+        case 'approve': openReviewModal('approve'); break;
+        case 'return': openReviewModal('return'); break;
+        case 'review-cancel': closeModal('reviewModal'); break;
+        case 'review-send': submitReview(); break;
+        case 'conflict-mine': resolveConflict('mine'); break;
+        case 'conflict-theirs': resolveConflict('theirs'); break;
+        case 'copy-pane': {
+          if (!ED) break;
+          const L = ED.conflictLatest;
+          if (t.getAttribute('data-pane') === 'mine') copyAndToast(rawText(ED.slot, ED.cur.b1, ED.cur.b2), '내 글을');
+          else if (L) copyAndToast(rawText(L, L.body1, L.body2), '다른 분 글을');
+          break;
+        }
+        case 'restore-backup': {
+          if (!ED) break;
+          const bk = readBackup(ED);
+          if (bk) {
+            ED.forceNewRev = true;   // 불러온 글은 수정 기록 새 줄로(서버에 있던 글이 담긴 줄을 덮어쓰지 않게)
+            setEditorText(bk.b1, bk.b2 || '');
+            if (!ED.dirty) ED.forceNewRev = false;   // 지금 글과 같아 저장할 게 없으면 표시도 지움
+            showToast('✅ 이 기기에 남은 글을 불러왔어요. 곧 자동 저장돼요', 'success');
+          }
+          break;
+        }
+        case 'view-backup': {
+          if (!ED) break;
+          const bk = readBackup(ED);
+          if (bk) openTextModal('이 기기에 남은 글', `${fmt(new Date(Number(bk.t)).toISOString())}에 쓴 글이에요.`, ED.slot, bk.b1, bk.b2 || '');
+          break;
+        }
+        case 'discard-backup':
+          if (ED && confirm('이 기기에 남은 글을 지울까요? 되돌릴 수 없어요.')) { lsDel(LS_DRAFT + ED.id); renderEdNotices(); }
+          break;
+        case 'copy-prev': if (ED && ED.prevMine) copyAndToast(rawText(ED.slot, ED.prevMine.b1, ED.prevMine.b2), '바꾸기 전 내 글을'); break;
+        case 'dismiss-prev': if (ED) { ED.prevMine = null; renderEdNotices(); } break;
+        case 'lint-go': lintGo(t.getAttribute('data-field'), Number(t.getAttribute('data-idx'))); break;
+        case 'rev-toggle': toggleRevision(t.getAttribute('data-rev')); break;
+        case 'rev-copy': {
+          if (!ED || !ED.revs) break;
+          const r = ED.revs.find(x => String(x.id) === t.getAttribute('data-rev'));
+          if (r) copyAndToast(rawText(ED.slot, r.body1, r.body2), '기록의 글을');
+          break;
+        }
+        case 'rev-restore': {
+          if (!ED || !ED.revs || !ED.perm.canEdit) break;
+          const r = ED.revs.find(x => String(x.id) === t.getAttribute('data-rev'));
+          if (r && confirm('이 기록의 글로 바꿀까요? 지금 글도 수정 기록에 남아 있어요.')) restoreRevision(r);
+          break;
+        }
+        case 'copy-block': {
+          const s = S.slotById.get(t.getAttribute('data-id'));
+          if (s) copyAndToast(blockLines(s).join('\n'), `‘${s.title}’을(를)`);
+          break;
+        }
+        case 'copy-all': {
+          const list = mergedSlots();
+          if (list.length) copyAndToast(mergedLines(list).join('\n'), `${list.length}칸을`);
+          break;
+        }
+        case 'excel': downloadExcel(); break;
+        case 'count-chip': S.fAll.status = t.getAttribute('data-status') || ''; renderList(); break;
+        case 'jump-ref': {
+          const ref = document.getElementById('refCol');
+          if (ref) ref.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          break;
+        }
+        case 'close-text': closeModal('textModal'); break;
+        case 'copy-text-modal': if (textModalCopy) copyAndToast(textModalCopy, '글을'); break;
+        case 'demo-touch': {
+          if (!DEMO || !ED || !api.demoTouch) break;
+          const other = api.demoTouch(ED.id);
+          showToast(`(데모) ${other}님이 이 칸을 저장했어요`, 'success');
+          pollSlot();
+          break;
+        }
+        default: break;
+      }
+    });
+    document.addEventListener('change', (e) => {
+      const t = e.target.closest('[data-filter]');
+      if (!t) return;
+      const parts = t.getAttribute('data-filter').split('.');
+      const box = parts[0] === 'all' ? S.fAll : S.fMerged;
+      box[parts[1]] = t.value;
+      renderList();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape') return;
+      if (!$('#textModal').classList.contains('hidden')) closeModal('textModal');
+      else if (!$('#reviewModal').classList.contains('hidden')) closeModal('reviewModal');
+      else if (!$('#nameModal').classList.contains('hidden') && !S.nameForced) closeModal('nameModal');
+    });
+    window.addEventListener('resize', () => {
+      document.querySelectorAll('textarea.ed-text').forEach(autoGrow);
+    });
+    // 저장 전 글이 있으면 페이지를 떠나기 전에 알림
+    window.addEventListener('beforeunload', (e) => {
+      if (authLost) return;   // 로그인이 풀려 로그인 화면으로 갈 때는 묻지 않음(글은 이 기기에 백업됨)
+      if (ED && (ED.dirty || ED.saving)) {
+        e.preventDefault();
+        e.returnValue = '';
+      }
+    });
+
+    let textModalCopy = '';
+    function openTextModal(title, desc, slotLike, b1, b2) {
+      $('#textTitle').textContent = title;
+      $('#textDesc').textContent = desc || '';
+      $('#textBody').innerHTML = paneHtml(slotLike, b1, b2);
+      textModalCopy = rawText(slotLike, b1, b2);
+      openModal('textModal');
+    }
+
+    window.handleLogout = async function() {
+      if (ED && ED.dirty && !confirm('아직 저장하지 않은 글이 있어요. 그래도 로그아웃할까요?')) return;
+      const ok = confirm('로그아웃 하시겠습니까?');
+      if (!ok) return;
+      if (DEMO) { showToast('데모에서는 로그아웃하지 않아요'); return; }
+      loggingOut = true;   // 직접 로그아웃 → '로그인이 풀렸어요' 안내를 띄우지 않음
+      await api.logout();
+      window.location.href = 'login.html';
+    };
+
+    // ====== 비밀번호 변경 (본인) ======
+    // 비밀번호 칸은 모달이 열려 있을 때만 페이지에 둔다.
+    // (비밀번호 칸이 있으면 브라우저가 근처 글자 칸에 로그인 이메일을 자동으로 채움)
+    function mountPasswordInputs() {
+      document.querySelectorAll('#pwModal .pw-slot').forEach(slot => {
+        if (slot.firstChild) return;
+        const inp = document.createElement('input');
+        inp.type = 'password';
+        inp.id = slot.getAttribute('data-pw');
+        inp.setAttribute('autocomplete', slot.getAttribute('data-ac'));
+        slot.appendChild(inp);
+      });
+    }
+
+    function unmountPasswordInputs() {
+      document.querySelectorAll('#pwModal .pw-slot').forEach(slot => { slot.innerHTML = ''; });
+    }
+
+    window.openPasswordModal = function() {
+      if (DEMO) { showToast('데모에서는 비밀번호를 바꿀 수 없어요'); return; }
+      mountPasswordInputs();
+      document.getElementById('pwCurrent').value = '';
+      document.getElementById('pwNew').value = '';
+      document.getElementById('pwConfirm').value = '';
+      document.getElementById('pwModal').classList.remove('hidden');
+      setTimeout(() => document.getElementById('pwCurrent').focus(), 50);
+    };
+
+    window.closePasswordModal = function() {
+      document.getElementById('pwModal').classList.add('hidden');
+      unmountPasswordInputs();
+    };
+
+    window.submitPasswordChange = async function() {
+      if (DEMO || !supabase) return;
+      const currentPw = document.getElementById('pwCurrent').value;
+      const newPw = document.getElementById('pwNew').value;
+      const confirmPw = document.getElementById('pwConfirm').value;
+
+      if (!currentPw || !newPw || !confirmPw) {
+        showToast('❌ 모든 항목을 입력하세요', 'error');
+        return;
+      }
+      if (newPw.length < 6) {
+        showToast('❌ 새 비밀번호는 6자 이상이어야 합니다', 'error');
+        return;
+      }
+      if (newPw !== confirmPw) {
+        showToast('❌ 새 비밀번호와 확인이 일치하지 않습니다', 'error');
+        return;
+      }
+      if (currentPw === newPw) {
+        showToast('❌ 현재 비밀번호와 새 비밀번호가 같습니다', 'error');
+        return;
+      }
+
+      const btn = document.getElementById('pwSubmitBtn');
+      btn.disabled = true;
+      btn.textContent = '변경 중...';
+
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user || !user.email) {
+          showToast('❌ 사용자 정보를 가져올 수 없습니다', 'error');
+          return;
+        }
+
+        const verifyResp = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=password`, {
+          method: 'POST',
+          headers: {
+            'apikey': SUPABASE_KEY,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email: user.email, password: currentPw })
+        });
+
+        if (!verifyResp.ok) {
+          showToast('❌ 현재 비밀번호가 올바르지 않습니다', 'error');
+          return;
+        }
+
+        const { error } = await supabase.auth.updateUser({ password: newPw });
+        if (error) {
+          showToast('❌ 비밀번호 변경 실패: ' + error.message, 'error');
+          return;
+        }
+
+        showToast('✅ 비밀번호가 변경되었습니다', 'success');
+        closePasswordModal();
+      } catch (e) {
+        showToast('❌ 오류: ' + e.message, 'error');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = '변경';
+      }
+    };
+
+    init();
+  </script>
+
+  <!-- 비밀번호 변경 모달 -->
+  <!-- 비밀번호 칸은 모달을 열 때만 만든다(브라우저 자동 채움 방지). -->
+  <div id="pwModal" class="pw-modal-bg hidden">
+    <div class="pw-modal">
+      <h3>비밀번호 변경</h3>
+      <div class="pw-desc">현재 비밀번호 확인 후 새 비밀번호로 변경합니다.</div>
+      <div class="pw-field">
+        <label for="pwCurrent">현재 비밀번호</label>
+        <span class="pw-slot" data-pw="pwCurrent" data-ac="current-password"></span>
+      </div>
+      <div class="pw-field">
+        <label for="pwNew">새 비밀번호 (6자 이상)</label>
+        <span class="pw-slot" data-pw="pwNew" data-ac="new-password"></span>
+      </div>
+      <div class="pw-field">
+        <label for="pwConfirm">새 비밀번호 확인</label>
+        <span class="pw-slot" data-pw="pwConfirm" data-ac="new-password"></span>
+      </div>
+      <div class="pw-actions">
+        <button class="pw-btn-cancel" onclick="closePasswordModal()">취소</button>
+        <button class="pw-btn-submit" id="pwSubmitBtn" onclick="submitPasswordChange()">변경</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 토스트 메시지 -->
+  <div class="toast" id="toast"></div>
+
+</body>
+</html>
