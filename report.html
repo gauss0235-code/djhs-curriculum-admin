@@ -1401,8 +1401,8 @@
       approved: { label: '확인 완료', cls: 'st-approved' }
     };
     const STATUS_ORDER = ['empty', 'draft', 'submitted', 'returned', 'approved'];
-    const KIND_LABEL = { subject: '과목별 분석', school: '학교별 분석', track: '내용 기록 및 분석' };
-    // 전체 현황 묶음 제목: '공립 과목별 분석', '사립 내용 기록 및 분석', 공통 보완 칸은 '공통 내용 보완할 점'
+    const KIND_LABEL = { subject: '교과별 분석', school: '학교별 분석', track: '내용 기록 및 분석' };
+    // 전체 현황 묶음 제목: '공립 교과별 분석', '사립 내용 기록 및 분석', 공통 보완 칸은 '공통 내용 보완할 점'
     function groupTitle(part, kind) {
       if (kind === 'track' && part === '공통') return '공통 내용 보완할 점';
       return `${part} ${KIND_LABEL[kind] || kind}`;
@@ -2536,13 +2536,13 @@
       const c = countBy(mine);
       const done = (c.submitted || 0) + (c.approved || 0);
       html += `<div class="summary-line">내 칸 ${mine.length}개 · 제출 이상 ${done}개 — ${countsText(mine)}</div>`;
-      // 종류별로 묶어 보여 줌: 공립 교과 → 사립 교과 → 공립 학교별 → 사립 학교별 → 그 밖(보고서 내용 보완)
-      // (전체 현황·합본은 보고서 순서 그대로)
+      // 종류별로 묶어 보여 줌: 공립 교과별 → 사립 교과별 → 공립 학교별 → 사립 학교별 → 그 밖(보고서 내용 보완)
+      // (전체 현황·합본은 보고서 순서 그대로, 묶음 이름은 전체 현황과 같게 groupTitle 사용)
       const groups = [
-        { label: '공립 교과 분석', test: s => s.kind === 'subject' && s.part === '공립' },
-        { label: '사립 교과 분석', test: s => s.kind === 'subject' && s.part === '사립' },
-        { label: '공립 학교별 분석', test: s => s.kind === 'school' && s.part === '공립' },
-        { label: '사립 학교별 분석', test: s => s.kind === 'school' && s.part === '사립' }
+        { label: groupTitle('공립', 'subject'), test: s => s.kind === 'subject' && s.part === '공립' },
+        { label: groupTitle('사립', 'subject'), test: s => s.kind === 'subject' && s.part === '사립' },
+        { label: groupTitle('공립', 'school'), test: s => s.kind === 'school' && s.part === '공립' },
+        { label: groupTitle('사립', 'school'), test: s => s.kind === 'school' && s.part === '사립' }
       ];
       const used = new Set();
       const parts = groups.map(g => {
