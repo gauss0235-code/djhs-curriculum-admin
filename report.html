@@ -1401,7 +1401,12 @@
       approved: { label: '확인 완료', cls: 'st-approved' }
     };
     const STATUS_ORDER = ['empty', 'draft', 'submitted', 'returned', 'approved'];
-    const KIND_LABEL = { subject: '과목별 분석', school: '학교별 분석', track: '보완·기록' };
+    const KIND_LABEL = { subject: '과목별 분석', school: '학교별 분석', track: '내용 기록 및 분석' };
+    // 전체 현황 묶음 제목: '공립 과목별 분석', '사립 내용 기록 및 분석', 공통 보완 칸은 '공통 내용 보완할 점'
+    function groupTitle(part, kind) {
+      if (kind === 'track' && part === '공통') return '공통 내용 보완할 점';
+      return `${part} ${KIND_LABEL[kind] || kind}`;
+    }
     const ACTION_LABEL = { save: '저장', submit: '제출', unsubmit: '제출 취소', approve: '확인 완료', return: '수정 요청', claim: '내가 쓸게요' };
     const TYPE_LABELS = { practice: '연습용', first_draft: '1차본', second_draft: '2차본', final: '최종본' };
     const LIST_FIELDS = ['id', 'year', 'part', 'kind', 'section', 'title', 'sort', 'writers', 'reviewer',
@@ -2603,7 +2608,7 @@
         const d = g.items.filter(s => s.status === 'submitted' || s.status === 'approved').length;
         return `
           <section class="group">
-            <div class="group-head"><h3>${esc(g.part)} · ${esc(KIND_LABEL[g.kind] || g.kind)}</h3><span class="group-sub">${g.items.length}칸 · 제출 이상 ${d}칸</span></div>
+            <div class="group-head"><h3>${esc(groupTitle(g.part, g.kind))}</h3><span class="group-sub">${g.items.length}칸 · 제출 이상 ${d}칸</span></div>
             <div class="rows">${g.items.map(rowHtml).join('')}</div>
           </section>`;
       }).join('');
