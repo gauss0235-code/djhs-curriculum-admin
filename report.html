@@ -880,6 +880,9 @@
     .ref-item a:hover { text-decoration: underline; }
     .ref-date { font-size: 12px; color: #6B7280; margin-left: auto; }
     .ref-desc { flex-basis: 100%; font-size: 12.5px; color: #6B7280; }
+    .ref-hidden { margin-top: 12px; font-size: 13px; color: #6B7280; }
+    .ref-hidden summary { cursor: pointer; font-weight: 600; }
+    .ref-hidden .ref-list { margin: 8px 0 0; opacity: .8; }
     .type-tag {
       display: inline-flex;
       align-items: center;
@@ -893,7 +896,6 @@
     .type-first_draft { background: var(--orange-soft); color: var(--orange); }
     .type-second_draft { background: #f0e9fa; color: #9b6fc9; }
     .type-final { background: var(--blue-soft); color: var(--blue); }
-    .type-inspect { background: #FEE2E2; color: #B91C1C; }
     .cp { border: 1.5px solid #eef3f7; border-radius: 12px; padding: 12px 14px; margin-bottom: 10px; }
     .cp-head { display: flex; gap: 6px 8px; align-items: center; flex-wrap: wrap; font-size: 13px; color: #6B7280; margin-bottom: 4px; }
     .cp-head b { color: var(--text); font-size: 14px; }
@@ -1530,20 +1532,14 @@
         },
         async schoolRefs(schoolName) {
           const sch = must(await sb.from('schools').select('id, name').eq('name', schoolName).maybeSingle());
-          if (!sch) return { school: null, curriculums: [], inspections: [] };
-          const [c, i] = await Promise.all([
-            sb.from('curriculums')
-              .select('id, title, sheet_type, spreadsheet_url, description, created_at, updated_at')
-              .eq('school_id', sch.id)
-              .order('created_at', { ascending: false }),
-            sb.from('inspections')
-              .select('id, title, spreadsheet_url, created_at, updated_at')
-              .eq('school_id', sch.id)
-              .order('created_at', { ascending: false })
-          ]);
-          if (c.error) throw c.error;
-          if (i.error) throw i.error;
-          return { school: sch, curriculums: c.data || [], inspections: i.data || [] };
+          if (!sch) return { school: null, curriculums: [] };
+          // 참고 자료는 편성표 최종본만 (학년도는 화면에서 isReportFinal로 한 번 더 거름)
+          const list = must(await sb.from('curriculums')
+            .select('id, title, sheet_type, spreadsheet_url, description, created_at, updated_at')
+            .eq('school_id', sch.id)
+            .eq('sheet_type', 'final')
+            .order('created_at', { ascending: false }));
+          return { school: sch, curriculums: list || [] };
         },
         // 함께 쓰는 계정이라 이 기기에서만 로그아웃(다른 선생님의 로그인은 그대로)
         async logout() { await sb.auth.signOut({ scope: 'local' }); }
@@ -1673,28 +1669,31 @@
         abbrev: { '인경': '인간과 경제활동', '확통': '확률과 통계', '사문': '사회와 문화', '세지': '세계시민과 지리' }
       };
       const refs = {
+        // 화면에는 isReportFinal()을 통과한 것(2027학년도 입학생 최종본)만 나옴 — 나머지는 걸러지는지 확인용
         '가상고': {
           curriculums: [
-            { id: 'dc3', title: '(데모) 2027학년도 입학생 편성표 2차본', sheet_type: 'second_draft', spreadsheet_url: 'https://docs.google.com/spreadsheets/d/DEMO-SHEET-0003/edit#gid=0', description: '데모용 가짜 링크예요', created_at: ago(60 * 24 * 3), updated_at: ago(60 * 24 * 3) },
+            { id: 'dc6', title: '(데모) 2027학년도 입학생 편성표 최종본', sheet_type: 'final', spreadsheet_url: 'https://docs.google.com/spreadsheets/d/DEMO-SHEET-0006/edit#gid=0', description: '데모용 가짜 링크예요', created_at: ago(60 * 24), updated_at: ago(60 * 24) },
+            { id: 'dc3', title: '(데모) 2027학년도 입학생 편성표 2차본', sheet_type: 'second_draft', spreadsheet_url: 'https://docs.google.com/spreadsheets/d/DEMO-SHEET-0003/edit#gid=0', description: null, created_at: ago(60 * 24 * 3), updated_at: ago(60 * 24 * 3) },
             { id: 'dc2', title: '(데모) 2027학년도 입학생 편성표 1차본', sheet_type: 'first_draft', spreadsheet_url: 'https://docs.google.com/spreadsheets/d/DEMO-SHEET-0002/edit', description: null, created_at: ago(60 * 24 * 20), updated_at: ago(60 * 24 * 20) },
+            { id: 'dc7', title: '(데모) 2026학년도 입학생 편성표 최종본', sheet_type: 'final', spreadsheet_url: 'https://docs.google.com/spreadsheets/d/DEMO-SHEET-0007/edit', description: null, created_at: ago(60 * 24 * 30), updated_at: ago(60 * 24 * 30) },
             { id: 'dc1', title: '(데모) 연습용 편성표', sheet_type: 'practice', spreadsheet_url: 'https://docs.google.com/spreadsheets/d/DEMO-SHEET-0001/edit', description: null, created_at: ago(60 * 24 * 40), updated_at: ago(60 * 24 * 40) }
-          ],
-          inspections: [
-            { id: 'di1', title: '(데모) 2차 편성표 점검 결과', spreadsheet_url: 'https://docs.google.com/spreadsheets/d/DEMO-CHECK-0001/edit', created_at: ago(60 * 24 * 2), updated_at: ago(60 * 24 * 2) }
           ]
         },
         '샘플여자고': {
           curriculums: [
-            { id: 'dc4', title: '(데모) 2027학년도 입학생 편성표 최종본', sheet_type: 'final', spreadsheet_url: 'https://docs.google.com/spreadsheets/d/DEMO-SHEET-0004/edit', description: null, created_at: ago(60 * 24), updated_at: ago(60 * 24) }
-          ],
-          inspections: []
+            { id: 'dc4', title: '(데모) 2022 개정 교육과정 편성표 최종본(2026.11.10 수정)', sheet_type: 'final', spreadsheet_url: 'https://docs.google.com/spreadsheets/d/DEMO-SHEET-0004/edit', description: "'2022 개정'·날짜는 학년도로 보지 않아요", created_at: ago(60 * 24), updated_at: ago(60 * 24) }
+          ]
         },
-        '연습고': { curriculums: [], inspections: [] },
+        '연습고': {
+          curriculums: [
+            { id: 'dc8', title: '(데모) 2027학년도 입학생 편성표 2차본', sheet_type: 'second_draft', spreadsheet_url: 'https://docs.google.com/spreadsheets/d/DEMO-SHEET-0008/edit', description: null, created_at: ago(60 * 24 * 2), updated_at: ago(60 * 24 * 2) },
+            { id: 'dc9', title: '(데모) 26학년도 입학생 편성표 최종본', sheet_type: 'final', spreadsheet_url: 'https://docs.google.com/spreadsheets/d/DEMO-SHEET-0009/edit', description: null, created_at: ago(60 * 24 * 300), updated_at: ago(60 * 24 * 300) }
+          ]
+        },
         '예시고': {
           curriculums: [
-            { id: 'dc5', title: '(데모) 2027학년도 입학생 편성표 (PDF)', sheet_type: 'first_draft', spreadsheet_url: 'https://example.com/demo.pdf', description: null, created_at: ago(60 * 24 * 5), updated_at: ago(60 * 24 * 5) }
-          ],
-          inspections: []
+            { id: 'dc5', title: '(데모) 교육과정 편성표 최종본 (PDF)', sheet_type: 'final', spreadsheet_url: 'https://example.com/demo.pdf', description: '제목에 학년도가 없는 최종본도 보여요', created_at: ago(60 * 24 * 5), updated_at: ago(60 * 24 * 5) }
+          ]
         }
         // '데모여자고'는 일부러 없음 → "학교 목록에서 찾지 못했어요" 안내 확인용
       };
@@ -1820,7 +1819,7 @@
         async schoolRefs(schoolName) {
           await wait();
           const r = db.refs[schoolName];
-          if (!r) return { school: null, curriculums: [], inspections: [] };
+          if (!r) return { school: null, curriculums: [] };
           return Object.assign({ school: { id: 'demo-' + schoolName, name: schoolName } }, clone(r));
         },
         async logout() { await wait(); },
@@ -3088,6 +3087,24 @@
       }
       if (ED === ed) renderRefs();
     }
+    // 참고 자료: 이번 보고서 학년도(REPORT_YEAR) 입학생 편성표 '최종본'만.
+    // 제목에서 '학년도'·'입학' 바로 앞 숫자만 학년도로 봄 (예: 2026학년도, 26학년도, 2027 입학생)
+    // → '2022 개정 교육과정'·'2026.11.10 수정' 같은 숫자는 학년도가 아님
+    // 다른 학년도만 적힌 최종본은 숨기고, 학년도를 적지 않은 최종본은 보여 줌
+    function titleYears(title) {
+      const years = [];
+      String(title || '').replace(/(\d{2,4})\s*(?:학년도|입학)/g, (m, y) => {
+        if (y.length === 2) years.push('20' + y);
+        else if (y.length === 4 && y.slice(0, 2) === '20') years.push(y);
+        return m;
+      });
+      return years;
+    }
+    function isReportFinal(c) {
+      if (!c || c.sheet_type !== 'final') return false;
+      const years = titleYears(c.title);
+      return !years.length || years.includes(String(REPORT_YEAR));
+    }
     // 공립 과목 칸 ↔ 사립 과목 칸 번호 (예: pub-subj-09 ↔ pri-subj-09). 짝이 없는 번호면 null
     function counterpartId(id) {
       const m = /^(pub|pri)-(subj-.+)$/.exec(String(id || ''));
@@ -3108,25 +3125,24 @@
           el.innerHTML = `<div class="muted">학교 목록에서 ‘${esc(s.school_name)}’을(를) 찾지 못했어요. 관리자에게 학교 이름을 확인해 달라고 알려 주세요.</div>`;
           return;
         }
-        let h = `<div class="ref-sub-title">${esc(d.school.name)} 교육과정 편성표 <span class="muted">(최신순, 읽기 전용으로 열려요)</span></div>`;
-        h += d.curriculums.length
-          ? `<ul class="ref-list">${d.curriculums.map(c => `
+        const all = (d.curriculums || []).filter(c => c && c.sheet_type === 'final');
+        const finals = all.filter(isReportFinal);
+        const hidden = all.filter(c => !isReportFinal(c));
+        const refList = list => `<ul class="ref-list">${list.map(c => `
               <li class="ref-item">
                 <span class="type-tag type-${esc(c.sheet_type)}">${esc(TYPE_LABELS[c.sheet_type] || c.sheet_type || '')}</span>
                 <a href="${esc(safeUrl(toReadOnlyUrl(c.spreadsheet_url)))}" target="_blank" rel="noopener">${esc(c.title)} ↗</a>
                 <span class="ref-date">${esc(fmtDay(c.created_at))}</span>
                 ${c.description ? `<span class="ref-desc">${esc(c.description)}</span>` : ''}
-              </li>`).join('')}</ul>`
-          : '<div class="muted" style="margin-bottom:14px;">등록된 편성표가 없어요.</div>';
-        h += '<div class="ref-sub-title">편성표 점검 결과</div>';
-        h += d.inspections.length
-          ? `<ul class="ref-list">${d.inspections.map(c => `
-              <li class="ref-item">
-                <span class="type-tag type-inspect">점검</span>
-                <a href="${esc(safeUrl(toReadOnlyUrl(c.spreadsheet_url)))}" target="_blank" rel="noopener">${esc(c.title)} ↗</a>
-                <span class="ref-date">${esc(fmtDay(c.created_at))}</span>
-              </li>`).join('')}</ul>`
-          : '<div class="muted">등록된 점검 결과가 없어요.</div>';
+              </li>`).join('')}</ul>`;
+        let h = `<div class="ref-sub-title">${esc(d.school.name)} ${REPORT_YEAR}학년도 입학생 교육과정 편성표 최종본 <span class="muted">(읽기 전용으로 열려요)</span></div>`;
+        h += finals.length
+          ? refList(finals)
+          : `<div class="muted">${hidden.length ? `${REPORT_YEAR}학년도 입학생 최종본이 아직 없어요.` : '아직 등록된 최종본이 없어요. 학교에서 최종본을 올리면 여기에 나와요.'}</div>`;
+        // 제목에 다른 학년도가 적혀 숨긴 최종본 — 제목을 잘못 읽었을 때 대비해 접어서 보여 줌
+        if (hidden.length) {
+          h += `<details class="ref-hidden"><summary>제목에 다른 학년도가 적힌 최종본 ${hidden.length}개 (접어 둠)</summary>${refList(hidden)}</details>`;
+        }
         el.innerHTML = h;
         return;
       }
