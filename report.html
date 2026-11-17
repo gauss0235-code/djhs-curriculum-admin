@@ -914,8 +914,12 @@
       white-space: nowrap;
     }
     .doc-src { font-size: 13px; color: var(--text-muted); font-weight: 600; }
-    /* 초안 미리보기 화면에서는 이름·마감 카드와 탭을 숨겨 표를 넓게 */
-    body.doc-mode #strip, body.doc-mode #tabs { display: none !important; }
+    /* 초안 미리보기(새 창)는 내용만: 사이트 머리말·페이지 제목·이름 카드·탭·바닥글을 숨기고 넓게 */
+    body.doc-mode > header, body.doc-mode .page-header, body.doc-mode #demoBanner,
+    body.doc-mode #strip, body.doc-mode #tabs, body.doc-mode > footer { display: none !important; }
+    body.doc-mode main { max-width: 1600px; padding: 20px 24px 32px; }
+    .doc-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px 16px; flex-wrap: wrap; }
+    .doc-head .slot-title { margin: 2px 0 0; }
     .doc-tools { display: flex; align-items: center; gap: 10px 12px; flex-wrap: wrap; margin-top: 14px; }
     .doc-find {
       flex: 1;
@@ -962,8 +966,7 @@
       padding: 6px 5px;
       text-align: center;
       vertical-align: middle;
-      word-break: keep-all;
-      overflow-wrap: anywhere;
+      word-break: keep-all;      /* 과목명이 '<' 뒤나 낱말 중간에서 끊기지 않게 (띄어쓰기에서만 줄바꿈) */
       background: white;
     }
     .doc-table thead { position: sticky; top: 0; z-index: 3; }
@@ -1240,6 +1243,7 @@
       .conflict-text { max-height: 26vh; }
       .name-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .doc-card { padding: 16px 12px; }
+      body.doc-mode main { padding: 12px 10px 24px; }
       .doc-scroll.main { max-height: 72vh; }
       .doc-link { padding: 12px 12px; gap: 10px; }
       .doc-link .go { padding: 7px 10px; font-size: 12.5px; }
@@ -1379,6 +1383,8 @@
     const PICK = QS.has('pick') || ssGet(LS_PICK) === '1';
     const BASE_TITLE = document.title;
     if (PICK) ssSet(LS_PICK, '1');
+    // 초안 미리보기 주소로 바로 열면 처음부터 '내용만' 모양으로 (사이트 머리말이 잠깐 보였다 사라지지 않게)
+    if (/^#doc\//.test(location.hash)) document.body.classList.add('doc-mode');
     if (QS.has('pick')) {
       try {
         QS.delete('pick');
@@ -2525,7 +2531,26 @@
       const c = countBy(mine);
       const done = (c.submitted || 0) + (c.approved || 0);
       html += `<div class="summary-line">내 칸 ${mine.length}개 · 제출 이상 ${done}개 — ${countsText(mine)}</div>`;
-      html += `<div class="slot-list">${mine.map(s => slotCard(s)).join('')}</div>`;
+      // 종류별로 묶어 보여 줌: 공립 교과 → 사립 교과 → 공립 학교별 → 사립 학교별 → 그 밖(보고서 내용 보완)
+      // (전체 현황·합본은 보고서 순서 그대로)
+      const groups = [
+        { label: '공립 교과 분석', test: s => s.kind === 'subject' && s.part === '공립' },
+        { label: '사립 교과 분석', test: s => s.kind === 'subject' && s.part === '사립' },
+        { label: '공립 학교별 분석', test: s => s.kind === 'school' && s.part === '공립' },
+        { label: '사립 학교별 분석', test: s => s.kind === 'school' && s.part === '사립' }
+      ];
+      const used = new Set();
+      const parts = groups.map(g => {
+        const items = mine.filter(s => !used.has(s.id) && g.test(s));
+        items.forEach(s => used.add(s.id));
+        return { label: g.label, items };
+      });
+      parts.push({ label: '보고서 내용 보완', items: mine.filter(s => !used.has(s.id)) });
+      html += parts.filter(p => p.items.length).map(p => `
+        <section class="group">
+          <div class="group-head"><h3>${esc(p.label)} <span class="cnt-inline">${p.items.length}</span></h3></div>
+          <div class="slot-list">${p.items.map(s => slotCard(s)).join('')}</div>
+        </section>`).join('');
       return html;
     }
 
@@ -3421,7 +3446,7 @@
     }
     async function openDoc(id) {
       const v = $('#view');
-      const back = `<button type="button" class="back-btn" data-act="close-doc" data-id="${esc(id)}">← 작성 화면으로</button>`;
+      const back = `<button type="button" class="back-btn" data-act="close-doc" data-id="${esc(id)}">✕ 창 닫기</button>`;
       v.innerHTML = '<div class="loading">올해 보고서 초안 자료를 불러오는 중입니다...</div>';
       let d = null;
       try {
@@ -3445,12 +3470,13 @@
       v.innerHTML = `
         <div class="doc-view">
           <div class="slot-top">
-            <div class="slot-top-row">
+            <div class="doc-head">
+              <div>
+                <div class="sc-crumb">📄 ${esc(c.src || '')} · ${esc(c.part || (slot ? slot.part : ''))} · 3. 과목별 편성 현황</div>
+                <h3 class="slot-title">${esc(d.title || c.head || (slot ? slot.title : id))}</h3>
+              </div>
               ${back}
-              <span class="doc-src">📄 ${esc(c.src || '')}</span>
             </div>
-            <div class="sc-crumb" style="margin-top:14px;">${esc(c.part || (slot ? slot.part : ''))} · 3. 과목별 편성 현황</div>
-            <h3 class="slot-title">${esc(d.title || c.head || (slot ? slot.title : id))}</h3>
             <div class="doc-tools">
               <input type="text" id="docFind" class="doc-find" placeholder="과목·학교 찾기 (예: 기하, 미적분Ⅱ, 경제 수학)" autocomplete="off" readonly onfocus="this.removeAttribute('readonly')" onpointerdown="this.removeAttribute('readonly')">
               <span id="docHits" class="doc-hits"></span>
